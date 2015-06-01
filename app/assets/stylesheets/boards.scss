@@ -1,0 +1,16 @@
+// Place all the styles related to the Boards controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.pad {
+  height: 33.3333333%;
+  background-color: black;
+  text-align: center;
+  font-size: 23vh;
+  color: black;
+}
+
+.pad:hover {
+  background-color: blue;
+  cursor: pointer;
+}
