@@ -1,53 +1,28 @@
+//Builds html for the menu
+function SampleLiBuilder(sample_json){
+    var colors = ["blue","green","red","orange","yellow","purple","white","grey","black"]
+    var htmlString = '<li class="sample-list" style="color:'
+        +colors[Math.floor(Math.random()*colors.length)]
+        +'" data-url="'
+        + sample_json.url
+        +'"><p>'
+        +sample_json.name
+        +'</p></li>'
+    return htmlString
+}
+
+// AJAX REQUEST
 function initializeSelector(padId) {
-    // var context = new AudioContext();
-
-    // // Define function to load audio associated with a pad html object
-    // function loadAudio(object, url) {
-    //     var request = new XMLHttpRequest();
-    //     request.open('GET', url, true);
-    //     request.responseType = 'arraybuffer';
-    //     request.onload = function() {
-    //         context.decodeAudioData(request.response, function(buffer) {
-    //             object.buffer = buffer;
-    //         });
-    //     }
-    //     request.send();
-    // }
-
-    // // Define function to add audio properties to a pad
-    // function addAudioProperties(object) {
-    //     object.name = object.id;
-    //     object.source = $(object).data('url');
-    //     loadAudio(object, object.source);
-    //     object.play = function() {
-    //         var s = context.createBufferSource();
-    //         s.buffer = object.buffer;
-    //         s.connect(context.destination);
-    //         s.start(0);
-    //         object.s = s;
-    //     }
-    // }
-
-
-    //make ajax request
-    function SampleDivBuilder(sample_json){
-        var htmlString = '<div class="list-group-item" data-url="'
-            + sample_json.url
-            +'">'
-            +sample_json.name
-            +'</div>'
-        return htmlString
-    }
 
     $.getJSON( "/samples.json", function( data ) {
+        //iterate through samples from database
         data.forEach(function(sample_json){
-
-            var htmlElement = $(SampleDivBuilder(sample_json))
-
-            $('.modal-body .list-group').append(htmlElement[0])
-
+            //create and append html
+            var htmlElement = $(SampleLiBuilder(sample_json))
+            $('.modal-body ul').append(htmlElement[0])
+            
+            //make it so each element plays and highlights on click
             addAudioProperties(htmlElement[0]);
-
             $(htmlElement[0]).click(function(){
                 this.play();
                 //remove active class from siblings
@@ -56,26 +31,25 @@ function initializeSelector(padId) {
                 $(this).addClass('active');
             });
         });
+
+        //when confirm is clicked
         $("#confirm-sample").click(function(){
-            var $sample_element = $('.list-group .active');
+            //grab data-url from active element
+            var $sample_element = $('li.active');
             var sample_url = $sample_element.data("url");
-            var sample_name = $sample_element.text();
+
+            //replace selected pad's url and reset audio properties
             $('#' + padId).attr("data-url",sample_url);
-            debugger;
-            //close modals
+            addAudioProperties($('#' + padId)[0], sample_url);
         });
-        //add confirm button
-        //on click
-        //take the selected element's data url
-        //assign that to the HTML pad that's been selected previously
+
+        // General cancel when you leave modal
+        $("#sampleModal").on('hidden.bs.modal', function(){
+            $('.pad').unbind();
+            $('.sample-list').removeClass('active');
+        });
 
         $('#sampleModal').modal('show');
+
     });
 }
-
-//when you get json back
-
-//show a modal
-//make div for each sample
-//on click each sample plays a sound
-//confirm button at bottom will do something special
