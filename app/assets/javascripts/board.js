@@ -68,14 +68,24 @@ $(document).ready(function() {
     var padId;
 
     $('#change-pad').click(function(){
-        // Trigger pop-up directing user to click the pad they want to change
-        // Add class to pads that makes them highlight on mouseover
-        $('.pad').addClass('selectable');
-        $('.selectable').click(function(){
-            $('#sampleModal').modal('show');
-            padId = this.id;
+        $('.pad').bind({
+            mouseenter: function() {
+                $(this).css("background-color","#2D2D2D");
+                $(this).css("cursor","pointer");
+            },
+            mouseleave: function() {
+                $(this).css("background-color","black");
+                $(this).css("cursor","auto");
+            },
+            click: function() {
+                $('#sampleModal').modal('show');
+                padId = this.id;
+            }
         });
-        alert("click a pad to change");
+        $('.select-a-pad').modal('toggle');
+        window.setTimeout(function(){
+            $('.select-a-pad').modal('toggle')
+        }, 1000);
     });
 
     // AJAX REQUEST
@@ -119,7 +129,7 @@ $(document).ready(function() {
 
         // General cancel
         $("#sampleModal").on('hidden.bs.modal', function(){
-            $('.selectable').removeClass('selectable');
+            $('.pad').unbind();
             $('.sample-list').removeClass('active');
         });
     });
