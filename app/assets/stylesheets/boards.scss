@@ -1,16 +1,54 @@
-// Place all the styles related to the Boards controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
+/* Pad styling */
 .pad {
-  height: 33.3333333%;
+  height: 33.333%;
   background-color: black;
   text-align: center;
   font-size: 23vh;
   color: blue;
 }
 
+/* General page styling */
 html body {
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+#wrapper {
+  height: 100%;
+  background-color: black;
+}
+
+div#page-content-wrapper {
+  height: 100%;
+  padding: 0;
+}
+
+button#menu-toggle {
+  position: absolute;
+  z-index: 10;
+  background-color: #2D2D2D;
+  border: none;
+  border-radius: 0;
+}
+
+button#menu-toggle:focus {
+  outline: none;
+}
+
+span#menu-arrow {
+  font-size: 1.5em;
+  color: blue;
+}
+
+div#sidebar-wrapper {
+  background-color: #2D2D2D;
+}
+
+li {
+  font-size: 2em;
+  margin: 3% 0;
 }

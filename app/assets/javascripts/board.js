@@ -36,7 +36,7 @@ $(document).ready(function() {
 
   // Define key index
   var keys = [84,89,85,71,72,74,66,78,77];
-  
+
   // Add button press
   addEventListener("keydown", function(event) {
     for (var i = 0; i < 9; i++) {
@@ -55,4 +55,11 @@ $(document).ready(function() {
       };
     };
   });
+
+  $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+      $("#menu-arrow").toggleClass("glyphicon-chevron-right glyphicon-chevron-left");
+  });
+
 });
