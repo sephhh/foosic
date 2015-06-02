@@ -1,5 +1,3 @@
-<p>Hello world!</p>
-<%= @board.pads.first.sample %>
-<% @board.pads.each_with_index do |pad, index| %>
-  <div id="pad-<%= index %>" data-url="<%= pad.sample %>" class="button col-md-4 pad">Q</div>
+<% @board.samples.each_with_index do |sample, index| %>
+  <div id="pad-<%= index %>" data-url="<%= sample.url %>" class="button col-md-4 pad"><%= @board.letters[index] %></div>
 <% end %>
