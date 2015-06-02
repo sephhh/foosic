@@ -33,14 +33,16 @@ function initializeSelector(padId) {
         });
 
         //when confirm is clicked
-        $("#confirm-sample").click(function(){
+        $("#confirm-sample").click(function(event){
             //grab data-url from active element
             var $sample_element = $('li.active');
             var sample_url = $sample_element.data("url");
-
             //replace selected pad's url and reset audio properties
             $('#' + padId).attr("data-url",sample_url);
             addAudioProperties($('#' + padId)[0], sample_url);
+            
+            //remove this event handler once it's called
+            $( this ).off(event);
         });
 
         // General cancel when you leave modal
