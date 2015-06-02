@@ -7,6 +7,11 @@
   color: blue;
 }
 
+div.selectable:hover {
+  background-color: #2D2D2D;
+  cursor: pointer;
+}
+
 /* General page styling */
 html body {
   padding-top: 0;
@@ -51,4 +56,65 @@ div#sidebar-wrapper {
 li {
   font-size: 2em;
   margin: 3% 0;
+}
+
+/* modal styling */
+div.modal-content {
+  background-color: #2D2D2D;
+  border-radius: 0;
+  border-color: black;
+}
+
+button.close {
+  color: blue;
+  opacity: 1;
+  text-shadow: none;
+}
+
+h4.modal-title {
+  color: blue;
+  font-size: 2em;
+}
+
+div.modal-header {
+  background-color: #2C2C2C;
+  border-bottom: none;
+}
+
+div.modal-footer {
+  background-color: #2C2C2C;
+  border-top: none;
+}
+
+div.modal-body {
+  padding: 0;
+  border-radius: 0;
+  height: 60vh;
+  overflow: scroll;
+}
+
+button#confirm-sample {
+  border-radius: 0;
+  background-color: black;
+  color: green;
+  border-style: none;
+}
+
+.modal-ul {
+  list-style-type: none;
+  cursor: pointer;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+li.sample-list:hover {
+  background-color: grey;
+}
+
+.sample-list.active {
+  background-color: black;
+}
+
+.sample-list p {
+  padding-left: 20px;
 }

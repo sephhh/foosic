@@ -38,6 +38,34 @@
             <div id="pad-<%= index %>" data-url="<%= sample.url %>" class="button col-md-4 pad"><%= @board.letters[index] %></div>
         <% end %>
         <!-- end board -->
+
+        <!-- select pad message -->
+        <div id="select-a-pad">Click a pad to change</div>
+
+        <!-- modal -->
+        <div id="sampleModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">CHOOSE A SAMPLE</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="modal-ul">
+                        </ul>
+                        <!-- append options here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-sample">CONFIRM</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end modal -->
+
     </div>
     <!-- end main page -->
 </div>
