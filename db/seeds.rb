@@ -30,3 +30,6 @@ pad13 = Sample.create(name: "Multi Clap", url: "https://dl.dropboxusercontent.co
 
 pad14 = Sample.create(name: "Cereal", url: "https://dl.dropboxusercontent.com/s/d3svfvhk9x09b4c/SD_cereal%20me.wav?dl=0")
 
+pad15 = Sample.create(name: "Don't wanna", url: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/I_don't_wanna_do_it.wav")
+pad16 = Sample.create(name: "Let's do it", url: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Let's_do_it.wav")
+pad17 = Sample.create(name: "Let's doo it", url: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Let's_doo_it.wav")
