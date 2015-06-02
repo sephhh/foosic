@@ -9,12 +9,24 @@
 
 board1 = Board.create
 
-pad1 = Sample.create(name: "sample1", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Boom-Kick.wav", :board_id => 1)
-pad2 = Sample.create(name: "sample2", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Electric-Bass-High-Bb-Staccato.wav", :board_id => 1)
-pad3 = Sample.create(name: "sample3", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/ContactMic_Samples-NORM_79_Surprise_Sample_Pack.wav", :board_id => 1)
-pad4 = Sample.create(name: "sample4", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Cymbal_Zildjian_Avedis_12_st_mallets_07_Cymbal_Essentials.wav", :board_id => 1)
-pad5 = Sample.create(name: "sample5", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/SD_militaire_synth_Synthdrum_PAck.wav", :board_id => 1)
-pad6 = Sample.create(name: "sample6", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/booga_hit_doubleb06_World_Sounds_Vol1.wav", :board_id => 1)
-pad7 = Sample.create(name: "sample7", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/ghana_bell_high_Bell_Essentials.wav", :board_id => 1)
-pad8 = Sample.create(name: "sample8", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/glass2_Bell_Essentials.wav", :board_id => 1)
-pad9 = Sample.create(name: "sample9", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/yipp23_Analog_Attitude.wav", :board_id => 1)
+pad1 = Sample.create(name: "Boom Kick", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Boom-Kick.wav", :board_id => 1)
+pad2 = Sample.create(name: "Electric-Bass-High-Bb-Staccato", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Electric-Bass-High-Bb-Staccato.wav", :board_id => 1)
+pad3 = Sample.create(name: "Contact Mic", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/ContactMic_Samples-NORM_79_Surprise_Sample_Pack.wav", :board_id => 1)
+pad4 = Sample.create(name: "Cymbal_Zildjian", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Cymbal_Zildjian_Avedis_12_st_mallets_07_Cymbal_Essentials.wav", :board_id => 1)
+pad5 = Sample.create(name: "SD_militaire_synth", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/SD_militaire_synth_Synthdrum_PAck.wav", :board_id => 1)
+pad6 = Sample.create(name: "booga_hit_double", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/booga_hit_doubleb06_World_Sounds_Vol1.wav", :board_id => 1)
+pad7 = Sample.create(name: "ghana_bell_high", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/ghana_bell_high_Bell_Essentials.wav", :board_id => 1)
+pad8 = Sample.create(name: "glass2_Bell", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/glass2_Bell_Essentials.wav", :board_id => 1)
+pad9 = Sample.create(name: "yipp23_Analog", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/yipp23_Analog_Attitude.wav", :board_id => 1)
+
+
+pad10 = Sample.create(name: "Boom Sub Analog", url: "https://dl.dropboxusercontent.com/s/0mtn1dbly5ua8be/BD_8forboom-sub_Analog%20Attitude.wav?dl=0")
+
+pad11 = Sample.create(name: "Bell Mimo Analog", url: "https://dl.dropboxusercontent.com/s/z0iabnu3sjzkmgu/bell%20mimo_Analog%20Attitude.wav?dl=0")
+
+pad12 = Sample.create(name: "Bella Synthdrum", url: "https://dl.dropboxusercontent.com/s/g0zwwn98k0mogoc/bella_Synthdrum%20Pack.wav?dl=0")
+
+pad13 = Sample.create(name: "Multi Clap", url: "https://dl.dropboxusercontent.com/s/f1ug3l6uzzka1i4/Clap_multi%20snap.wav?dl=0")
+
+pad14 = Sample.create(name: "Cereal", url: "https://dl.dropboxusercontent.com/s/d3svfvhk9x09b4c/SD_cereal%20me.wav?dl=0")
+
