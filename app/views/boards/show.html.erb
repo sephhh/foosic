@@ -1,3 +1,5 @@
+<%= javascript_include_tag "board" %>
+
 <% @board.samples.each_with_index do |sample, index| %>
   <div id="pad-<%= index %>" data-url="<%= sample.url %>" class="button col-md-4 pad"><%= @board.letters[index] %></div>
 <% end %>
