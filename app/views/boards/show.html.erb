@@ -1,3 +1,41 @@
-<% @board.samples.each_with_index do |sample, index| %>
-  <div id="pad-<%= index %>" data-url="<%= sample.url %>" class="button col-md-4 pad"><%= @board.letters[index] %></div>
-<% end %>
+<!-- full page wrapper -->
+<div id="wrapper" class="toggled">
+    <!-- sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li>
+                <a href="#" style="color:yellow" id="change-pad">CHANGE PAD</a>
+            </li>
+            <li>
+                <a href="#" style="color:red">LOAD BOARD</a>
+            </li>
+            <li>
+                <a href="#" style="color:orange">SAVE BOARD</a>
+            </li>
+            <li>
+                <a href="#" style="color:green">ADD SAMPLE</a>
+            </li>
+            <li>
+                <a href="#" style="color:purple">INSTRUCTIONS</a>
+            </li>
+            <li>
+                <a href="#" style="color:white">ABOUT</a>
+            </li>
+        </ul>
+    </div>
+    <!-- end sidebar -->
+    <!-- main page -->
+    <div id="page-content-wrapper">
+        <!-- toggle button -->
+        <button class="btn btn-default" id="menu-toggle"><span id="menu-arrow" class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+        <!-- end toggle button -->
+
+        <!-- board -->
+        <% @board.samples.each_with_index do |sample, index| %>
+            <div id="pad-<%= index %>" data-url="<%= sample.url %>" class="button col-md-4 pad"><%= @board.letters[index] %></div>
+        <% end %>
+        <!-- end board -->
+    </div>
+    <!-- end main page -->
+</div>
+<!-- end full page wrapper -->
