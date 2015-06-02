@@ -30,11 +30,11 @@ function addAudioProperties(object) {
 
 //make ajax request
 function SampleDivBuilder(sample_json){
-  var htmlString = '<p class="sample" data-url="'
+  var htmlString = '<div class="list-group-item" data-url="'
   + sample_json.url
   +'">'
   +sample_json.name
-  +'</p>'
+  +'</div>'
   return htmlString
 }
 
@@ -43,16 +43,28 @@ $.getJSON( "/samples.json", function( data ) {
     
     var htmlElement = $(SampleDivBuilder(sample_json))
     
-    $('.modal-body').append(htmlElement[0])
+    $('.modal-body .list-group').append(htmlElement[0])
     
     addAudioProperties(htmlElement[0]);
     
     $(htmlElement[0]).click(function(){
       this.play();
+      //remove active class from siblings
+      $(this).siblings().removeClass("active");  
+      //add active class to clicked item
+      $(this).addClass('active');
     });
   });
-  
-
+  $("#confirm-sample").click(function(){
+      var $sample_element = $('.list-group .active');
+      var sample_url = $sample_element.data("url");
+      var sample_name = $sample_element.text();
+      alert("You picked " + sample_name + " at " + sample_url )
+    });
+  //add confirm button
+    //on click
+      //take the selected element's data url
+      //assign that to the HTML pad that's been selected previously
 
   $('#sampleModal').modal('show') 
 });
