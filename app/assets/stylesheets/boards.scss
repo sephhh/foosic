@@ -7,11 +7,6 @@
   color: blue;
 }
 
-div.selectable:hover {
-  background-color: #2D2D2D;
-  cursor: pointer;
-}
-
 /* General page styling */
 html body {
   padding-top: 0;
@@ -117,4 +112,11 @@ li.sample-list:hover {
 
 .sample-list p {
   padding-left: 20px;
+}
+
+.select-a-pad .modal-dialog {
+  margin-top: 30vh;
+  color: yellow;
+  font-size: 3em;
+  text-align: center;
 }
