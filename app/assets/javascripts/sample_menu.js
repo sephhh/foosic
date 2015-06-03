@@ -51,6 +51,7 @@ function initializeSelector(padId) {
     // General cancel when you leave modal
     $("#sampleModal").on('hidden.bs.modal', function(){
         $('.pad').unbind();
+        $('#confirm-sample').off();
         $('.sample-list').removeClass('active');
     });
 
