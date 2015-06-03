@@ -33,3 +33,13 @@ pad14 = Sample.create(name: "Cereal", url: "https://dl.dropboxusercontent.com/s/
 pad15 = Sample.create(name: "Don't wanna", url: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/I_don't_wanna_do_it.wav")
 pad16 = Sample.create(name: "Let's do it", url: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Let's_do_it.wav")
 pad17 = Sample.create(name: "Let's doo it", url: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Let's_doo_it.wav")
+
+pad18 = Sample.create(name: "Kanye Piano 1", url:"https://dl.dropboxusercontent.com/s/wwtv72568d9qzll/piano1.wav?dl=0")
+pad19 = Sample.create(name: "Kanye Piano 2", url:"https://dl.dropboxusercontent.com/s/zd50gwtqkuvqd7o/piano2.wav?dl=0")
+pad20 = Sample.create(name: "Kanye Piano 3", url:"https://dl.dropboxusercontent.com/s/o1912g16dulfajd/piano3.wav?dl=0")
+pad21 = Sample.create(name: "Kanye Piano 4", url:"https://dl.dropboxusercontent.com/s/1mc6vqqc6obmp3u/piano4.wav?dl=0")
+pad22 = Sample.create(name: "Kanye Piano 5", url:"https://dl.dropboxusercontent.com/s/q6sfrzkbu8pyvtl/piano5.wav?dl=0")
+pad23 = Sample.create(name: "Kanye Piano 6", url:"https://dl.dropboxusercontent.com/s/d51whv9zml9osu6/piano6.wav?dl=0")
+pad24 = Sample.create(name: "Kanye Piano 7", url:"https://dl.dropboxusercontent.com/s/is6q74ew4qc09tx/piano7.wav?dl=0")
+pad25 = Sample.create(name: "Kanye Piano 8", url:"https://dl.dropboxusercontent.com/s/ds98tqpgnqtqo2f/piano8.wav?dl=0")
+pad26 = Sample.create(name: "Look at ya", url:"https://dl.dropboxusercontent.com/s/zc2o9wqu5a7bvfn/Look_at_ya.wav?dl=0")
