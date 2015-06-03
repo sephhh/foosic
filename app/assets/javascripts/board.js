@@ -1,6 +1,14 @@
 // AUDIO SETUP
 // Set audio context
 var context = new AudioContext();
+var preout = context.createGain();
+var loopBuffer, loopSource;
+var padEvent = new Event('padPress');
+var recordingState = false;
+preout.connect(context.destination);
+
+// configure recorder.js
+var rec = new Recorder(preout);
 
 // Define function to load audio associated with a pad html object
 function loadAudio(object, url) {
@@ -23,7 +31,7 @@ function addAudioProperties(object, url) {
     object.play = function() {
         var s = context.createBufferSource();
         s.buffer = object.buffer;
-        s.connect(context.destination);
+        s.connect(preout);
         s.start(0);
         object.s = s;
     }
@@ -44,10 +52,43 @@ $(document).ready(function() {
     addEventListener("keydown", function(event) {
         for (var i = 0; i < 9; i++) {
             if (event.keyCode == keys[i]) {
+                // fire play event
+                document.dispatchEvent(padEvent)
                 var pad_id = '#pad-' + i;
                 $(pad_id)[0].play();
                 $(pad_id).css("background-color","blue");
             };
+        };
+        if (event.keyCode == 32) {
+            if (recordingState) {
+                rec.stop();
+                rec.getBuffer(function(buffers) {
+                    loopSource = context.createBufferSource();
+                    loopBuffer = context.createBuffer( 2, buffers[0].length, context.sampleRate );
+                    loopBuffer.getChannelData(0).set(buffers[0]);
+                    loopBuffer.getChannelData(1).set(buffers[1]);
+                    loopSource.buffer = loopBuffer;
+                    // line below added for looping
+                    loopSource.loop = true;
+
+                    loopSource.connect(context.destination);
+                    loopSource.start(0);
+                    recordingState = false;
+                });
+            } else {
+                // Start listening for button press
+                if (loopSource) {
+                    loopSource.stop();
+                };
+                function loop(){
+                    // listen for play event. on play event do...
+                    rec.clear();
+                    rec.record();
+                    document.removeEventListener('padPress', loop);
+                };
+                document.addEventListener('padPress', loop);
+                recordingState = true;
+            }
         };
     });
     addEventListener("keyup", function(event) {
@@ -95,4 +136,6 @@ $(document).ready(function() {
             $('.select-a-pad').modal('toggle')
         }, 1000);
     });
+
+
 });
