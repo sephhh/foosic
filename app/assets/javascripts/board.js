@@ -2,40 +2,12 @@
 // Set audio context
 var context = new AudioContext();
 var preout = context.createGain();
-var loopBuffer, loopSource;
 var padEvent = new Event('padPress');
-var recordingState = false;
 preout.connect(context.destination);
 
 // configure recorder.js
 var rec = new Recorder(preout);
-
-// Define function to load audio associated with a pad html object
-function loadAudio(object, url) {
-    var request = new XMLHttpRequest();
-    request.open('GET', url, true);
-    request.responseType = 'arraybuffer';
-    request.onload = function() {
-        context.decodeAudioData(request.response, function(buffer) {
-            object.buffer = buffer;
-        });
-    }
-    request.send();
-}
-
-// Define function to add audio properties to a pad
-function addAudioProperties(object, url) {
-    object.name = object.id;
-    object.source = url || $(object).data('url');
-    loadAudio(object, object.source);
-    object.play = function() {
-        var s = context.createBufferSource();
-        s.buffer = object.buffer;
-        s.connect(preout);
-        s.start(0);
-        object.s = s;
-    }
-}
+var looper = new Looper(rec);
 
 
 //Once the page loads
@@ -50,53 +22,26 @@ $(document).ready(function() {
 
     // Add button press
     addEventListener("keydown", function(event) {
-        for (var i = 0; i < 9; i++) {
-            if (event.keyCode == keys[i]) {
-                // fire play event
-                document.dispatchEvent(padEvent)
-                var pad_id = '#pad-' + i;
-                $(pad_id)[0].play();
-                $(pad_id).css("background-color","blue");
-            };
+        //if it's one of our keypad keys
+        if (keys.indexOf(event.keyCode) >= 0){
+            document.dispatchEvent(padEvent)
+            //select the pad, play, and change color
+            var $pad = $('#pad-' + keys.indexOf(event.keyCode));
+            $pad[0].play();
+            $pad.css("background-color","blue");
         };
-        if (event.keyCode == 32) {
-            if (recordingState) {
-                rec.stop();
-                rec.getBuffer(function(buffers) {
-                    loopSource = context.createBufferSource();
-                    loopBuffer = context.createBuffer( 2, buffers[0].length, context.sampleRate );
-                    loopBuffer.getChannelData(0).set(buffers[0]);
-                    loopBuffer.getChannelData(1).set(buffers[1]);
-                    loopSource.buffer = loopBuffer;
-                    // line below added for looping
-                    loopSource.loop = true;
-
-                    loopSource.connect(context.destination);
-                    loopSource.start(0);
-                    recordingState = false;
-                });
-            } else {
-                // Start listening for button press
-                if (loopSource) {
-                    loopSource.stop();
-                };
-                function loop(){
-                    // listen for play event. on play event do...
-                    rec.clear();
-                    rec.record();
-                    document.removeEventListener('padPress', loop);
-                };
-                document.addEventListener('padPress', loop);
-                recordingState = true;
-            }
+        //if it's the space bar
+        if (event.keyCode === 32) {
+            //looper object responds to spacebar press
+            looper.respond();
         };
     });
     addEventListener("keyup", function(event) {
-        for (var i = 0; i < 9; i++) {
-            if (event.keyCode == keys[i]) {
-                var pad_id = '#pad-' + i;
-                $(pad_id).css("background-color","black");
-            };
+       
+        if (keys.indexOf(event.keyCode) >= 0){
+            //select the pad, play, and change color
+            var $pad = $('#pad-' + keys.indexOf(event.keyCode));
+            $pad.css("background-color","black");
         };
     });
 
@@ -109,33 +54,7 @@ $(document).ready(function() {
         $("#menu-arrow").toggleClass("glyphicon-chevron-right glyphicon-chevron-left");
     });
 
-
     //click "change pad" from menu
-    $('#change-pad').click(function(){
-        $('.pad').bind({
-            //pad changes color when mouse enters
-            mouseenter: function() {
-                $(this).css("background-color","#2D2D2D");
-                $(this).css("cursor","pointer");
-            },
-            mouseleave: function() {
-                $(this).css("background-color","black");
-                $(this).css("cursor","auto");
-            },
-            //clicking pad brings up menu to select new sample
-            click: function() {
-                initializeSelector(this.id);
-                // $('#sampleModal').modal('show');
-                // var padId = this.id;
-            }
-        });
-
-        //flash message
-        $('.select-a-pad').modal('toggle');
-        window.setTimeout(function(){
-            $('.select-a-pad').modal('toggle')
-        }, 1000);
-    });
-
+    $('#change-pad').click(changePadHandler);
 
 });
