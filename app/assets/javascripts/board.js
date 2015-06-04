@@ -23,7 +23,9 @@ $(document).ready(function() {
     addEventListener("keydown", function(event) {
         //if it's one of our keypad keys
         if (keys.indexOf(event.keyCode) >= 0){
-            document.dispatchEvent(padEvent)
+            if (looper.looperState === 'listening') {
+                looper.respond(true);
+            }
             //select the pad, play, and change color
             var $pad = $('#pad-' + keys.indexOf(event.keyCode));
             $pad[0].play();
@@ -40,7 +42,7 @@ $(document).ready(function() {
         if (keys.indexOf(event.keyCode) >= 0){
             //select the pad, play, and change color
             var $pad = $('#pad-' + keys.indexOf(event.keyCode));
-            $pad.css("background-color","black");
+            $pad.css("background","rgba(0,0,0,0)");
         };
     });
 

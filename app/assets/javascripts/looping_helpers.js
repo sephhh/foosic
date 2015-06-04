@@ -56,31 +56,30 @@ function Looper (recorder){
     this.animator = new Animator();
 }
 
-Looper.prototype.respond = function(first_argument) {
+Looper.prototype.respond = function(notSpaceBar) {
     if (this.looperState === 'off') {
         // animate
         this.animator.startBlinking();
         // start listening
         var thisRec = this.rec;
         var that = this;
-        function loop(){
-            // animate
-            that.animator.stopBlinking();
-            that.animator.showRecordingIndicator();
-            thisRec.clear();
-            thisRec.record();
-            that.looperState = 'recording';
-            document.removeEventListener('padPress', loop);
-        }
-        document.addEventListener('padPress', loop);
         this.looperState = 'listening';
     } else if (this.looperState === 'listening') {
-        // animate
-        this.animator.stopBlinking();
-        this.animator.hideRecordingIndicator();
-        // cancel listening
-        document.removeEventListener('padPress', loop);
-        this.looperState = 'off';
+        if (notSpaceBar) {
+            // animate
+            this.animator.stopBlinking();
+            this.animator.showRecordingIndicator();
+            // start recording
+            this.rec.clear();
+            this.rec.record();
+            this.looperState = 'recording';
+        } else {
+            // animate
+            this.animator.stopBlinking();
+            this.animator.hideRecordingIndicator();
+            // cancel listening
+            this.looperState = 'off';
+        }
     } else if (this.looperState === 'recording') {
         // animate
         this.animator.hideRecordingIndicator();

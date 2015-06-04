@@ -1,7 +1,7 @@
 /* Pad styling */
 .pad {
   height: 33.333%;
-  background-color: black;
+  background: rgba(0,0,0,0);
   text-align: center;
   font-size: 23vh;
   color: blue;
@@ -122,3 +122,26 @@ li.sample-list:hover {
 }
 
 /* animation layer styling */
+#player-layer {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: grey;
+  display: none;
+}
+
+#player-layer.show {
+  display: block;
+}
+
+#recording-layer {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: red;
+  display: none;
+}
+
+#recording-layer.show {
+  display: block;
+}
