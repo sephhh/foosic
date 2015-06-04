@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   root 'boards#show'
 
   get 'kanye' => 'boards#kanye'
+  get 'dropbox_test' => 'boards#dropbox_test'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
