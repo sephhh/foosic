@@ -21,6 +21,8 @@ $(document).ready(function() {
 
     // Add button press
     addEventListener("keydown", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
         //if it's one of our keypad keys
         if (keys.indexOf(event.keyCode) >= 0){
             if (looper.looperState === 'listening') {
