@@ -83,7 +83,6 @@ Looper.prototype.respond = function(notSpaceBar) {
     } else if (this.looperState === 'recording') {
         // animate
         this.animator.hideRecordingIndicator();
-        this.animator.startLoop(2000);
         // stop recording and start playback
         this.rec.stop();
         this.playLoop();
@@ -103,6 +102,7 @@ Looper.prototype.playLoop = function() {
     this.rec.getBuffer(function(buffers) {
         this.loopSource = context.createBufferSource();
         this.loopBuffer = context.createBuffer( 2, buffers[0].length, context.sampleRate );
+        this.animator.startLoop(this.loopBuffer.duration * 1000);
         this.loopBuffer.getChannelData(0).set(buffers[0]);
         this.loopBuffer.getChannelData(1).set(buffers[1]);
         this.loopSource.buffer = this.loopBuffer;
