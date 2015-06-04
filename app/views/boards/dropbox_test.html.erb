@@ -1,1 +1,92 @@
 <h1>Hello Seph!</h1>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js">
+</script>
+
+<center>
+        <button id="writeButton">Click to create <code>testaudio.wav</code> in Dropbox.</button>
+</center>
+
+
+ <script>
+ var context = new AudioContext();
+
+  var client = new Dropbox.Client({ key: "<%= ENV['APP_KEY'] %>" });
+
+  function writeFile(file, filename) {
+      client.writeFile(filename, file, function (error) {
+          if (error) {
+              alert('Error: ' + error);
+          } else {
+              alert('File written successfully!');
+          }
+      });
+  }
+ 
+  client.authenticate({ interactive: false }, function (error, client) {
+      if (error) {
+          alert('Error: ' + error);
+      }
+  });
+
+  function addAudioPropertiesWithDropBox(object, filename) {
+    object.name = object.id;
+    loadAudioFromDropbox(object, filename);
+    object.play = function() {
+        var s = context.createBufferSource();
+        s.buffer = object.buffer;
+        s.connect(context.destination);
+        s.start(0);
+        object.s = s;
+    }
+  }
+  function loadAudioFromDropbox(object, filename) {
+    client.readFile(filename, { arrayBuffer: true }, function(error, response){
+      if (error) {
+          alert('Error: ' + error);
+      } else {
+         context.decodeAudioData(response, function(buffer) {
+          object.buffer = buffer;
+          alert("audio decoded!");
+        });
+      }       
+    })
+
+  }
+
+ 
+
+  document.getElementById('writeButton').onclick = function () {
+    // loadFiletoDropbox("https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Boom-Kick.wav")
+
+    //read file 
+    addAudioPropertiesWithDropBox(this, "testaudio.wav")
+
+  }
+
+  function loadFiletoDropbox(url) {
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer';
+    request.onload = function() {
+      //write request.response to dropbox if authenticated
+      client.authenticate(function (error, client) {
+          if (error) {
+              alert('Error: ' + error);
+          } else {
+              writeFile(request.response, "testaudio.wav");
+          }
+      });
+    }
+  request.send();
+}
+
+
+
+
+
+</script>
+
+
