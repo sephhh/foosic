@@ -1,31 +1,40 @@
 function Looper (recorder){
-  this.rec = recorder;
-  this.recordingState = false;
-  this.loopSource;
-  this.loopBuffer;
-  this.eventId = null;
+    this.rec = recorder;
+    this.looperState = 'off'; // other states are 'listening','recording', and 'looping'
+    this.loopSource;
+    this.loopBuffer;
+    this.eventId = null;
 }
 
 Looper.prototype.respond = function(first_argument) {
-  if (this.recordingState === true) {
-    this.rec.stop();
-    this.playLoop();
-
-  } else {
-      // Start listening for button press
-      if (this.loopSource) {
-          this.loopSource.stop();
-      };
-
-      var thisRec = this.rec;
-      function loop(){
-        thisRec.clear();
-        thisRec.record();
+    if (this.looperState === 'off') {
+        // start listening
+        var thisRec = this.rec;
+        var that = this;
+        function loop(){
+            thisRec.clear();
+            thisRec.record();
+            that.looperState = 'recording';
+            document.removeEventListener('padPress', loop);
+        }
+        document.addEventListener('padPress', loop);
+        this.looperState = 'listening';
+    } else if (this.looperState === 'listening') {
+        // cancel listening
         document.removeEventListener('padPress', loop);
-      }
-      document.addEventListener('padPress', loop);
-      this.recordingState = true;
-  }
+        this.looperState = 'off';
+    } else if (this.looperState === 'recording') {
+        // stop recording and start playback
+        this.rec.stop();
+        this.playLoop();
+        this.looperState = 'playback';
+    } else if (this.looperState === 'playback'){
+        // stop recording
+        if (this.loopSource) {
+            this.loopSource.stop();
+        };
+        this.looperState = 'off';
+    }
 };
 
 Looper.prototype.playLoop = function() {
@@ -44,4 +53,15 @@ Looper.prototype.playLoop = function() {
     this.recordingState = false;
 };
 
-
+Looper.prototype.animate = function(animation) {
+    switch(animation) {
+    case '':
+        code block
+        break;
+    case '':
+        code block
+        break;
+    default:
+        default code block
+}
+}
