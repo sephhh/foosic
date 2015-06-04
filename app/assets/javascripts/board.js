@@ -9,7 +9,6 @@ preout.connect(context.destination);
 var rec = new Recorder(preout);
 var looper = new Looper(rec);
 
-
 //Once the page loads
 $(document).ready(function() {
     // Add audio properties for each pad
@@ -37,7 +36,7 @@ $(document).ready(function() {
         };
     });
     addEventListener("keyup", function(event) {
-       
+
         if (keys.indexOf(event.keyCode) >= 0){
             //select the pad, play, and change color
             var $pad = $('#pad-' + keys.indexOf(event.keyCode));
