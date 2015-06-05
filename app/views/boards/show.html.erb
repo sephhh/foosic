@@ -3,7 +3,7 @@
 <%= javascript_include_tag "web_audio_helpers" %>
 <%= javascript_include_tag "sample_menu" %>
 <%= javascript_include_tag "looping_helpers" %>
-
+<%= javascript_include_tag "board_helpers" %>
 
 <%= javascript_include_tag "board" %>
 
@@ -49,7 +49,7 @@
 
         <!-- board -->
         <% @board.samples.each_with_index do |sample, index| %>
-            <div id="pad-<%= index %>" data-url="<%= sample.url %>" class="button col-md-4 pad"><%= @board.letters[index] %></div>
+            <div id="pad-<%= index %>" class="button col-md-4 pad"><%= @board.letters[index] %></div>
         <% end %>
         <!-- end board -->
 

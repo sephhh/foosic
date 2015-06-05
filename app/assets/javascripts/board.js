@@ -1,37 +1,74 @@
-// AUDIO SETUP
-// Set audio context
-var context = new AudioContext();
-var preout = context.createGain();
-var padEvent = new Event('padPress');
-preout.connect(context.destination);
-
-// configure recorder.js
-var rec = new Recorder(preout);
-var looper = new Looper(rec);
-
 //Once the page loads
 $(document).ready(function() {
-    // Add audio properties for each pad
-    $('.pad').each(function() {
-        addAudioProperties(this);
+    // AUDIO SETUP
+    // Set audio context
+    var context = new AudioContext();
+    // Set preout to route all pads to for recording
+    var preout = context.createGain();
+    // Connect preout to destination
+    preout.connect(context.destination);
+    // Configure recorder.js
+    var rec = new Recorder(preout);
+    // Create looper - rec knows what to record, context allows loop to be played
+    var looper = createLooper({rec: rec, context: context});
+
+    // CREATE USER BOARD
+    var userBoard;
+    // specify board color
+    var boardSpec = {color: 'blue', context: context};
+    // specify default board settings
+    var defaultBoard = [
+        "Boom Kick",
+        "Multi Clap",
+        "Cereal",
+        "Don't wanna",
+        "Bella Synthdrum",
+        "Contact Mic",
+        "SD_militaire_synth",
+        "booga_hit_double",
+        "ghana_bell_high"
+    ];
+    // get all sample data - NOTE: can probably push some of this logic to the server
+    $.getJSON("/samples.json", function(data) {
+        // filter for defaults
+        var defaultSampleData = [];
+        data.forEach(function(sampleData){
+            for (var i = 0; i < 9; i++) {
+                if (sampleData.name === defaultBoard[i]) {
+                    defaultSampleData.push(sampleData);
+                }
+            }
+        });
+        boardSpec.sampleData = defaultSampleData;
+        userBoard = createBoard(boardSpec);
     });
 
+    // BUTTON PRESS LISTENERS
     // Define key index
     var keys = [84,89,85,71,72,74,66,78,77];
 
-    // Add button press
     addEventListener("keydown", function(event) {
         event.preventDefault();
         event.stopPropagation();
+        var padId = keys.indexOf(event.keyCode);
         //if it's one of our keypad keys
-        if (keys.indexOf(event.keyCode) >= 0){
+        if (padId >= 0){
+            // change state of looper if it's listening
             if (looper.looperState === 'listening') {
                 looper.respond(true);
             }
-            //select the pad, play, and change color
-            var $pad = $('#pad-' + keys.indexOf(event.keyCode));
-            $pad[0].play();
-            $pad.css("background-color","blue");
+            // play the sample on the userBoard
+            userBoard.samples[padId].play();
+            // change color of pad
+            $('#pad-' + padId).css("background-color", userBoard.color);
+            // send pad play to connected users
+            if (conn) {
+                var message = {
+                    messageType: 'padPlay',
+                    padId: padId
+                }
+                conn.send(message);
+            }
         };
         //if it's the space bar
         if (event.keyCode === 32) {
@@ -39,17 +76,16 @@ $(document).ready(function() {
             looper.respond();
         };
     });
-    addEventListener("keyup", function(event) {
 
-        if (keys.indexOf(event.keyCode) >= 0){
-            //select the pad, play, and change color
-            var $pad = $('#pad-' + keys.indexOf(event.keyCode));
-            $pad.css("background","rgba(0,0,0,0)");
+    addEventListener("keyup", function(event) {
+        var padId = keys.indexOf(event.keyCode);
+        if (padId >= 0){
+            // change color back
+            $('#pad-' + padId).css("background","rgba(0,0,0,0)");
         };
     });
 
     // CLICK TRIGGERS
-
     //toggle menu
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
