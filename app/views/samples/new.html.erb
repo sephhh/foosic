@@ -1,3 +1,25 @@
 <h1>Hello <%= current_user.email  %></h1>
 
+<% if current_user.connected_to_dropbox?%>
+  
+<% else %>
+  
+<% end %>
 
+
+
+<!-- 
+if user has dropbox token
+create a new client object with js
+alert blah
+
+
+else
+direct to oauth flow
+once you get code
+  create a new client object with js
+  make call to server
+  server gets reusable token and saves it to db associated with user
+when all that's successful alert bloop
+
+ -->
