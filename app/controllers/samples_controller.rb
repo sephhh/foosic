@@ -12,6 +12,7 @@ class SamplesController < ApplicationController
     unless user_signed_in?
       redirect_to new_user_session_path, :alert => "You must be logged in to create a sample."
     end
+    @app_key = ENV['APP_KEY']
   end
 
 end

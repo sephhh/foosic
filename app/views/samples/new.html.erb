@@ -1,12 +1,62 @@
 <h1>Hello <%= current_user.email  %></h1>
+<script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js">
+</script>
 
+<script>
+<% binding.pry %>
 <% if current_user.connected_to_dropbox?%>
-  
+  var client = new Dropbox.Client({token: '<%= current_user.dropbox_token %>'})
 <% else %>
-  
+  var client = new Dropbox.Client({ key: '<%= ENV['APP_KEY'] %>' });
+  client.authenticate({interactive: false}, function(error, client) {
+  if (error) {
+    return handleError(error);
+  }
+  if (client.isAuthenticated()) {
+    // Cached credentials are available, make Dropbox API calls.
+    alert("you were already authenticated!")
+  } else {
+    // show and set up the "Sign into Dropbox" button
+    var button = document.querySelector("#signin-button");
+    button.setAttribute("class", "visible");
+    button.addEventListener("click", function() {
+      // The user will have to click an 'Authorize' button.
+      client.authenticate(function(error, client) {
+        if (error) {
+          return handleError(error);
+        }
+            alert("you just now authenticated!")
+
+      });
+    });
+  }
+});
 <% end %>
 
+</script>
 
+<!-- client.authenticate({interactive: false}, function(error, client) {
+  if (error) {
+    return handleError(error);
+  }
+  if (client.isAuthenticated()) {
+    // Cached credentials are available, make Dropbox API calls.
+    doSomethingCool();
+  } else {
+    // show and set up the "Sign into Dropbox" button
+    var button = document.querySelector("#signin-button");
+    button.setAttribute("class", "visible");
+    button.addEventListener("click", function() {
+      // The user will have to click an 'Authorize' button.
+      client.authenticate(function(error, client) {
+        if (error) {
+          return handleError(error);
+        }
+        doSomethingCool();
+      });
+    });
+  }
+}); -->
 
 <!-- 
 if user has dropbox token
