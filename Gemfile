@@ -21,6 +21,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'devise'
 
+gem 'dotenv-rails', :groups => [:development, :test]
+
+gem 'dropbox-sdk', '~> 1.6.4'
+
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

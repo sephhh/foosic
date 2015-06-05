@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: "users/sessions" }
+
   resources :samples
 
   resources :boards
@@ -8,6 +9,10 @@ Rails.application.routes.draw do
 
   get 'kanye' => 'boards#kanye'
 
+  devise_scope :user do
+    post "users/save_token" => 'users/sessions#save_token'
+    get "users/save_token" => 'users/sessions#save_token'
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
