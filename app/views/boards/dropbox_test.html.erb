@@ -13,7 +13,8 @@
  <script>
  var context = new AudioContext();
 
-  var client = new Dropbox.Client({ key: "<%= ENV['APP_KEY'] %>" });
+  var client = new Dropbox.Client({token: '<%= ENV['SEPH_TOKEN'] %>'})
+
 
   function writeFile(file, filename) {
       client.writeFile(filename, file, function (error) {
