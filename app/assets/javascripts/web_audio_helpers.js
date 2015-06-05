@@ -30,5 +30,13 @@ var createSample = function(spec) {
         this.source = source;
     }
 
+    newSample.loop = function() {
+        var source = this.context.createBufferSource();
+        source.buffer = this.buffer;
+        source.connect(this.destination);
+        source.loop = true;
+        source.start(this.context.currentTime + 0.7);
+    }
+
     return newSample;
 }

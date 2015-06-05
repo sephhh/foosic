@@ -28,6 +28,19 @@ $(document).ready(function() {
         "booga_hit_double",
         "ghana_bell_high"
     ];
+    if (window.location.href.match(/kanye/)) {
+        defaultBoard = [
+            "Kanye Piano 1",
+            "Kanye Piano 2",
+            "Kanye Piano 3",
+            "Kanye Piano 4",
+            "Kanye Piano 5",
+            "Kanye Piano 6",
+            "Kanye Piano 7",
+            "Kanye Piano 8",
+            "Look at ya"
+        ]
+    }
     // get all sample data - NOTE: can probably push some of this logic to the server
     $.getJSON("/samples.json", function(data) {
         sampleData = data;
@@ -119,4 +132,27 @@ $(document).ready(function() {
             changePadHandler.mode = 'inactive';
         });
     });
+
+    // KANYE MODE
+    if (window.location.href.match(/kanye/)) {
+        var key_array=[]
+        var runaway = [84, 84, 84, 89, 85, 85, 85, 71, 72, 72, 72, 74, 66, 66, 78, 84].join("yeezy");
+        var kanyeSpec = {
+            name: "kanye loop",
+            url: "https://dl.dropboxusercontent.com/s/kk2n3c4fi2zmhbe/kanye-west-runaway-beat-loop.wav?dl=0",
+            context: context,
+            destination: context.destination
+        }
+        kanyeLoop = createSample(kanyeSpec);
+
+        addEventListener("keydown", function(event) {
+            key_array.push(event.keyCode);
+            if (key_array.length >= 16){
+                key_array = key_array.slice(-16);
+                if (key_array.join("yeezy") === runaway){
+                    kanyeLoop.loop();
+                }
+            }
+        });
+    }
 });

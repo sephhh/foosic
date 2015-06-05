@@ -64,9 +64,15 @@
         <!-- end toggle button -->
 
         <!-- board -->
-        <% @board.samples.each_with_index do |sample, index| %>
-            <div id="pad-<%= index %>" data-id="<%= index %>" class="button col-md-4 pad"><%= @board.letters[index] %></div>
-        <% end %>
+        <div id="pad-0" data-id="0" class="button col-md-4 pad">T</div>
+        <div id="pad-1" data-id="1" class="button col-md-4 pad">Y</div>
+        <div id="pad-2" data-id="2" class="button col-md-4 pad">U</div>
+        <div id="pad-3" data-id="3" class="button col-md-4 pad">G</div>
+        <div id="pad-4" data-id="4" class="button col-md-4 pad">H</div>
+        <div id="pad-5" data-id="5" class="button col-md-4 pad">J</div>
+        <div id="pad-6" data-id="6" class="button col-md-4 pad">B</div>
+        <div id="pad-7" data-id="7" class="button col-md-4 pad">N</div>
+        <div id="pad-8" data-id="8" class="button col-md-4 pad">M</div>
         <!-- end board -->
 
         <!-- modal select pad message -->
