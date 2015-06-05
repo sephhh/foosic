@@ -1,60 +1,76 @@
-//Builds html for the menu
-function SampleLiBuilder(sample_json){
-    var colors = ["blue","green","red","orange","yellow","purple","white","grey","black"]
-    var htmlString = '<li class="sample-list" style="color:'
-        +colors[Math.floor(Math.random()*colors.length)]
-        +'" data-url="'
-        + sample_json.url
-        +'"><p>'
-        +sample_json.name
-        +'</p></li>'
-    return htmlString
-}
-
-// AJAX REQUEST
-function initializeSelector(padId) {
-
-    if ($('.sample-list').length === 0) {
-        $.getJSON( "/samples.json", function( data ) {
-            //iterate through samples from database
-            data.forEach(function(sample_json){
-                //create and append html
-                var htmlElement = $(SampleLiBuilder(sample_json))
-                $('.modal-body ul').append(htmlElement[0])
-
-                //make it so each element plays and highlights on click
-                addAudioProperties(htmlElement[0]);
-                $(htmlElement[0]).click(function(){
-                    this.play();
-                    //remove active class from siblings
-                    $(this).siblings().removeClass("active");
-                    //add active class to clicked item
-                    $(this).addClass('active');
-                });
-            });
-        });
+// create change pad handler
+var createChangePadHandler = function(spec){
+    var sampleLibrary = [];
+    for (var i = 0; i < spec.sampleData.length; i++) {
+        var sampleSpec = {
+            name: spec.sampleData[i].name,
+            url: spec.sampleData[i].url,
+            context: spec.context,
+            destination: spec.destination
+        }
+        var sample = createSample(sampleSpec);
+        sampleLibrary.push(sample);
+    };
+    var sampleList = "";
+    for (var i = 0; i < spec.sampleData.length; i++) {
+        sampleList += ('<li class="sample-list" data-id="' + i + '" style="color:green"><p>' + spec.sampleData[i].name + '</p></li>');
     };
 
-    //when confirm is clicked
-    $("#confirm-sample").click(function(event){
-        //grab data-url from active element
-        var $sample_element = $('li.active');
-        var sample_url = $sample_element.data("url");
-        //replace selected pad's url and reset audio properties
-        $('#' + padId).attr("data-url",sample_url);
-        addAudioProperties($('#' + padId)[0], sample_url);
+    newChangePadHandler = {
+        board: spec.board,
+        sampleLibrary: sampleLibrary,
+        sampleList: sampleList,
+        mode: 'inactive'
+    };
 
-        //remove this event handler once it's called
-        $( this ).off(event);
-    });
+    // enter select-a-pad mode
+    newChangePadHandler.selectAPadOn = function(){
+        this.mode = 'selectAPad';
+        that = this;
+        $('.pad').bind({
+            //pad changes color when mouse enters
+            mouseenter: function() {
+                $(this).css("background-color","#2D2D2D");
+                $(this).css("cursor","pointer");
+            },
+            mouseleave: function() {
+                $(this).css("background-color","black");
+                $(this).css("cursor","auto");
+            },
+            //clicking pad brings up menu to select new sample
+            click: function() {
+                that.activePad = $(this).data("id");
+                that.selectASampleOn();
+            }
+        });
+        // toggle select-a-pad message modal
+        $('.select-a-pad').modal('toggle');
+        window.setTimeout(function(){
+            $('.select-a-pad').modal('toggle')
+        }, 1000);
+    }
 
-    // General cancel when you leave modal
-    $("#sampleModal").on('hidden.bs.modal', function(){
-        $('.pad').unbind();
-        $('#confirm-sample').off();
-        $('.sample-list').removeClass('active');
-    });
+    // enter select-a-sample mode
+    newChangePadHandler.selectASampleOn = function(){
+        this.mode = 'select-a-sample';
+        that = this;
+        $('#sampleModal').modal('show');
+        $('.sample-list').click(function(){
+            // update view
+            $('.activeSample').removeClass('activeSample');
+            $(this).addClass('activeSample');
+            // update handler
+            that.activeSample = that.sampleLibrary[$(this).data("id")];
+            // play sound
+            that.activeSample.play();
+        });
+    }
 
-    $('#sampleModal').modal('show');
+    // handle changes
+    newChangePadHandler.changePadConfirm = function() {
+        this.mode = 'inactive';
+        this.board.updateSample(this.activePad, this.activeSample);
+    }
 
+    return newChangePadHandler;
 }

@@ -13,7 +13,7 @@ $(document).ready(function() {
     var looper = createLooper({rec: rec, context: context});
 
     // CREATE USER BOARD
-    var userBoard;
+    var userBoard, sampleData;
     // specify board color
     var boardSpec = {color: 'blue', destination: preout, context: context};
     // specify default board settings
@@ -30,6 +30,7 @@ $(document).ready(function() {
     ];
     // get all sample data - NOTE: can probably push some of this logic to the server
     $.getJSON("/samples.json", function(data) {
+        sampleData = data;
         // filter for defaults
         var defaultSampleData = [];
         data.forEach(function(sampleData){
@@ -40,6 +41,7 @@ $(document).ready(function() {
             }
         });
         boardSpec.sampleData = defaultSampleData;
+        // Initialize board
         userBoard = createBoard(boardSpec);
     });
 
@@ -94,6 +96,27 @@ $(document).ready(function() {
     });
 
     //click "change pad" from menu
-    $('#change-pad').click(changePadHandler);
-
+    var changePadHandler;
+    $('#change-pad').click(function() {
+        if (!changePadHandler) {
+            var changePadHandlerSpec = {
+                board: userBoard,
+                sampleData: sampleData,
+                context: context,
+                destination: preout
+            }
+            changePadHandler = createChangePadHandler(changePadHandlerSpec);
+        }
+        changePadHandler.selectAPadOn();
+        $('.modal-ul').append(changePadHandler.sampleList);
+        $('#confirm-sample').click(function(){
+            changePadHandler.changePadConfirm();
+        });
+        $("#sampleModal").on('hidden.bs.modal', function(){
+            $('.pad').unbind();
+            $('#confirm-sample').off();
+            $('.sample-list').removeClass('active');
+            changePadHandler.mode = 'inactive';
+        });
+    });
 });

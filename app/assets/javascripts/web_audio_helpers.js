@@ -1,26 +1,34 @@
 // Define function to load audio associated with a pad html object
-function loadAudio(object, url) {
+function loadAudio(sample) {
     var request = new XMLHttpRequest();
-    request.open('GET', url, true);
+    request.open('GET', sample.url, true);
     request.responseType = 'arraybuffer';
     request.onload = function() {
-        context.decodeAudioData(request.response, function(buffer) {
-            object.buffer = buffer;
+        sample.context.decodeAudioData(request.response, function(buffer) {
+            sample.buffer = buffer;
         });
     }
     request.send();
 }
 
-// Define function to add audio properties to a pad
-function addAudioProperties(object, url) {
-    object.name = object.id;
-    object.source = url || $(object).data('url');
-    loadAudio(object, object.source);
-    object.play = function() {
-        var s = context.createBufferSource();
-        s.buffer = object.buffer;
-        s.connect(preout);
-        s.start(0);
-        object.s = s;
+// Sample constructor
+var createSample = function(spec) {
+    var newSample = {
+        name: spec.name,
+        url: spec.url,
+        context: spec.context,
+        destination: spec.destination
     }
+
+    loadAudio(newSample);
+
+    newSample.play = function() {
+        var source = this.context.createBufferSource();
+        source.buffer = this.buffer;
+        source.connect(this.destination);
+        source.start(0);
+        this.source = source;
+    }
+
+    return newSample;
 }
