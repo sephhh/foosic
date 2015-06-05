@@ -8,6 +8,14 @@
   <%= analytics_init if Rails.env.production? %>
 </head>
 <body>
+<!-- TODO: integrate notices into styling -->
+<% if notice %>
+    <p class="notice"><%= notice %></p>
+<%end%>
+<% if alert %>
+    <p class="alert"><%= alert %></p>
+<%end%>
+<!-- end of notices -->
 
 <%= yield %>
 
