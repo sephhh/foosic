@@ -24,7 +24,7 @@
                 <a href="#" style="color:orange">SAVE BOARD</a>
             </li>
             <li>
-                <a href="#" style="color:green">ADD SAMPLE</a>
+                <%= link_to "ADD SAMPLE", new_sample_path,style:"color:green"  %>
             </li>
             <li>
                 <a href="#" style="color:purple">INSTRUCTIONS</a>
@@ -32,21 +32,21 @@
             <li>
                 <a href="#" style="color:white">ABOUT</a>
             </li>
-            <% if user_signed_in? %>
+        <% if user_signed_in? %>
             <li>
                 HELLO <%= current_user.email %>
             </li>
             <li>
                 <%= link_to "SIGNOUT", destroy_user_session_path, method: :delete, style:"color:white"  %>
             </li>
-            <% else %>
-                <li>
-                    <%= link_to "Sign In", new_user_session_path, style:"color:white"  %>
-                </li>
-                <li>
-                    <%= link_to "Sign Up", new_user_registration_path, style:"color:white"  %>
-                </li>
-            <% end %>
+        <% else %>
+            <li>
+                <%= link_to "Sign In", new_user_session_path, style:"color:white"  %>
+            </li>
+            <li>
+                <%= link_to "Sign Up", new_user_registration_path, style:"color:white"  %>
+            </li>
+        <% end %>
 
 
         </ul>
@@ -108,4 +108,5 @@
     </div>
     <!-- end main page -->
 </div>
+
 <!-- end full page wrapper -->
