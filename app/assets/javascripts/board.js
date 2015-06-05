@@ -15,7 +15,7 @@ $(document).ready(function() {
     // CREATE USER BOARD
     var userBoard;
     // specify board color
-    var boardSpec = {color: 'blue', context: context};
+    var boardSpec = {color: 'blue', destination: preout, context: context};
     // specify default board settings
     var defaultBoard = [
         "Boom Kick",

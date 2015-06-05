@@ -1,11 +1,12 @@
 // Animator constructor
 var createAnimator = function(spec) {
-    that = {
+    newAnimator = {
         looping: false
     };
 
-    that.startLoop = function(duration) {
+    newAnimator.startLoop = function(duration) {
         this.looping = true;
+        that = this;
         function wipe_right(elem, width) {
             elem.css('width', '0px');
             elem.css("right", width);
@@ -13,7 +14,7 @@ var createAnimator = function(spec) {
                 width: width,
                 right: '0px'
             }, duration, 'linear', function(){
-                if (this.looping) {
+                if (that.looping) {
                     wipe_right(elem, width);
                 }
             });
@@ -22,42 +23,42 @@ var createAnimator = function(spec) {
         wipe_right($('#player-layer'), $('#player-layer').css('width'));
     }
 
-    that.endLoop = function() {
+    newAnimator.endLoop = function() {
         this.looping = false;
         $('#player-layer').removeClass('show');
     }
 
-    that.startBlinking = function() {
+    newAnimator.startBlinking = function() {
         this.blinker = window.setInterval(function () {
             $('#recording-layer').toggleClass("show");
         }, 100);
     }
 
-    that.stopBlinking = function() {
+    newAnimator.stopBlinking = function() {
         clearInterval(this.blinker);
     }
 
-    that.showRecordingIndicator = function() {
+    newAnimator.showRecordingIndicator = function() {
         $('#recording-layer').addClass("show");
     }
 
-    that.hideRecordingIndicator = function() {
+    newAnimator.hideRecordingIndicator = function() {
         $('#recording-layer').removeClass("show");
     }
 
-    return that;
+    return newAnimator;
 }
 
 // Looper constructor
 var createLooper = function(spec) {
-    that = {
+    newLooper = {
         rec: spec.rec,
         looperState: 'off',
         animator: createAnimator(),
         context: spec.context
     };
 
-    that.respond = function(notSpaceBar) {
+    newLooper.respond = function(notSpaceBar) {
         if (this.looperState === 'off') {
             // animate
             this.animator.startBlinking();
@@ -69,7 +70,6 @@ var createLooper = function(spec) {
                 this.animator.stopBlinking();
                 this.animator.showRecordingIndicator();
                 // start recording
-                debugger;
                 this.rec.clear();
                 this.rec.record();
                 this.looperState = 'recording';
@@ -85,25 +85,21 @@ var createLooper = function(spec) {
             this.animator.hideRecordingIndicator();
             // stop recording and start playback
             this.rec.stop();
-            debugger;
             this.playLoop();
             this.looperState = 'playback';
         } else if (this.looperState === 'playback'){
             // animate
             this.animator.endLoop();
             // stop recording
-            if (this.loopSource) {
-                this.loopSource.stop();
-            };
+            this.loopSource.stop();
             this.looperState = 'off';
         }
     };
 
-    that.playLoop = function() {
+    newLooper.playLoop = function() {
         this.rec.getBuffer(function(buffers) {
             this.loopSource = this.context.createBufferSource();
             this.loopBuffer = this.context.createBuffer(2, buffers[0].length, this.context.sampleRate);
-            this.animator.startLoop(this.loopBuffer.duration * 1000);
             this.loopBuffer.getChannelData(0).set(buffers[0]);
             this.loopBuffer.getChannelData(1).set(buffers[1]);
             this.loopSource.buffer = this.loopBuffer;
@@ -112,9 +108,10 @@ var createLooper = function(spec) {
 
             this.loopSource.connect(this.context.destination);
             this.loopSource.start(0);
+            // Animate
+            this.animator.startLoop(this.loopBuffer.duration * 1000);
         }.bind(this));
-        this.recordingState = false;
     };
 
-    return that;
+    return newLooper;
 }

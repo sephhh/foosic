@@ -13,23 +13,24 @@ function loadAudio(sample) {
 
 // Sample constructor
 var createSample = function(spec) {
-    var that = {
+    var newSample = {
         name: spec.name,
         url: spec.url,
-        context: spec.context
+        context: spec.context,
+        destination: spec.destination
     }
 
     loadAudio(that);
 
-    that.play = function() {
+    newSample.play = function() {
         var source = that.context.createBufferSource();
         source.buffer = that.buffer;
-        source.connect(that.context.destination);
+        source.connect(that.destination);
         source.start(0);
         that.source = source;
     }
 
-    return that;
+    return newSample;
 }
 
 // Board Constructor
@@ -39,17 +40,18 @@ var createBoard = function(spec) {
     for (var i = 0; i < 9; i++) {
         var sampleSpec = spec.sampleData[i];
         sampleSpec.context = spec.context;
+        sampleSpec.destination = spec.destination;
         var sample = createSample(sampleSpec);
         samples.push(sample);
     };
 
-    var that = {
+    var newBoard = {
         color: spec.color,
         samples: samples
     };
 
-    that.updateSample = function(padId, newSample) {
-        that.samples[padId] = newSample;
+    newBoard.updateSample = function(padId, newSample) {
+        this.samples[padId] = newSample;
         if (conn) {
             var message = {
                 messageType: 'boardUpdate',
@@ -63,5 +65,5 @@ var createBoard = function(spec) {
         }
     }
 
-    return that;
+    return newBoard;
 }
