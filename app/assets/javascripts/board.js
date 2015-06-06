@@ -167,11 +167,11 @@ $(document).ready(function() {
     // PEER MODE
     if (window.location.href.match(/peer1/)) {
         // set up as peer
-        var myId = "Andi";
-        var peerId = "Parker";
+        var myId = "peer1";
+        var peerId = "peer2";
         var key = $('#peerJSKey').data("key");
 
-        var peer = new Peer(myId, {key: key});
+        var peer = new Peer(myId, {host: 'tyutyu-peerjs-server.herokuapp.com', port: 80, path: '/'});
 
         var conn;
 
@@ -191,11 +191,11 @@ $(document).ready(function() {
     }
 
     if (window.location.href.match(/peer2/)) {
-        var myId = "Parker";
-        var peerId = "Andi";
+        var myId = "peer2";
+        var peerId = "peer1";
         var key = $('#peerJSKey').data("key");
 
-        var peer = new Peer(myId, {key: key});
+        var peer = new Peer(myId, {host: 'tyutyu-peerjs-server.herokuapp.com', port: 80, path: '/'});
 
         // connect to other peer
         var conn = peer.connect(peerId);
