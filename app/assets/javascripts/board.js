@@ -167,8 +167,8 @@ $(document).ready(function() {
     // PEER MODE
     if (window.location.href.match(/peer1/)) {
         // set up as peer
-        var myId = "peer1";
-        var peerId = "peer2";
+        var myId = "Andi";
+        var peerId = "Parker";
         var key = $('#peerJSKey').data("key");
 
         var peer = new Peer(myId, {key: key});
@@ -191,8 +191,8 @@ $(document).ready(function() {
     }
 
     if (window.location.href.match(/peer2/)) {
-        var myId = "peer2";
-        var peerId = "peer1";
+        var myId = "Parker";
+        var peerId = "Andi";
         var key = $('#peerJSKey').data("key");
 
         var peer = new Peer(myId, {key: key});
