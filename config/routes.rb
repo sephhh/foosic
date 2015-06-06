@@ -7,7 +7,11 @@ Rails.application.routes.draw do
 
   root 'boards#show'
 
-  get 'kanye' => 'boards#kanye'
+  get 'kanye' => 'boards#show'
+
+  get 'peer1' => 'boards#show'
+
+  get 'peer2' => 'boards#show'
 
   devise_scope :user do
     post "users/save_token" => 'users/sessions#save_token'

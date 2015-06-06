@@ -75,7 +75,7 @@ $(document).ready(function() {
             // play the sample on the userBoard
             userBoard.samples[padId].play();
             // change color of pad
-            $('#pad-' + padId).css("background-color", userBoard.color);
+            $('#pad-' + padId).addClass(userBoard.color);
             // send pad play to connected users
             if (conn) {
                 var message = {
@@ -96,7 +96,15 @@ $(document).ready(function() {
         var padId = keys.indexOf(event.keyCode);
         if (padId >= 0){
             // change color back
-            $('#pad-' + padId).css("background","rgba(0,0,0,0)");
+            $('#pad-' + padId).removeClass(userBoard.color);
+            // change peer's color back
+            if (conn) {
+                var message = {
+                    messageType: 'padStop',
+                    padId: padId
+                }
+                conn.send(message);
+            }
         };
     });
 
@@ -152,6 +160,54 @@ $(document).ready(function() {
                 if (key_array.join("yeezy") === runaway){
                     kanyeLoop.loop();
                 }
+            }
+        });
+    }
+
+    // PEER MODE
+    if (window.location.href.match(/peer1/)) {
+        // set up as peer
+        var myId = "peer1";
+        var peerId = "peer2";
+        var key = $('#peerJSKey').data("key");
+
+        var peer = new Peer(myId, {key: key});
+
+        var conn;
+
+        peer.on('connection', function(connection) {
+            conn = connection;
+            conn.on('data', function(data){
+                // handle data
+                if (data.messageType === 'padPlay') {
+                    userBoard.samples[data.padId].play();
+                    $('#pad-' + data.padId).addClass("yellow");
+                }
+                if (data.messageType === 'padStop') {
+                    $('#pad-' + data.padId).removeClass("yellow");
+                }
+            });
+        });
+    }
+
+    if (window.location.href.match(/peer2/)) {
+        var myId = "peer2";
+        var peerId = "peer1";
+        var key = $('#peerJSKey').data("key");
+
+        var peer = new Peer(myId, {key: key});
+
+        // connect to other peer
+        var conn = peer.connect(peerId);
+
+        conn.on('data', function(data){
+            // handle data
+            if (data.messageType === 'padPlay') {
+                userBoard.samples[data.padId].play();
+                $('#pad-' + data.padId).addClass("yellow");
+            }
+            if (data.messageType === 'padStop') {
+                $('#pad-' + data.padId).removeClass("yellow");
             }
         });
     }
