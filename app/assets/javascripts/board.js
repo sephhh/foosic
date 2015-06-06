@@ -169,12 +169,9 @@ $(document).ready(function() {
         // set up as peer
         var myId = "peer1";
         var peerId = "peer2";
-        var key = $('#peerJSKey').data("key");
-
-        var peer = new Peer(myId, {host: 'tyutyu-peerjs-server.herokuapp.com', port: 80, path: '/'});
-
         var conn;
 
+        var peer = new Peer(myId, {host: 'tyutyu-peerjs-server.herokuapp.com', port: 80, path: '/'});
         peer.on('connection', function(connection) {
             conn = connection;
             conn.on('data', function(data){
@@ -193,22 +190,21 @@ $(document).ready(function() {
     if (window.location.href.match(/peer2/)) {
         var myId = "peer2";
         var peerId = "peer1";
-        var key = $('#peerJSKey').data("key");
+        var conn;
 
-        var peer = new Peer(myId, {host: 'tyutyu-peerjs-server.herokuapp.com', port: 80, path: '/'});
-
-        // connect to other peer
-        var conn = peer.connect(peerId);
-
-        conn.on('data', function(data){
-            // handle data
-            if (data.messageType === 'padPlay') {
-                userBoard.samples[data.padId].play();
-                $('#pad-' + data.padId).addClass("yellow");
-            }
-            if (data.messageType === 'padStop') {
-                $('#pad-' + data.padId).removeClass("yellow");
-            }
+        var peer = new Peer(myId, {host: 'tyutyu-peerjs-server.herokuapp.com', port: 80, path: '/', debug: true});
+        peer.on('open',function(){
+            conn = peer.connect(peerId);
+            conn.on('data',function(data){
+                // handle data
+                if (data.messageType === 'padPlay') {
+                    userBoard.samples[data.padId].play();
+                    $('#pad-' + data.padId).addClass("yellow");
+                }
+                if (data.messageType === 'padStop') {
+                    $('#pad-' + data.padId).removeClass("yellow");
+                }
+            });
         });
     }
 });
