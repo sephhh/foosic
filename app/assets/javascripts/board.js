@@ -15,7 +15,7 @@ $(document).ready(function() {
     // CREATE USER BOARD
     var userBoard, sampleData;
     // specify board color
-    var boardSpec = {color: 'blue', destination: preout, context: context};
+    var userBoardSpec = {color: 'blue', destination: preout, context: context};
     // specify default board settings
     var defaultBoard = [
         "Boom Kick",
@@ -53,9 +53,11 @@ $(document).ready(function() {
                 }
             }
         });
-        boardSpec.sampleData = defaultSampleData;
+        userBoardSpec.sampleData = defaultSampleData;
         // Initialize board
-        userBoard = createBoard(boardSpec);
+        userBoard = createBoard(userBoardSpec);
+        // Start peer mode
+        initializePeerToPeer(userBoard);
     });
 
     // BUTTON PRESS LISTENERS
@@ -77,18 +79,23 @@ $(document).ready(function() {
             // change color of pad
             $('#pad-' + padId).addClass(userBoard.color);
             // send pad play to connected users
-            if (conn) {
+            if (userBoard.peerToPeer) {
                 var message = {
                     messageType: 'padPlay',
                     padId: padId
                 }
-                conn.send(message);
+                userBoard.peerToPeer.connection.send(message);
             }
         };
         //if it's the space bar
         if (event.keyCode === 32) {
             //looper object responds to spacebar press
             looper.respond();
+            // send message to peer
+            var message = {
+                messageType: 'spacebarToggle'
+            }
+            userBoard.peerToPeer.connection.send(message);
         };
     });
 
@@ -98,12 +105,12 @@ $(document).ready(function() {
             // change color back
             $('#pad-' + padId).removeClass(userBoard.color);
             // change peer's color back
-            if (conn) {
+            if (userBoard.peerToPeer) {
                 var message = {
                     messageType: 'padStop',
                     padId: padId
                 }
-                conn.send(message);
+                userBoard.peerToPeer.connection.send(message);
             }
         };
     });
@@ -165,46 +172,35 @@ $(document).ready(function() {
     }
 
     // PEER MODE
-    if (window.location.href.match(/peer1/)) {
-        // set up as peer
-        var myId = "peer1";
-        var peerId = "peer2";
-        var conn;
-
-        var peer = new Peer(myId, {host: 'tyutyu-peerjs-server.herokuapp.com', port: 80, path: '/'});
-        peer.on('connection', function(connection) {
-            conn = connection;
-            conn.on('data', function(data){
-                // handle data
-                if (data.messageType === 'padPlay') {
-                    userBoard.samples[data.padId].play();
-                    $('#pad-' + data.padId).addClass("yellow");
-                }
-                if (data.messageType === 'padStop') {
-                    $('#pad-' + data.padId).removeClass("yellow");
-                }
-            });
-        });
-    }
-
-    if (window.location.href.match(/peer2/)) {
-        var myId = "peer2";
-        var peerId = "peer1";
-        var conn;
-
-        var peer = new Peer(myId, {host: 'tyutyu-peerjs-server.herokuapp.com', port: 80, path: '/', debug: true});
-        peer.on('open',function(){
-            conn = peer.connect(peerId);
-            conn.on('data',function(data){
-                // handle data
-                if (data.messageType === 'padPlay') {
-                    userBoard.samples[data.padId].play();
-                    $('#pad-' + data.padId).addClass("yellow");
-                }
-                if (data.messageType === 'padStop') {
-                    $('#pad-' + data.padId).removeClass("yellow");
-                }
-            });
-        });
+    function initializePeerToPeer(userBoard){
+        // Remove audio components, which do not appear to be supported by Peer JS data connection
+        userBoardSpecTransmission = {
+            color: "yellow",
+            sampleData: userBoard.sampleData
+        }
+        if (window.location.href.match(/peer1/)) {
+            var peerToPeerSpec = {
+                role: 'receiver',
+                id: 'peer1',
+                peerId: 'peer2',
+                userBoardSpecTransmission: userBoardSpecTransmission,
+                context: userBoardSpec.context,
+                destination: userBoardSpec.destination,
+                looper: looper
+            }
+            userBoard.peerToPeer = createPeerToPeer(peerToPeerSpec);
+        }
+        if (window.location.href.match(/peer2/)) {
+            var peerToPeerSpec = {
+                role: 'initiator',
+                id: 'peer2',
+                peerId: 'peer1',
+                userBoardSpecTransmission: userBoardSpecTransmission,
+                context: userBoardSpec.context,
+                destination: userBoardSpec.destination,
+                looper: looper
+            }
+            userBoard.peerToPeer = createPeerToPeer(peerToPeerSpec);
+        }
     }
 });
