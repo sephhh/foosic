@@ -1,8 +1,7 @@
 var createPeerToPeer = function(spec) {
     newPeerToPeer = {
-        role: spec.role,
         id: spec.id,
-        peerId: spec.peerId,
+        peerIds: [],
         config: {
             host: 'tyutyu-peerjs-server.herokuapp.com',
             port: 80,
@@ -12,7 +11,9 @@ var createPeerToPeer = function(spec) {
         userBoardSpecTransmission: spec.userBoardSpecTransmission,
         context: spec.context,
         destination: spec.destination,
-        looper: spec.looper
+        looper: spec.looper,
+        connections: [],
+        peerBoards: []
     }
 
     newPeerToPeer.peer = new Peer(newPeerToPeer.id, newPeerToPeer.config);
@@ -20,32 +21,30 @@ var createPeerToPeer = function(spec) {
     newPeerToPeer.handleMessage = function(peerMessage){
         switch(peerMessage.messageType) {
         case 'padPlay':
-            this.peerBoard.samples[peerMessage.padId].play();
-            $('#pad-' + peerMessage.padId).addClass(this.peerBoard.color);
+            this.peerBoards[this.peerIds.indexOf(peerMessage.peerId)].samples[peerMessage.padId].play();
+            $('#pad-' + peerMessage.padId).addClass(this.peerBoards[this.peerIds.indexOf(peerMessage.peerId)].color);
             // handle looping
             if (this.looper.looperState === 'listening') {
                 this.looper.respond(true);
             }
             break;
         case 'padStop':
-            $('#pad-' + peerMessage.padId).removeClass(this.peerBoard.color);
+            $('#pad-' + peerMessage.padId).removeClass(this.peerBoards[this.peerIds.indexOf(peerMessage.peerId)].color);
             break;
         case 'connectionOpened':
-            if (this.role === "receiver") {
-                this.sayHello();
-            }
             console.log(peerMessage.messageBody);
             var peerBoardSpec = peerMessage.userBoardSpecTransmission;
             peerBoardSpec.context = this.context;
             peerBoardSpec.destination = this.destination;
-            this.peerBoard = createBoard(peerBoardSpec);
+            this.peerBoards.push(createBoard(peerBoardSpec));
+            this.peerIds.push(peerMessage.peerId);
             break;
         case 'padUpdated':
             var newSampleSpec = peerMessage.newSampleSpecTransmission;
             newSampleSpec.context = this.context;
             newSampleSpec.destination = this.destination;
             var newSample = createSample(newSampleSpec);
-            this.peerBoard.samples[peerMessage.padId] = newSample;
+            this.peerBoards[this.peerIds.indexOf(peerMessage.peerId)].samples[peerMessage.padId] = newSample;
             break;
         case 'spacebarToggle':
             this.looper.respond();
@@ -53,33 +52,36 @@ var createPeerToPeer = function(spec) {
         }
     }
 
-    newPeerToPeer.sayHello = function() {
+    newPeerToPeer.sayHello = function(connection) {
         var message = {
             messageType: 'connectionOpened',
             messageBody: 'Hello!',
+            peerId: this.id,
             userBoardSpecTransmission: this.userBoardSpecTransmission
         }
-        this.connection.send(message);
+        connection.send(message);
     }
 
-    if (newPeerToPeer.role === 'initiator') {
-        newPeerToPeer.peer.on('open',function(){
-            newPeerToPeer.connection = newPeerToPeer.peer.connect(newPeerToPeer.peerId);
-            newPeerToPeer.connection.on('open',function(){
-                newPeerToPeer.sayHello();
-                newPeerToPeer.connection.on('data', function(peerMessage){
-                    newPeerToPeer.handleMessage(peerMessage);
-                });
-            });
+    newPeerToPeer.connectToPeer = function(peerId) {
+        var newConnection = newPeerToPeer.peer.connect(peerId);
+        newPeerToPeer.connections.push(newConnection);
+        newConnection.on('open',function(){
+            newPeerToPeer.sayHello(newConnection);
         });
-    } else {
-        newPeerToPeer.peer.on('connection', function(connection){
-            newPeerToPeer.connection = connection;
-            newPeerToPeer.connection.on('data', function(peerMessage){
-                newPeerToPeer.handleMessage(peerMessage);
-            });
-        })
+        newConnection.on('data', function(peerMessage){
+            newPeerToPeer.handleMessage(peerMessage)
+        });
     }
+
+    newPeerToPeer.peer.on('connection', function(connection){
+        newPeerToPeer.connections.push(connection);
+        connection.on('data', function(peerMessage){
+            newPeerToPeer.handleMessage(peerMessage);
+            if (peerMessage.messageType === 'connectionOpened') {
+                newPeerToPeer.sayHello(connection);
+            }
+        });
+    });
 
     return newPeerToPeer;
 }

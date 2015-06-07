@@ -26,13 +26,16 @@ var createBoard = function(spec) {
         if (this.peerToPeer) {
             var message = {
                 messageType: 'padUpdated',
+                peerId: this.peerToPeer.id,
                 padId: padId,
                 newSampleSpecTransmission: {
                     name: newSample.name,
                     url: newSample.url
                 }
             }
-            this.peerToPeer.connection.send(message);
+            for (var i = 0; i < this.peerToPeer.connections.length; i++) {
+                this.peerToPeer.connections[i].send(message);
+            }
         }
     }
 

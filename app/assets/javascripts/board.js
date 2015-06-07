@@ -79,12 +79,15 @@ $(document).ready(function() {
             // change color of pad
             $('#pad-' + padId).addClass(userBoard.color);
             // send pad play to connected users
-            if (userBoard.peerToPeer) {
+            if (userBoard.peerToPeer.connections.length > 0) {
                 var message = {
                     messageType: 'padPlay',
-                    padId: padId
+                    padId: padId,
+                    peerId: userBoard.peerToPeer.id
                 }
-                userBoard.peerToPeer.connection.send(message);
+                for (var i = 0; i < userBoard.peerToPeer.connections.length; i++) {
+                    userBoard.peerToPeer.connections[i].send(message);
+                }
             }
         };
         //if it's the space bar
@@ -92,10 +95,14 @@ $(document).ready(function() {
             //looper object responds to spacebar press
             looper.respond();
             // send message to peer
-            var message = {
-                messageType: 'spacebarToggle'
+            if (userBoard.peerToPeer.connections.length > 0) {
+                var message = {
+                    messageType: 'spacebarToggle'
+                }
+                for (var i = 0; i < userBoard.peerToPeer.connections.length; i++) {
+                    userBoard.peerToPeer.connections[i].send(message);
+                }
             }
-            userBoard.peerToPeer.connection.send(message);
         };
     });
 
@@ -105,12 +112,15 @@ $(document).ready(function() {
             // change color back
             $('#pad-' + padId).removeClass(userBoard.color);
             // change peer's color back
-            if (userBoard.peerToPeer) {
+            if (userBoard.peerToPeer.connections.length > 0) {
                 var message = {
                     messageType: 'padStop',
-                    padId: padId
+                    padId: padId,
+                    peerId: userBoard.peerToPeer.id
                 }
-                userBoard.peerToPeer.connection.send(message);
+                for (var i = 0; i < userBoard.peerToPeer.connections.length; i++) {
+                    userBoard.peerToPeer.connections[i].send(message);
+                }
             }
         };
     });
@@ -180,9 +190,7 @@ $(document).ready(function() {
         }
         if (window.location.href.match(/peer1/)) {
             var peerToPeerSpec = {
-                role: 'receiver',
                 id: 'peer1',
-                peerId: 'peer2',
                 userBoardSpecTransmission: userBoardSpecTransmission,
                 context: userBoardSpec.context,
                 destination: userBoardSpec.destination,
@@ -191,16 +199,29 @@ $(document).ready(function() {
             userBoard.peerToPeer = createPeerToPeer(peerToPeerSpec);
         }
         if (window.location.href.match(/peer2/)) {
+            userBoardSpecTransmission.color = "purple";
             var peerToPeerSpec = {
-                role: 'initiator',
                 id: 'peer2',
-                peerId: 'peer1',
                 userBoardSpecTransmission: userBoardSpecTransmission,
                 context: userBoardSpec.context,
                 destination: userBoardSpec.destination,
                 looper: looper
             }
-            userBoard.peerToPeer = createPeerToPeer(peerToPeerSpec);
+            userBoard.peerToPeer = (createPeerToPeer(peerToPeerSpec));
+            userBoard.peerToPeer.connectToPeer('peer1');
+        }
+        if (window.location.href.match(/peer3/)) {
+            userBoardSpecTransmission.color = "green";
+            var peerToPeerSpec = {
+                id: 'peer3',
+                userBoardSpecTransmission: userBoardSpecTransmission,
+                context: userBoardSpec.context,
+                destination: userBoardSpec.destination,
+                looper: looper
+            }
+            userBoard.peerToPeer = (createPeerToPeer(peerToPeerSpec));
+            userBoard.peerToPeer.connectToPeer('peer1');
+            userBoard.peerToPeer.connectToPeer('peer2');
         }
     }
 });

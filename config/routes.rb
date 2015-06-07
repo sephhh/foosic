@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   get 'peer2' => 'boards#show'
 
+  get 'peer3' => 'boards#show'
+
   devise_scope :user do
     post "users/save_token" => 'users/sessions#save_token'
     get "users/save_token" => 'users/sessions#save_token'
