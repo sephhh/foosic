@@ -15,6 +15,11 @@
   background-color: yellow;
 }
 
+.pad.selectable {
+  background-color: #2D2D2D;
+  cursor: pointer;
+}
+
 /* General page styling */
 html body {
   padding-top: 0;

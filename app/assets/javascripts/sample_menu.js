@@ -30,12 +30,10 @@ var createChangePadHandler = function(spec){
         $('.pad').bind({
             //pad changes color when mouse enters
             mouseenter: function() {
-                $(this).css("background-color","#2D2D2D");
-                $(this).css("cursor","pointer");
+                $(this).addClass('selectable');
             },
             mouseleave: function() {
-                $(this).css("background-color","black");
-                $(this).css("cursor","auto");
+                $(this).removeClass('selectable');
             },
             //clicking pad brings up menu to select new sample
             click: function() {
