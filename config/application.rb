@@ -32,5 +32,8 @@ module Foosic
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Line added for WebSocket Support
+    config.middleware.delete Rack::Lock
   end
 end

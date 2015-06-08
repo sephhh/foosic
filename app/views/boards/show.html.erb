@@ -21,7 +21,7 @@
                 <a href="#" style="color:yellow" id="change-pad">CHANGE PAD</a>
             </li>
             <li>
-                <a href="#" style="color:red">LOAD BOARD</a>
+                <a href="#" style="color:red" id="connect">CONNECT</a>
             </li>
             <li>
                 <a href="#" style="color:orange">SAVE BOARD</a>
@@ -35,21 +35,21 @@
             <li>
                 <a href="#" style="color:white">ABOUT</a>
             </li>
-        <% if user_signed_in? %>
-            <li>
-                HELLO <%= current_user.email %>
-            </li>
-            <li>
-                <%= link_to "SIGNOUT", destroy_user_session_path, method: :delete, style:"color:white"  %>
-            </li>
-        <% else %>
-            <li>
-                <%= link_to "Sign In", new_user_session_path, style:"color:white"  %>
-            </li>
-            <li>
-                <%= link_to "Sign Up", new_user_registration_path, style:"color:white"  %>
-            </li>
-        <% end %>
+            <% if user_signed_in? %>
+                <li>
+                    HELLO <%= current_user.email %>
+                </li>
+                <li>
+                    <%= link_to "SIGNOUT", destroy_user_session_path, method: :delete, style:"color:white"  %>
+                </li>
+            <% else %>
+                <li>
+                    <%= link_to "Sign In", new_user_session_path, style:"color:white"  %>
+                </li>
+                <li>
+                    <%= link_to "Sign Up", new_user_registration_path, style:"color:white"  %>
+                </li>
+            <% end %>
 
 
         </ul>
@@ -90,7 +90,7 @@
             </div>
         </div>
 
-        <!-- modal -->
+        <!-- sample selection modal -->
         <div id="sampleModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
@@ -101,7 +101,7 @@
                         <h4 class="modal-title">CHOOSE A SAMPLE</h4>
                     </div>
                     <div class="modal-body">
-                        <ul class="modal-ul">
+                        <ul id="sample-list" class="modal-ul">
                         </ul>
                         <!-- append options here -->
                     </div>
@@ -113,6 +113,43 @@
             </div>
         </div>
         <!-- end modal -->
+
+        <!-- connection modal -->
+        <div id="connection-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <ul id="connection-options" class="modal-ul">
+                            <li id="connect-with-a-rando">CONNECT W/ A RANDO</li>
+                            <li id="view-online-users">ONLINE USERS</li>
+                            <li id="view-online-groups">ONLINE GROUPS</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end modal -->
+
+        <!-- online users modal -->
+        <div id="online-users-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <ul id="online-users" class="modal-ul">
+                            <li class="online-user">no one's online :(</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end modal -->
+
 
     </div>
     <!-- end main page -->

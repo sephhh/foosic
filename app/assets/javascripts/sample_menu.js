@@ -13,7 +13,7 @@ var createChangePadHandler = function(spec){
     };
     var sampleList = "";
     for (var i = 0; i < spec.sampleData.length; i++) {
-        sampleList += ('<li class="sample-list" data-id="' + i + '" style="color:green"><p>' + spec.sampleData[i].name + '</p></li>');
+        sampleList += ('<li class="sample-list" data-id="' + i + '" style="color:yellow"><p>' + spec.sampleData[i].name + '</p></li>');
     };
 
     newChangePadHandler = {

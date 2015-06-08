@@ -56,8 +56,6 @@ $(document).ready(function() {
         userBoardSpec.sampleData = defaultSampleData;
         // Initialize board
         userBoard = createBoard(userBoardSpec);
-        // Start peer mode
-        initializePeerToPeer(userBoard);
     });
 
     // BUTTON PRESS LISTENERS
@@ -146,7 +144,7 @@ $(document).ready(function() {
             changePadHandler = createChangePadHandler(changePadHandlerSpec);
         }
         changePadHandler.selectAPadOn();
-        $('.modal-ul').append(changePadHandler.sampleList);
+        $('#sample-list').append(changePadHandler.sampleList);
         $('#confirm-sample').click(function(){
             changePadHandler.changePadConfirm();
         });
@@ -183,45 +181,54 @@ $(document).ready(function() {
 
     // PEER MODE
     function initializePeerToPeer(userBoard){
+        var colors = ["yellow","red","orange","purple","green","white"]
         // Remove audio components, which do not appear to be supported by Peer JS data connection
         userBoardSpecTransmission = {
-            color: "yellow",
+            color: colors[Math.floor(Math.random()*colors.length)],
             sampleData: userBoard.sampleData
         }
-        if (window.location.href.match(/peer1/)) {
-            var peerToPeerSpec = {
-                id: 'peer1',
-                userBoardSpecTransmission: userBoardSpecTransmission,
-                context: userBoardSpec.context,
-                destination: userBoardSpec.destination,
-                looper: looper
-            }
-            userBoard.peerToPeer = createPeerToPeer(peerToPeerSpec);
+        var peerToPeerSpec = {
+            id: userId,
+            userBoardSpecTransmission: userBoardSpecTransmission,
+            context: userBoardSpec.context,
+            destination: userBoardSpec.destination,
+            looper: looper
         }
-        if (window.location.href.match(/peer2/)) {
-            userBoardSpecTransmission.color = "purple";
-            var peerToPeerSpec = {
-                id: 'peer2',
-                userBoardSpecTransmission: userBoardSpecTransmission,
-                context: userBoardSpec.context,
-                destination: userBoardSpec.destination,
-                looper: looper
-            }
-            userBoard.peerToPeer = (createPeerToPeer(peerToPeerSpec));
-            userBoard.peerToPeer.connectToPeer('peer1');
-        }
-        if (window.location.href.match(/peer3/)) {
-            userBoardSpecTransmission.color = "green";
-            var peerToPeerSpec = {
-                id: 'peer3',
-                userBoardSpecTransmission: userBoardSpecTransmission,
-                context: userBoardSpec.context,
-                destination: userBoardSpec.destination,
-                looper: looper
-            }
-            userBoard.peerToPeer = (createPeerToPeer(peerToPeerSpec));
-            userBoard.peerToPeer.connectToPeer('peer1');
-            userBoard.peerToPeer.connectToPeer('peer2');
-        }
+        userBoard.peerToPeer = createPeerToPeer(peerToPeerSpec);
     }
+
+    // USER MANAGEMENT
+    // open modal on click from menu
+    $('#connect').click(function(){
+        $('#connection-modal').modal('toggle');
+    });
+
+    // open new modal on click from modal
+    $('#view-online-users').click(function(){
+        $('#connection-modal').modal('toggle');
+        // populate online users modal
+        function callback(onlineUserList) {
+            $('#online-users').empty();
+            for (var i = 0; i < onlineUserList.length; i++) {
+                $('#online-users').append($('<li class="online-user">').text(onlineUserList[i]));
+            }
+            $('.online-user').click(function(){
+                userBoard.peerToPeer.connectToPeer(this.textContent);
+                $('#online-users-modal').modal('toggle');
+            });
+        }
+        dispatcher.trigger('get_online_users', 1, callback);
+
+        // toggle online users modal
+        $('#online-users-modal').modal('toggle');
+    });
+
+    // websockets user management
+    var userId;
+    var dispatcher = new WebSocketRails('localhost:3000/websocket');
+    dispatcher.bind('set_username',function(username){
+        userId = username;
+        // Start peer mode - eventually we need to make sure this only fire after we have the user board
+        initializePeerToPeer(userBoard);
+    });
 });
