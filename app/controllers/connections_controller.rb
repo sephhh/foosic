@@ -1,9 +1,11 @@
 class ConnectionsController < WebsocketRails::BaseController
-  def hello
-    send_message :private, "hi"
+
+  def get_online_users
+    users = connection_store.collect_all(:username)
+    users.delete(connection_store[:username])
+    if users.size > 0
+      trigger_success users
+    end
   end
 
-  def respond
-    WebsocketRails[:public].trigger 'update', "hello, #{message}"
-  end
 end

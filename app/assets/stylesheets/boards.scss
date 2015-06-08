@@ -60,6 +60,10 @@ button#menu-toggle:focus {
   outline: none;
 }
 
+button.btn.btn-success {
+  font-size: 1.5em;
+}
+
 span#menu-arrow {
   font-size: 1.5em;
   color: blue;
@@ -82,13 +86,14 @@ div.modal-content {
 }
 
 button.close {
-  color: blue;
+  display: none;
+  color: yellow;
   opacity: 1;
   text-shadow: none;
 }
 
 h4.modal-title {
-  color: blue;
+  color: yellow;
   font-size: 2em;
 }
 
@@ -112,7 +117,7 @@ div.modal-body {
 button#confirm-sample {
   border-radius: 0;
   background-color: black;
-  color: green;
+  color: yellow;
   border-style: none;
 }
 
@@ -123,7 +128,7 @@ button#confirm-sample {
   padding-left: 0;
 }
 
-li.sample-list:hover {
+.modal-ul li:hover {
   background-color: grey;
 }
 
@@ -131,8 +136,12 @@ li.sample-list:hover {
   background-color: black;
 }
 
-.sample-list p {
+.modal-ul li {
   padding-left: 20px;
+}
+
+#connection-options {
+  color: red;
 }
 
 .select-a-pad .modal-dialog {
@@ -165,4 +174,8 @@ li.sample-list:hover {
 
 #recording-layer.show {
   display: block;
+}
+
+#online-users-modal {
+  color: red;
 }
