@@ -15,8 +15,12 @@ save button
  -->
 
 <div id="signin-button" class="btn btn-info"></div>
+<div id="recordingslist" style="display: block; margin-bottom: 10px;"></div>
+
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js">
+
+
 </script>
 
 <%= javascript_include_tag "new_sample" %>
@@ -26,6 +30,7 @@ save button
 $(document).ready(function() {
 // todo: wrap in iffe or something
   var client;
+  var context = new AudioContext();
 
   //takes user token from database and returns authenticated client object
   function authenticateFromDatabase(token){
@@ -63,6 +68,8 @@ $(document).ready(function() {
     if (client.isAuthenticated()) {
       saveUser(client.credentials().token)
       console.log("you have been authenticated!")
+      initializeRecorder(client, context);
+
     } else {
       // show and set up the "Sign into Dropbox" button
       //once they click and authenticate they will come back to this page authenticated
@@ -77,7 +84,7 @@ $(document).ready(function() {
     //if there's a user token from db, authenticate with that
     if(data.user_token !== null){
       client = authenticateFromDatabase(data.user_token);
-      //initialize recorder (pass in client?)
+      initializeRecorder(client, context);
     }
     else {
     //create client object from our app_key

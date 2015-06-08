@@ -11,6 +11,7 @@ Rails.application.config.assets.precompile += %w( web_audio_helpers.js )
 Rails.application.config.assets.precompile += %w( looping_helpers.js )
 Rails.application.config.assets.precompile += %w( board_helpers.js )
 Rails.application.config.assets.precompile += %w( peerjs_connection_helpers.js )
+Rails.application.config.assets.precompile += %w( new_sample.js )
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
