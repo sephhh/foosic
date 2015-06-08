@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: "users/sessions" }
 
+  get 'samples/new_html' => 'samples#new_html'
+
   resources :samples
 
   resources :boards

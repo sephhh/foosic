@@ -1,0 +1,135 @@
+<h1>Hello <%= current_user.email  %></h1>
+
+
+<!-- 
+TODO:
+
+Make it ajax-y
+loading this page asks for user's info using ajax, or our app key
+
+when that's done JS does appropriate DB authenticatino
+
+//build a recorder_builder that returns a recorder object with tonsa methods I want, initialize being the main one
+
+Record button and audio display
+Record, stop buttons
+save button
+  saves file to dropbox
+  saves file in database (need migration to adjust for this?)
+
+ -->
+
+<div id="signin-button" class="btn btn-info"></div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js">
+</script>
+
+<%= javascript_include_tag "new_sample" %>
+
+<script>
+
+$(document).ready(function() {
+// todo: wrap in iffe or something
+var client;
+
+//takes user token from database and returns authenticated client object
+function authenticateFromDatabase(token){
+  var client = new Dropbox.Client({token: token})
+  console.log("I got yr dropbox info so I logged you in!!!!")
+  return client;
+}
+
+function saveUser (token){
+  $.post( "/users/save_token", {dropBoxToken:token});
+}
+function handleError(error){
+  console.log(error);
+}
+
+function dropboxSignInFlow(client){
+  var buttonDiv = $("#signin-button");
+  buttonDiv.append("Click here to Sign In to Dropbox")
+  buttonDiv.on("click", function() {
+    // The user will have to click an 'Authorize' button.
+    client.authenticate(function(error, client) {
+      if (error) {
+        return handleError(error);
+      }
+    });
+  });
+}
+
+
+function authenticateWithDropbox(error, client){
+  if (error) {
+    return handleError(error);
+  }
+  //if they are back from flow, save user's token in DB 
+  if (client.isAuthenticated()) {
+    saveUser(client.credentials().token)
+    console.log("you have been authenticated!")
+  } else {
+    // show and set up the "Sign into Dropbox" button
+    //once they click and authenticate they will come back to this page authenticated
+    dropboxSignInFlow(client);
+  }
+
+}
+
+
+$.getJSON( "/samples/new.json", function( data ) {
+
+  //if there's a user token from db, authenticate with that
+  if(data.user_token !== null){
+    client = authenticateFromDatabase(data.user_token);
+    //initialize recorder (pass in client?)
+  }
+  else {
+  //create client object from our app_key
+  client = new Dropbox.Client({ key: data.app_key });
+  //send user through authentication process
+    client.authenticate({interactive: false}, authenticateWithDropbox);
+  }
+});
+
+});
+
+</script>
+
+
+<!-- 
+        $.getJSON( "/samples.json", function( data ) {
+            //iterate through samples from database
+            data.forEach(function(sample_json){
+                //create and append html
+                var htmlElement = $(SampleLiBuilder(sample_json))
+                $('.modal-body ul').append(htmlElement[0])
+
+                //make it so each element plays and highlights on click
+                addAudioProperties(htmlElement[0]);
+                $(htmlElement[0]).click(function(){
+                    this.play();
+                    //remove active class from siblings
+                    $(this).siblings().removeClass("active");
+                    //add active class to clicked item
+                    $(this).addClass('active');
+                });
+            });
+        });
+
+ -->
+<!-- 
+if user has dropbox token
+create a new client object with js
+alert blah
+
+
+else
+direct to oauth flow
+once you get code
+  create a new client object with js
+  make call to server
+  server gets reusable token and saves it to db associated with user
+when all that's successful alert bloop
+
+ -->

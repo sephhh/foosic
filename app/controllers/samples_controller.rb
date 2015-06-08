@@ -8,11 +8,26 @@ class SamplesController < ApplicationController
     end 
   end
 
-  def new
-    unless user_signed_in?
+  def new_html
+    if !user_signed_in?
       redirect_to new_user_session_path, :alert => "You must be logged in to create a sample."
     end
-    @app_key = ENV['APP_KEY']
+  end
+
+  def new
+    @token = nil
+    @app_key = nil
+    if !user_signed_in?
+      redirect_to new_user_session_path, :alert => "You must be logged in to create a sample."
+    elsif current_user.connected_to_dropbox?
+      @token = current_user.dropbox_token
+    else
+      @app_key = ENV['APP_KEY']
+    end
+    respond_to do |format|
+      format.json {render json: { :app_key => @app_key, :user_token => @token }.to_json }
+      format.html {}
+    end
   end
 
 end
