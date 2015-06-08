@@ -225,7 +225,7 @@ $(document).ready(function() {
 
     // websockets user management
     var userId;
-    var dispatcher = new WebSocketRails('localhost:3000/websocket');
+    var dispatcher = new WebSocketRails('www.tyutyu.be/websocket');
     dispatcher.bind('set_username',function(username){
         userId = username;
         // Start peer mode - eventually we need to make sure this only fire after we have the user board
