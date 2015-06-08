@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 
+# Add WebSocket-Rails for user management
+gem 'websocket-rails'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use SCSS for stylesheets

@@ -224,4 +224,15 @@ $(document).ready(function() {
             userBoard.peerToPeer.connectToPeer('peer2');
         }
     }
+
+    // WEBSOCKETS
+    var dispatcher = new WebSocketRails('localhost:3000/websocket');
+    var channel = dispatcher.subscribe('public');
+    channel.bind('update', function(message) {
+        alert(message);
+    });
+    dispatcher.bind('private', function(message) {
+        alert(message);
+        dispatcher.trigger('client_response', 'Parker');
+    });
 });
