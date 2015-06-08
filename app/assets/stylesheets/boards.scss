@@ -62,6 +62,9 @@ button#menu-toggle:focus {
 
 button.btn.btn-success {
   font-size: 1.5em;
+  border-radius: 0;
+  background-color: black;
+  border-style: none;
 }
 
 span#menu-arrow {
@@ -115,10 +118,7 @@ div.modal-body {
 }
 
 button#confirm-sample {
-  border-radius: 0;
-  background-color: black;
   color: yellow;
-  border-style: none;
 }
 
 .modal-ul {
@@ -144,7 +144,7 @@ button#confirm-sample {
   color: red;
 }
 
-.select-a-pad .modal-dialog {
+.flash-modal .modal-dialog {
   margin-top: 30vh;
   color: yellow;
   font-size: 3em;

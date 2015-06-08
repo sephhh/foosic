@@ -188,7 +188,7 @@ $(document).ready(function() {
             sampleData: userBoard.sampleData
         }
         var peerToPeerSpec = {
-            id: userId,
+            id: username,
             userBoardSpecTransmission: userBoardSpecTransmission,
             context: userBoardSpec.context,
             destination: userBoardSpec.destination,
@@ -213,8 +213,13 @@ $(document).ready(function() {
                 $('#online-users').append($('<li class="online-user">').text(onlineUserList[i]));
             }
             $('.online-user').click(function(){
-                userBoard.peerToPeer.connectToPeer(this.textContent);
+                var message = {
+                    sender: username,
+                    receiver: this.textContent
+                };
+                dispatcher.trigger('request_connection', message);
                 $('#online-users-modal').modal('toggle');
+                $('#request-sent-modal').modal('toggle');
             });
         }
         dispatcher.trigger('get_online_users', 1, callback);
@@ -224,11 +229,42 @@ $(document).ready(function() {
     });
 
     // websockets user management
-    var userId;
-    var dispatcher = new WebSocketRails('www.tyutyu.be/websocket');
-    dispatcher.bind('set_username',function(username){
-        userId = username;
+    var username, channel, requestedConnection;
+    var dispatcher = new WebSocketRails('localhost:3000/websocket');
+    dispatcher.bind('set_username',function(generatedUsername){
+        username = generatedUsername;
+        channel = dispatcher.subscribe(username);
+        channel.bind('connection_requested',function(message){
+            requestedConnection = message;
+            // handle modal showing request
+            $('#connection-requested-modal').modal('toggle');
+            $('#requested-connection').text(message.sender + " wants to connect with you!");
+        });
+        channel.bind('connection_accepted',function(message){
+            $('#request-sent-modal').modal('toggle');
+            userBoard.peerToPeer.prepareForConnection();
+            userBoard.peerToPeer.connectToPeer(message.receiver);
+            $('#connecting-modal').modal('toggle');
+        });
+        channel.bind('connection_rejected',function(message){
+            $('#request-sent-modal').modal('toggle');
+            $('#connection-rejected-modal').modal('toggle');
+            window.setTimeout(function(){
+                $('#connection-rejected-modal').modal('toggle')
+            }, 1000);
+        });
+
         // Start peer mode - eventually we need to make sure this only fire after we have the user board
         initializePeerToPeer(userBoard);
+    });
+
+    $('#confirm-connection-request').click(function(){
+        userBoard.peerToPeer.prepareForConnection();
+        dispatcher.trigger('accept_connection',requestedConnection);
+        $('#connecting-modal').modal('toggle');
+    });
+
+    $("#connection-requested-modal").on('hidden.bs.modal', function(){
+        dispatcher.trigger('reject_connection',requestedConnection);
     });
 });

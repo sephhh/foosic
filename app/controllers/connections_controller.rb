@@ -8,4 +8,16 @@ class ConnectionsController < WebsocketRails::BaseController
     end
   end
 
+  def request_connection
+    WebsocketRails[message[:receiver]].trigger 'connection_requested', message
+  end
+
+  def accept_connection
+    WebsocketRails[message[:sender]].trigger 'connection_accepted', message
+  end
+
+  def reject_connection
+    WebsocketRails[message[:sender]].trigger 'connection_rejected', message
+  end
+
 end

@@ -42,9 +42,9 @@ var createChangePadHandler = function(spec){
             }
         });
         // toggle select-a-pad message modal
-        $('.select-a-pad').modal('toggle');
+        $('#select-a-pad').modal('toggle');
         window.setTimeout(function(){
-            $('.select-a-pad').modal('toggle')
+            $('#select-a-pad').modal('toggle')
         }, 1000);
     }
 

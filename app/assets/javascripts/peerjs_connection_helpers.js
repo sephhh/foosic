@@ -62,6 +62,12 @@ var createPeerToPeer = function(spec) {
         connection.send(message);
     }
 
+    newPeerToPeer.prepareForConnection = function(){
+        if (newPeerToPeer.peer.disconnected === true) {
+            newPeerToPeer.peer.reconnect();
+        }
+    }
+
     newPeerToPeer.connectToPeer = function(peerId) {
         var newConnection = newPeerToPeer.peer.connect(peerId);
         newPeerToPeer.connections.push(newConnection);
@@ -74,6 +80,12 @@ var createPeerToPeer = function(spec) {
     }
 
     newPeerToPeer.peer.on('connection', function(connection){
+        $('#connecting-modal').modal('toggle');
+        $('#connection-success-modal').modal('toggle');
+        window.setTimeout(function(){
+            $('#connection-success-modal').modal('toggle')
+        }, 1000);
+
         newPeerToPeer.connections.push(connection);
         connection.on('data', function(peerMessage){
             newPeerToPeer.handleMessage(peerMessage);

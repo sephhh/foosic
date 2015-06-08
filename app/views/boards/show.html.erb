@@ -80,15 +80,64 @@
         <!-- end board -->
 
         <!-- modal select pad message -->
-        <div class="select-a-pad modal fade" role="dialog">
+        <div id="select-a-pad" class="flash-modal modal fade" role="dialog">
             <div class="modal-dialog">
-                <div class="select-a-pad modal-content">
-                    <div class="select-a-pad modal-header">
+                <div class="modal-content">
+                    <div class="modal-header">
                         <p>CLICK A PAD TO CHANGE ITS SAMPLE</p>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- end select-a-pad modal -->
+
+        <!-- modal connecting -->
+        <div id="connecting-modal" class="flash-modal modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p>CONNECTING...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end connecting modal -->
+
+        <!-- request sent modal -->
+        <div id="request-sent-modal" class="flash-modal modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p style="color:red">REQUEST SENT. WAITING FOR RESPONSE...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end request sent modal -->
+
+        <!-- modal connection rejected message -->
+        <div id="connection-rejected-modal" class="flash-modal modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p style="color:red">BUMMER BRAH CONNECTION REJECTED</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end connection rejected modal -->
+
+        <!-- modal connection success message -->
+        <div id="connection-success-modal" class="flash-modal modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p>CLICK A PAD TO CHANGE ITS SAMPLE</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end connection success modal -->
 
         <!-- sample selection modal -->
         <div id="sampleModal" class="modal fade" role="dialog">
@@ -149,6 +198,26 @@
             </div>
         </div>
         <!-- end modal -->
+
+        <!-- connection requested modal -->
+        <div id="connection-requested-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <ul class="modal-ul">
+                            <li id="requested-connection" style="color:red"></li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-connection-request" style="color:red">CONFIRM</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end connection requested modal -->
 
 
     </div>

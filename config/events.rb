@@ -6,6 +6,15 @@ WebsocketRails::EventMap.describe do
   # when client gets online users, populate list
   subscribe :get_online_users, 'connections#get_online_users'
 
+  # send request for connection
+  subscribe :request_connection, 'connections#request_connection'
+
+  # handle accepted requests
+  subscribe :accept_connection, 'connections#accept_connection'
+
+  # handle failed requests
+  subscribe :reject_connection, 'connections#reject_connection'
+
   # You can use this file to map incoming events to controller actions.
   # One event can be mapped to any number of controller actions. The
   # actions will be executed in the order they were subscribed.
