@@ -1,11 +1,23 @@
 class SamplesController < ApplicationController
 
   def index
-    @samples = Sample.all
+    if user_signed_in?
+      @samples = Sample.where("user_id = ? OR user_id IS NULL", current_user.id)
+    else
+      @samples = Sample.where("user_id IS NULL")
+    end
     respond_to do |format|
       format.json {render json: @samples}
       format.html {}
     end 
+  end
+
+  def create
+    Sample.create(name: params[:fileName], user_id: current_user.id)
+    respond_to do |format|
+      #send back "all's well" but don't do anything else.
+      format.json { head :ok }
+    end
   end
 
   def new_html

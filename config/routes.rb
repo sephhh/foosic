@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     post "users/save_token" => 'users/sessions#save_token'
     get "users/save_token" => 'users/sessions#save_token'
+    get "users/lookup" => 'users/sessions#lookup'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -5,6 +5,7 @@ var createChangePadHandler = function(spec){
         var sampleSpec = {
             name: spec.sampleData[i].name,
             url: spec.sampleData[i].url,
+            user_id: spec.sampleData[i].user_id,
             context: spec.context,
             destination: spec.destination
         }
