@@ -2,6 +2,7 @@ function CreateRecorder(client, context){
   var newRecorder = {
     client: client,
     context: context,
+    fileName: null,
     //states are recording, full, cleared
     state: "cleared"
   };
@@ -21,6 +22,7 @@ function CreateRecorder(client, context){
   newRecorder.stop = function(){
     this.recorder.stop();
     this.state = "full"
+    this.fileName = new Date().toISOString() + '.wav'
     //to display audio, need better way
     this.recorder.exportWAV(function(blob){
       var url = URL.createObjectURL(blob);
@@ -32,7 +34,7 @@ function CreateRecorder(client, context){
       au.controls = true;
       au.src = url;
       hf.href = url;
-      hf.download = new Date().toISOString() + '.wav';
+      hf.download = newRecorder.fileName;
       hf.innerHTML = hf.download;
       li.appendChild(au);
       li.appendChild(hf);
@@ -42,11 +44,16 @@ function CreateRecorder(client, context){
 
   newRecorder.save = function(){
     this.recorder.exportWAV(this.writeFile);
+    if (this.fileName === null){
+      this.fileName = new Date().toISOString() + '.wav'
+    }
+    $.post( "/samples", {fileName:this.fileName});
     this.recorder.clear();
+    this.fileName = null;
     this.state = "cleared";
   };
   newRecorder.writeFile = function(blob){
-    newRecorder.client.writeFile("test_audio.wav", blob, function (error) {
+    newRecorder.client.writeFile(newRecorder.fileName, blob, function (error) {
       if (error) {
           alert('Error: ' + error);
       } else {
@@ -93,11 +100,11 @@ function initializeRecorder(client, context){
     console.log(rec.state);
   });
 
-  //build HTML
-  //set click handlers
 }
-//runners, should go elsewhere
 
-//var context = new AudioContext();
-//var client = {};
-//initializeRecorder(client, context);
+//TODO
+//save sample to database-
+  //sample belongs_to user
+  //create and save sample
+  //modify how samples load so we can access custom ones
+//better file naming

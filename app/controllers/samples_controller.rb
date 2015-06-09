@@ -8,6 +8,14 @@ class SamplesController < ApplicationController
     end 
   end
 
+  def create
+    Sample.create(name: params[:fileName], user_id: current_user.id)
+    respond_to do |format|
+      #send back "all's well" but don't do anything else.
+      format.json { head :ok }
+    end
+  end
+
   def new_html
     if !user_signed_in?
       redirect_to new_user_session_path, :alert => "You must be logged in to create a sample."
