@@ -23,6 +23,18 @@
   background-color: green;
 }
 
+.pad.white {
+  background-color: white;
+}
+
+.pad.red {
+  background-color: red;
+}
+
+.pad-orange {
+  background-color: orange;
+}
+
 .pad.selectable {
   background-color: #2D2D2D;
   cursor: pointer;
@@ -144,9 +156,8 @@ button#confirm-sample {
   color: red;
 }
 
-.flash-modal .modal-dialog {
+.message-modal .modal-dialog {
   margin-top: 30vh;
-  color: yellow;
   font-size: 3em;
   text-align: center;
 }
@@ -176,6 +187,14 @@ button#confirm-sample {
   display: block;
 }
 
+#connection-message-modal {
+  color: red;
+}
+
 #online-users-modal {
   color: red;
+}
+
+#select-a-pad-modal {
+  color: yellow;
 }

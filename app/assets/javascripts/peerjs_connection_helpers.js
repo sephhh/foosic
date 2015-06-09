@@ -38,6 +38,10 @@ var createPeerToPeer = function(spec) {
             peerBoardSpec.destination = this.destination;
             this.peerBoards.push(createBoard(peerBoardSpec));
             this.peerIds.push(peerMessage.peerId);
+            $('#connection-message-modal p').text("CONNECTED!");
+            window.setTimeout(function(){
+                $('#connection-message-modal').modal('toggle')
+            }, 1000);
             break;
         case 'padUpdated':
             var newSampleSpec = peerMessage.newSampleSpecTransmission;
@@ -80,12 +84,6 @@ var createPeerToPeer = function(spec) {
     }
 
     newPeerToPeer.peer.on('connection', function(connection){
-        $('#connecting-modal').modal('toggle');
-        $('#connection-success-modal').modal('toggle');
-        window.setTimeout(function(){
-            $('#connection-success-modal').modal('toggle')
-        }, 1000);
-
         newPeerToPeer.connections.push(connection);
         connection.on('data', function(peerMessage){
             newPeerToPeer.handleMessage(peerMessage);

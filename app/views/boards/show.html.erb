@@ -80,7 +80,7 @@
         <!-- end board -->
 
         <!-- modal select pad message -->
-        <div id="select-a-pad" class="flash-modal modal fade" role="dialog">
+        <div id="select-a-pad-modal" class="message-modal modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -90,54 +90,6 @@
             </div>
         </div>
         <!-- end select-a-pad modal -->
-
-        <!-- modal connecting -->
-        <div id="connecting-modal" class="flash-modal modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <p>CONNECTING...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end connecting modal -->
-
-        <!-- request sent modal -->
-        <div id="request-sent-modal" class="flash-modal modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <p style="color:red">REQUEST SENT. WAITING FOR RESPONSE...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end request sent modal -->
-
-        <!-- modal connection rejected message -->
-        <div id="connection-rejected-modal" class="flash-modal modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <p style="color:red">BUMMER BRAH CONNECTION REJECTED</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end connection rejected modal -->
-
-        <!-- modal connection success message -->
-        <div id="connection-success-modal" class="flash-modal modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <p>CLICK A PAD TO CHANGE ITS SAMPLE</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end connection success modal -->
 
         <!-- sample selection modal -->
         <div id="sampleModal" class="modal fade" role="dialog">
@@ -163,24 +115,17 @@
         </div>
         <!-- end modal -->
 
-        <!-- connection modal -->
-        <div id="connection-modal" class="modal fade" role="dialog">
+        <!-- connection message modal -->
+        <div id="connection-message-modal" class="message-modal modal fade" role="dialog">
             <div class="modal-dialog">
-
-                <!-- modal content-->
                 <div class="modal-content">
-                    <div class="modal-body">
-                        <ul id="connection-options" class="modal-ul">
-                            <li id="connect-with-a-rando">CONNECT W/ A RANDO</li>
-                            <li id="view-online-users">ONLINE USERS</li>
-                            <li id="view-online-groups">ONLINE GROUPS</li>
-                        </ul>
+                    <div class="modal-header">
+                        <p id="connection-message"></p>
                     </div>
                 </div>
-
             </div>
         </div>
-        <!-- end modal -->
+        <!-- end connection message modal -->
 
         <!-- online users modal -->
         <div id="online-users-modal" class="modal fade" role="dialog">
@@ -188,6 +133,10 @@
 
                 <!-- modal content-->
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="username-message" style="color:black">YOU ARE: <span id="username-for-connection" style="color:red"></span></h2>
+                        <h2 style="color:black">CONNECT WITH SOMEONE ELSE ONLINE...</h2>
+                    </div>
                     <div class="modal-body">
                         <ul id="online-users" class="modal-ul">
                             <li class="online-user">no one's online :(</li>
@@ -205,13 +154,12 @@
 
                 <!-- modal content-->
                 <div class="modal-content">
-                    <div class="modal-body">
-                        <ul class="modal-ul">
-                            <li id="requested-connection" style="color:red"></li>
-                        </ul>
+                    <div class="modal-header">
+                        <h3 id="requested-connection" style="color:red"></h3>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" style="text-align:center">
                         <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-connection-request" style="color:red">CONFIRM</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="reject-connection-request" style="color:red">REJECT</button>
                     </div>
                 </div>
 

@@ -200,13 +200,13 @@ $(document).ready(function() {
     // USER MANAGEMENT
     // open modal on click from menu
     $('#connect').click(function(){
-        $('#connection-modal').modal('toggle');
-    });
+        // toggle online users modal
+        $('#online-users-modal').modal('toggle');
 
-    // open new modal on click from modal
-    $('#view-online-users').click(function(){
-        $('#connection-modal').modal('toggle');
-        // populate online users modal
+        // populate username
+        $('#username-for-connection').text(username);
+
+        // define callback to populate online users modal
         function callback(onlineUserList) {
             $('#online-users').empty();
             for (var i = 0; i < onlineUserList.length; i++) {
@@ -219,38 +219,39 @@ $(document).ready(function() {
                 };
                 dispatcher.trigger('request_connection', message);
                 $('#online-users-modal').modal('toggle');
-                $('#request-sent-modal').modal('toggle');
+                $('#connection-message-modal').modal('toggle');
+                $('#connection-message-modal p').text("REQUEST SENT. WAITING FOR RESPONSE...");
             });
         }
-        dispatcher.trigger('get_online_users', 1, callback);
 
-        // toggle online users modal
-        $('#online-users-modal').modal('toggle');
+        // get the online users using WebSocket dispatcher
+        dispatcher.trigger('get_online_users', 1, callback);
     });
 
     // websockets user management
     var username, channel, requestedConnection;
+    var requestInProgress = false;
     var dispatcher = new WebSocketRails('localhost:3000/websocket');
     dispatcher.bind('set_username',function(generatedUsername){
         username = generatedUsername;
         channel = dispatcher.subscribe(username);
         channel.bind('connection_requested',function(message){
+            requestInProgress = true;
             requestedConnection = message;
             // handle modal showing request
             $('#connection-requested-modal').modal('toggle');
-            $('#requested-connection').text(message.sender + " wants to connect with you!");
+            $('#requested-connection').text(message.sender + " WANTS TO CONNECT WITH YOU");
         });
         channel.bind('connection_accepted',function(message){
-            $('#request-sent-modal').modal('toggle');
+            // $('#request-sent-modal').modal('toggle');
             userBoard.peerToPeer.prepareForConnection();
             userBoard.peerToPeer.connectToPeer(message.receiver);
-            $('#connecting-modal').modal('toggle');
+            $('#connection-message-modal p').text("REQUEST ACCEPTED. CONNECTING...");
         });
         channel.bind('connection_rejected',function(message){
-            $('#request-sent-modal').modal('toggle');
-            $('#connection-rejected-modal').modal('toggle');
+            $('#connection-message-modal p').text("REQUEST REJECTED. BUMMER");
             window.setTimeout(function(){
-                $('#connection-rejected-modal').modal('toggle')
+                $('#connection-message-modal').modal('toggle')
             }, 1000);
         });
 
@@ -259,12 +260,21 @@ $(document).ready(function() {
     });
 
     $('#confirm-connection-request').click(function(){
+        requestInProgress = false;
         userBoard.peerToPeer.prepareForConnection();
         dispatcher.trigger('accept_connection',requestedConnection);
-        $('#connecting-modal').modal('toggle');
+        $('#connection-message-modal').modal('toggle');
+        $('#connection-message-modal p').text('CONNECTING...');
+    });
+
+    $('#reject-connection-request').click(function(){
+        requestInProgress = false;
+        dispatcher.trigger('reject_connection',requestedConnection);
     });
 
     $("#connection-requested-modal").on('hidden.bs.modal', function(){
-        dispatcher.trigger('reject_connection',requestedConnection);
+        if (requestInProgress) {
+            dispatcher.trigger('reject_connection',requestedConnection);
+        }
     });
 });
