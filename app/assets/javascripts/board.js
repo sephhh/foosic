@@ -14,49 +14,19 @@ $(document).ready(function() {
 
     // CREATE USER BOARD
     var userBoard, sampleData;
-    // specify board color
+    // specify board color and audio environment
     var userBoardSpec = {color: 'blue', destination: preout, context: context};
     // specify default board settings
-    var defaultBoard = [
-        "Boom Kick",
-        "Multi Clap",
-        "Cereal",
-        "Don't wanna",
-        "Bella Synthdrum",
-        "Contact Mic",
-        "SD_militaire_synth",
-        "booga_hit_double",
-        "ghana_bell_high"
-    ];
+    var defaultBoardId = 1;
     if (window.location.href.match(/kanye/)) {
-        defaultBoard = [
-            "Kanye Piano 1",
-            "Kanye Piano 2",
-            "Kanye Piano 3",
-            "Kanye Piano 4",
-            "Kanye Piano 5",
-            "Kanye Piano 6",
-            "Kanye Piano 7",
-            "Kanye Piano 8",
-            "Look at ya"
-        ]
+        defaultBoardId = 2;
     }
-    // get all sample data - NOTE: can probably push some of this logic to the server
-    $.getJSON("/samples.json", function(data) {
-        sampleData = data;
-        // filter for defaults
-        var defaultSampleData = [];
-        data.forEach(function(sampleData){
-            for (var i = 0; i < 9; i++) {
-                if (sampleData.name === defaultBoard[i]) {
-                    defaultSampleData.push(sampleData);
-                }
-            }
-        });
-        userBoardSpec.sampleData = defaultSampleData;
-        // Initialize board
+    //look up samples for default board
+    $.getJSON("/boards/lookup", { id: defaultBoardId}, function(data){
+        userBoardSpec.sampleData = data;
         userBoard = createBoard(userBoardSpec);
-    });
+     }); 
+
 
     // BUTTON PRESS LISTENERS
     // Define key index

@@ -6,7 +6,14 @@ class BoardsController < ApplicationController
   def show
   end
 
-  def kanye
-    render 'show'
+  def lookup
+    @board = Board.find(params[:id])
+    respond_to do |format|
+      format.json {render json: @board.get_samples}
+    end 
   end
+
+  def create
+  end
+
 end

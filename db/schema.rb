@@ -11,16 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+ActiveRecord::Schema.define(version: 20150609175334) do
 
-ActiveRecord::Schema.define(version: 20150609133526) do
-
-  create_table "boards", force: :cascade do |t|
+  create_table "board_samples", force: :cascade do |t|
+    t.integer  "board_id"
+    t.integer  "sample_id"
+    t.integer  "pad_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "online_users", force: :cascade do |t|
-    t.string   "username"
+  add_index "board_samples", ["board_id"], name: "index_board_samples_on_board_id"
+  add_index "board_samples", ["sample_id"], name: "index_board_samples_on_sample_id"
+
+  create_table "boards", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -28,13 +34,11 @@ ActiveRecord::Schema.define(version: 20150609133526) do
   create_table "samples", force: :cascade do |t|
     t.string   "name"
     t.string   "url"
-    t.integer  "board_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "user_id"
   end
 
-  add_index "samples", ["board_id"], name: "index_samples_on_board_id"
   add_index "samples", ["user_id"], name: "index_samples_on_user_id"
 
   create_table "users", force: :cascade do |t|

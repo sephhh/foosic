@@ -3,7 +3,6 @@ class CreateSamples < ActiveRecord::Migration
     create_table :samples do |t|
       t.string :name
       t.string :url
-      t.belongs_to :board, index: true
 
       t.timestamps null: false
     end

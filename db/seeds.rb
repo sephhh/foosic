@@ -7,17 +7,16 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-board1 = Board.create
 
-pad1 = Sample.create(name: "Boom Kick", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Boom-Kick.wav", :board_id => 1)
-pad2 = Sample.create(name: "Electric-Bass-High-Bb-Staccato", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Electric-Bass-High-Bb-Staccato.wav", :board_id => 1)
-pad3 = Sample.create(name: "Contact Mic", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/ContactMic_Samples-NORM_79_Surprise_Sample_Pack.wav", :board_id => 1)
-pad4 = Sample.create(name: "Cymbal_Zildjian", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Cymbal_Zildjian_Avedis_12_st_mallets_07_Cymbal_Essentials.wav", :board_id => 1)
-pad5 = Sample.create(name: "SD_militaire_synth", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/SD_militaire_synth_Synthdrum_PAck.wav", :board_id => 1)
-pad6 = Sample.create(name: "booga_hit_double", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/booga_hit_doubleb06_World_Sounds_Vol1.wav", :board_id => 1)
-pad7 = Sample.create(name: "ghana_bell_high", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/ghana_bell_high_Bell_Essentials.wav", :board_id => 1)
-pad8 = Sample.create(name: "glass2_Bell", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/glass2_Bell_Essentials.wav", :board_id => 1)
-pad9 = Sample.create(name: "yipp23_Analog", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/yipp23_Analog_Attitude.wav", :board_id => 1)
+pad1 = Sample.create(name: "Boom Kick", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Boom-Kick.wav")
+pad2 = Sample.create(name: "Electric-Bass-High-Bb-Staccato", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Electric-Bass-High-Bb-Staccato.wav")
+pad3 = Sample.create(name: "Contact Mic", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/ContactMic_Samples-NORM_79_Surprise_Sample_Pack.wav")
+pad4 = Sample.create(name: "Cymbal_Zildjian", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/Cymbal_Zildjian_Avedis_12_st_mallets_07_Cymbal_Essentials.wav")
+pad5 = Sample.create(name: "SD_militaire_synth", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/SD_militaire_synth_Synthdrum_PAck.wav")
+pad6 = Sample.create(name: "booga_hit_double", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/booga_hit_doubleb06_World_Sounds_Vol1.wav")
+pad7 = Sample.create(name: "ghana_bell_high", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/ghana_bell_high_Bell_Essentials.wav")
+pad8 = Sample.create(name: "glass2_Bell", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/glass2_Bell_Essentials.wav")
+pad9 = Sample.create(name: "yipp23_Analog", url:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/282817/yipp23_Analog_Attitude.wav")
 
 
 pad10 = Sample.create(name: "Boom Sub Analog", url: "https://dl.dropboxusercontent.com/s/0mtn1dbly5ua8be/BD_8forboom-sub_Analog%20Attitude.wav?dl=0")
@@ -43,3 +42,30 @@ pad23 = Sample.create(name: "Kanye Piano 6", url:"https://dl.dropboxusercontent.
 pad24 = Sample.create(name: "Kanye Piano 7", url:"https://dl.dropboxusercontent.com/s/is6q74ew4qc09tx/piano7.wav?dl=0")
 pad25 = Sample.create(name: "Kanye Piano 8", url:"https://dl.dropboxusercontent.com/s/ds98tqpgnqtqo2f/piano8.wav?dl=0")
 pad26 = Sample.create(name: "Look at ya", url:"https://dl.dropboxusercontent.com/s/zc2o9wqu5a7bvfn/Look_at_ya.wav?dl=0")
+
+board1 = Board.create(name: "Default")
+board1.assign_pad(1, 1)
+board1.assign_pad(2, 2)
+board1.assign_pad(3, 3)
+board1.assign_pad(4, 4)
+board1.assign_pad(5, 5)
+board1.assign_pad(6, 6)
+board1.assign_pad(7, 7)
+board1.assign_pad(8, 8)
+board1.assign_pad(9, 9)
+
+board2 = Board.create(name:"Kanye")
+board2.assign_pad(18, 18)
+board2.assign_pad(19, 19)
+board2.assign_pad(20, 20)
+board2.assign_pad(21, 21)
+board2.assign_pad(22, 22)
+board2.assign_pad(23, 23)
+board2.assign_pad(24, 24)
+board2.assign_pad(25, 25)
+board2.assign_pad(26, 26)
+
+
+
+
+
