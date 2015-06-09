@@ -231,7 +231,7 @@ $(document).ready(function() {
     // websockets user management
     var username, channel, requestedConnection;
     var requestInProgress = false;
-    var dispatcher = new WebSocketRails('localhost:3000/websocket');
+    var dispatcher = new WebSocketRails('www.tyutyu.be/websocket');
     dispatcher.bind('set_username',function(generatedUsername){
         username = generatedUsername;
         channel = dispatcher.subscribe(username);
