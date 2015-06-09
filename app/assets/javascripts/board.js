@@ -25,7 +25,7 @@ $(document).ready(function() {
     $.getJSON("/boards/lookup", { id: defaultBoardId}, function(data){
         userBoardSpec.sampleData = data;
         userBoard = createBoard(userBoardSpec);
-     }); 
+    });
 
 
     // BUTTON PRESS LISTENERS
@@ -170,6 +170,11 @@ $(document).ready(function() {
     // USER MANAGEMENT
     // open modal on click from menu
     $('#connect').click(function(){
+        // Start peer mode if needed
+        if (!userBoard.peerToPeer) {
+            initializePeerToPeer(userBoard);
+        }
+
         // toggle online users modal
         $('#online-users-modal').modal('toggle');
 
@@ -206,6 +211,10 @@ $(document).ready(function() {
         username = generatedUsername;
         channel = dispatcher.subscribe(username);
         channel.bind('connection_requested',function(message){
+            // Start peer mode if needed
+            if (!userBoard.peerToPeer) {
+                initializePeerToPeer(userBoard);
+            }
             requestInProgress = true;
             requestedConnection = message;
             // handle modal showing request
@@ -224,9 +233,6 @@ $(document).ready(function() {
                 $('#connection-message-modal').modal('toggle')
             }, 1000);
         });
-
-        // Start peer mode - eventually we need to make sure this only fire after we have the user board
-        initializePeerToPeer(userBoard);
     });
 
     $('#confirm-connection-request').click(function(){
@@ -259,8 +265,8 @@ $(document).ready(function() {
 
             // populate list
             data.forEach(function(board){
-                var HTMLString = '<li class="board-list-item" data-id="' + 
-                board.id + '">' + board.name + '</li>';
+                var HTMLString = '<li class="board-list-item" data-id="' +
+                    board.id + '">' + board.name + '</li>';
                 $('#list-boards-ul').append(HTMLString);
             });
 
@@ -285,8 +291,6 @@ $(document).ready(function() {
             if (boardName !== ""){
                 $.post('/boards', {name: boardName, sampleData: userBoard.sampleData});
                 $('#board-save-modal').modal('toggle');
-            } else {
-                alert("ENTER A NAME FOOL!")
             }
         });
     });
