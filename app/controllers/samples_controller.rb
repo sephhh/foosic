@@ -1,7 +1,11 @@
 class SamplesController < ApplicationController
 
   def index
-    @samples = Sample.all
+    if user_signed_in?
+      @samples = Sample.where("user_id = ? OR user_id IS NULL", current_user.id)
+    else
+      @samples = Sample.where("user_id IS NULL")
+    end
     respond_to do |format|
       format.json {render json: @samples}
       format.html {}

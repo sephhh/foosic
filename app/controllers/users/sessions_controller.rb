@@ -10,6 +10,15 @@ class Users::SessionsController < Devise::SessionsController
     end
   end
 
+  def lookup
+    @user = current_user
+    respond_to do |format|
+      #send back token of current user
+      format.json {render json: {token: @user.dropbox_token}.to_json}
+    end
+  end
+
+
 # before_filter :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in

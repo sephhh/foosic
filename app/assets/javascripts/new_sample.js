@@ -43,17 +43,16 @@ function CreateRecorder(client, context){
   };
 
   newRecorder.save = function(){
-    this.recorder.exportWAV(this.writeFile);
     if (this.fileName === null){
       this.fileName = new Date().toISOString() + '.wav'
     }
+    this.recorder.exportWAV(this.writeFile.bind(this));
     $.post( "/samples", {fileName:this.fileName});
     this.recorder.clear();
-    this.fileName = null;
     this.state = "cleared";
   };
   newRecorder.writeFile = function(blob){
-    newRecorder.client.writeFile(newRecorder.fileName, blob, function (error) {
+    this.client.writeFile(this.fileName, blob, function (error) {
       if (error) {
           alert('Error: ' + error);
       } else {
