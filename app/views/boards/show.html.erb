@@ -27,7 +27,7 @@
                 <a href="#" style="color:red" id="connect">CONNECT</a>
             </li>
             <li>
-                <a href="#" style="color:orange">SAVE BOARD</a>
+                <a href="#" style="color:orange" id="load-board">LOAD BOARD</a>
             </li>
             <li>
                 <%= link_to "ADD SAMPLE", new_sample_path,style:"color:green"  %>
@@ -170,6 +170,24 @@
         </div>
         <!-- end connection requested modal -->
 
+        <!-- list boards modal -->
+        <div id="list-boards-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- modal content-->
+                <div class="modal-content" style="color:orange">
+                    <div class="modal-header">
+                        <h2>CHOOSE A BOARD</h2>
+                    </div>
+                    <div class="modal-body">
+                        <ul id="list-boards-ul" class="modal-ul">
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end load boards modal -->
 
     </div>
     <!-- end main page -->

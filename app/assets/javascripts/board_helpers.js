@@ -38,6 +38,21 @@ var createBoard = function(spec) {
             }
         }
     }
+
+    newBoard.refreshBoard = function(data) {
+        for (var i = 0; i < 9; i++) {
+            this.sampleData[i] = data.sampleData[i];
+            var sampleSpec = this.sampleData[i];
+            sampleSpec.context = this.context;
+            sampleSpec.destination = this.destination;
+            var sample = createSample(sampleSpec);
+            newBoard.updateSample(i, sample);
+            // delete context from spec to enable transmission
+            sampleSpec.context = null;
+            sampleSpec.destination = null;
+        };
+    }
+
     return newBoard;
 }
 

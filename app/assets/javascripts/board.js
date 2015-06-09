@@ -247,4 +247,40 @@ $(document).ready(function() {
             dispatcher.trigger('reject_connection',requestedConnection);
         }
     });
+
+    $('#load-board').click(function(){
+        // toggle list-boards modal
+        $('#list-boards-modal').modal('toggle');
+
+        // get all of the boards
+        $.getJSON("/boards", function(data){
+            // clear existing list
+            $('#list-boards-ul').empty()
+
+            // populate list
+            data.forEach(function(board){
+                var HTMLString = '<li class="board-list-item" data-id="' + 
+                board.id + '">' + board.name + '</li>';
+                $('#list-boards-ul').append(HTMLString);
+            });
+
+            // add click listeners to boards
+            $('.board-list-item').one('click',function(){
+                var boardId = $(this).data("id");
+                $.getJSON("/boards/lookup", { id: boardId }, function(data){
+                    userBoardSpec.sampleData = data;
+                    userBoard.refreshBoard(userBoardSpec);
+                });
+                $('#list-boards-modal').modal('toggle');
+            });
+        });
+
+        // add click listener for boards in list - refresh board on click
+        $('.board-list-item').click(function(){
+            $.getJSON("/boards/lookup", { id: this.data("board-id")}, function(data){
+                userBoardSpec.sampleData = data;
+                userBoard.reloadBoard(userBoardSpec);
+            }); 
+        });
+    });
 });
