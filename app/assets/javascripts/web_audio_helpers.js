@@ -33,6 +33,7 @@ var createSample = function(spec) {
     var newSample = {
         name: spec.name,
         url: spec.url,
+        id: spec.id,
         user_id: spec.user_id,
         context: spec.context,
         destination: spec.destination

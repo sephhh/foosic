@@ -13,7 +13,7 @@ $(document).ready(function() {
     var looper = createLooper({rec: rec, context: context});
 
     // CREATE USER BOARD
-    var userBoard, sampleData;
+    var userBoard;
     // specify board color and audio environment
     var userBoardSpec = {color: 'blue', destination: preout, context: context};
     // specify default board settings
@@ -33,8 +33,8 @@ $(document).ready(function() {
     var keys = [84,89,85,71,72,74,66,78,77];
 
     addEventListener("keydown", function(event) {
-        event.preventDefault();
-        event.stopPropagation();
+        // event.preventDefault();
+        // event.stopPropagation();
         var padId = keys.indexOf(event.keyCode);
         //if it's one of our keypad keys
         if (padId >= 0){
@@ -107,7 +107,7 @@ $(document).ready(function() {
         if (!changePadHandler) {
             var changePadHandlerSpec = {
                 board: userBoard,
-                sampleData: sampleData,
+                sampleData: userBoard.sampleData,
                 context: context,
                 destination: preout
             }
@@ -271,16 +271,23 @@ $(document).ready(function() {
                     userBoardSpec.sampleData = data;
                     userBoard.refreshBoard(userBoardSpec);
                 });
-                $('#list-boards-modal').modal('toggle');
+                $('#list-boards-modal').modal('toggle')
             });
         });
+    });
 
-        // add click listener for boards in list - refresh board on click
-        $('.board-list-item').click(function(){
-            $.getJSON("/boards/lookup", { id: this.data("board-id")}, function(data){
-                userBoardSpec.sampleData = data;
-                userBoard.reloadBoard(userBoardSpec);
-            }); 
+    $('#save-board').click(function(){
+        $('#board-save-modal').modal('toggle');
+        $('#confirm-board-save').one('click',function(event){
+            event.preventDefault();
+            event.stopPropagation();
+            var boardName = $('#board-name-input').val();
+            if (boardName !== ""){
+                $.post('/boards', {name: boardName, sampleData: userBoard.sampleData});
+                $('#board-save-modal').modal('toggle');
+            } else {
+                alert("ENTER A NAME FOOL!")
+            }
         });
     });
 });

@@ -3,6 +3,7 @@ var createChangePadHandler = function(spec){
     var sampleLibrary = [];
     for (var i = 0; i < spec.sampleData.length; i++) {
         var sampleSpec = {
+            id: spec.sampleData[i].id,
             name: spec.sampleData[i].name,
             url: spec.sampleData[i].url,
             user_id: spec.sampleData[i].user_id,

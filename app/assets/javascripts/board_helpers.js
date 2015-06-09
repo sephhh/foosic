@@ -22,6 +22,11 @@ var createBoard = function(spec) {
     };
 
     newBoard.updateSample = function(padId, newSample) {
+        this.sampleData[padId] = {
+            id: newSample.id,
+            name: newSample.name,
+            url: newSample.url
+        }
         this.samples[padId] = newSample;
         if (this.peerToPeer) {
             var message = {

@@ -22,6 +22,16 @@ class BoardsController < ApplicationController
   end
 
   def create
+    if user_signed_in?
+      @board = Board.create(name: params[:name], user_id: current_user.id)
+      params[:sampleData].each do |pad_id, sample|
+        @board.assign_pad(pad_id, sample["id"])
+      end
+    end
+    respond_to do |format|
+      #send back "all's well" but don't do anything else.
+      format.js { head :ok }
+    end
   end
 
 end

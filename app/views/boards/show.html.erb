@@ -30,6 +30,10 @@
                 <a href="#" style="color:orange" id="load-board">LOAD BOARD</a>
             </li>
             <li>
+                <a href="#" style="color:pink" id="save-board">SAVE BOARD</a>
+            </li>
+
+            <li>
                 <%= link_to "ADD SAMPLE", new_sample_path,style:"color:green"  %>
             </li>
             <li>
@@ -96,26 +100,27 @@
 
         <!-- sample selection modal -->
         <div id="sampleModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+                <div class="modal-dialog">
 
-                <!-- modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">CHOOSE A SAMPLE</h4>
+                    <!-- modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">CHOOSE A SAMPLE</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul id="sample-list" class="modal-ul">
+                            </ul>
+                            <!-- append options here -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-sample">CONFIRM</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <ul id="sample-list" class="modal-ul">
-                        </ul>
-                        <!-- append options here -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-sample">CONFIRM</button>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
+       
         <!-- end modal -->
 
         <!-- connection message modal -->
@@ -188,6 +193,30 @@
             </div>
         </div>
         <!-- end load boards modal -->
+        <!-- board save modal -->
+         <div id="board-save-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">SAVE BOARD AS</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action>
+                            <input type="text" value="" id="board-name-input">
+                        </form>
+                        <!-- append options here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-board-save">SAVE</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end board save modal -->
 
     </div>
     <!-- end main page -->

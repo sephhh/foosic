@@ -10,7 +10,7 @@ class Board < ActiveRecord::Base
     self.board_samples.order(:pad_id).map {|bs| bs.sample}
   end
 
-  def assign_pad(sample_id, pad_id)
+  def assign_pad(pad_id, sample_id)
     board_sample = self.board_samples.find_or_create_by(pad_id: pad_id)
     board_sample.sample_id = sample_id
     board_sample.save
