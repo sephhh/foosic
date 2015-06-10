@@ -31,23 +31,37 @@ function CreateRecorder(client, context){
       var li = document.createElement('li');
       var au = document.createElement('audio');
       var hf = document.createElement('a');
-      var recordingslist = $("#recordingslist")[0];
+      var recordingslist = $("#recordingslist");
       
       au.controls = true;
       au.src = url;
       hf.href = url;
       hf.download = newRecorder.fileName;
-      hf.innerHTML = hf.download;
+      hf.innerHTML = "DOWNLOAD FILE";
       li.appendChild(au);
       li.appendChild(hf);
-      recordingslist.appendChild(li);
+      recordingslist.append(li);
+      recordingslist.append('NAME SAMPLE: <input id="name-sample-input" type="text" value='+ newRecorder.fileName +'>')
     });
   };
 
   newRecorder.save = function(){
+    //if input is not ""
+      //if it ends in wav, use that
+      //if it doesn't, add .wav and use that
+    //if filename is null set it to date string
+    var inputName = $("#name-sample-input").val();
+    if(inputName !== ""){
+      if (inputName.substr(inputName.length - 4)===".wav"){
+        this.fileName = inputName;
+      }else{
+        this.fileName = inputName + ".wav"
+      }
+    }
     if (this.fileName === null){
       this.fileName = new Date().toISOString() + '.wav'
     }
+    
     this.recorder.exportWAV(this.writeFile.bind(this));
     $.post( "/samples", {fileName:this.fileName});
     this.recorder.clear();
@@ -112,33 +126,6 @@ function initializeRecorder(client, context){
     }
 
   });
-
-  addEventListener("keydown", function(event) {
-    //if they press r start or stop
-    if (event.keyCode === 82){
-      if (rec.state === "cleared"){
-        rec.start();
-      }
-      else if (rec.state === "recording"){
-        rec.stop();
-      }
-    };
-    //if they press s save
-    if (event.keyCode === 83){
-      if (rec.state === "full"){
-        rec.save();
-      }
-    };
-    // if c, clear
-    if (event.keyCode === 67){
-      if (rec.state === "full"){
-        rec.recorder.clear();
-        rec.state = "cleared";
-      }
-    };
-    console.log(rec.state);
-  });
-
 }
 
 
