@@ -380,6 +380,10 @@ $(document).ready(function() {
             }, 1500);
         }
     });
+    $("#add-sample-modal").on('hidden.bs.modal', function(){
+       $("#recordingslist").empty();
+       
+    });
 
     // clear notices after a bit
     window.setTimeout(function(){

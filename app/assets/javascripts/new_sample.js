@@ -28,7 +28,7 @@ function CreateRecorder(client, context){
     //to display audio, need better way
     this.recorder.exportWAV(function(blob){
       var url = URL.createObjectURL(blob);
-      var li = document.createElement('li');
+      var p = document.createElement('p');
       var au = document.createElement('audio');
       var hf = document.createElement('a');
       var recordingslist = $("#recordingslist");
@@ -38,10 +38,10 @@ function CreateRecorder(client, context){
       hf.href = url;
       hf.download = newRecorder.fileName;
       hf.innerHTML = "DOWNLOAD FILE";
-      li.appendChild(au);
-      li.appendChild(hf);
-      recordingslist.append(li);
-      recordingslist.append('NAME SAMPLE: <input id="name-sample-input" type="text" value='+ newRecorder.fileName +'>')
+      p.appendChild(au);
+      p.appendChild(hf);
+      recordingslist.append(p);
+      recordingslist.append('NAME YOUR SAMPLE: <input id="name-sample-input" type="text" value='+ newRecorder.fileName +'>')
     });
   };
 
@@ -76,25 +76,27 @@ function CreateRecorder(client, context){
       }
     });
   }
-  //pass in a jQuery div and this will add Save, Clear and Cancel buttons
+  //pass in a jQuery div and this will add Save, Clear and Cancel buttons to it
   newRecorder.activateButtons = function(){
     $("#rec-buttons").off();
     $("#rec-buttons").show();
     $("#new-sample-save").on("click", function(){
       if (rec.state === "full"){
         rec.save();
-        $("#recordingslist").empty();
       }
     });
     $("#new-sample-clear").on("click", function(){
       rec.recorder.clear();
       rec.state = "cleared";
+      $('#recording-interface').empty();
+      $('#recording-interface').append(rec.recButtonHTML);
       $("#recordingslist").empty();
+      $("#rec-buttons").hide();
+
     });
     $("#new-sample-cancel").on("click", function(){
       rec.recorder.clear();
       rec.state = "cleared";
-      $("#recordingslist").empty();
     });
   }
   //Take in a file namee. If file exists save it in database by posting to /samples
@@ -123,8 +125,8 @@ function initializeRecorder(client, context){
   $('#recording-interface').append(rec.recButtonHTML);
   $("#from-dropbox").show();
   $("#dropbox-file-input").tooltip();
-
-  $('#recording-interface').click(function(event){
+  $('#recording-interface').off()
+  $('#recording-interface').on("click", function(event){
     if (rec.state === "cleared"){
       rec.start();
       $(this).empty();
@@ -132,7 +134,6 @@ function initializeRecorder(client, context){
     }else if (rec.state === "recording"){
       rec.stop();
       $(this).empty();
-      $(this).append(rec.recButtonHTML);
       rec.activateButtons();
     }
   });
