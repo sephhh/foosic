@@ -231,6 +231,10 @@ div.modal-footer {
 }
 
 /* connection modals */
+#connection-message-modal {
+  z-index: 1000;
+}
+
 .connection .modal-header {
   color: red;
 }
