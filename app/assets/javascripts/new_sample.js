@@ -5,7 +5,7 @@ function CreateRecorder(client, context){
     fileName: null,
     //states are recording, full, cleared
     state: "cleared",
-    recButtonHTML: '<svg height="100" width="100" id="record"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg>',
+    recButtonHTML: '<div class="center">CLICK TO RECORD <svg height="100" width="100" id="record"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg></div>',
     stopButtonHTML: '<svg height="100" width="100" id="stop"><rect width="100" height="100" stroke="black" fill="blue" stroke-width=3/></svg>'
   };
 
@@ -31,23 +31,37 @@ function CreateRecorder(client, context){
       var li = document.createElement('li');
       var au = document.createElement('audio');
       var hf = document.createElement('a');
-      var recordingslist = $("#recordingslist")[0];
+      var recordingslist = $("#recordingslist");
       
       au.controls = true;
       au.src = url;
       hf.href = url;
       hf.download = newRecorder.fileName;
-      hf.innerHTML = hf.download;
+      hf.innerHTML = "DOWNLOAD FILE";
       li.appendChild(au);
       li.appendChild(hf);
-      recordingslist.appendChild(li);
+      recordingslist.append(li);
+      recordingslist.append('NAME SAMPLE: <input id="name-sample-input" type="text" value='+ newRecorder.fileName +'>')
     });
   };
 
   newRecorder.save = function(){
+    //if input is not ""
+      //if it ends in wav, use that
+      //if it doesn't, add .wav and use that
+    //if filename is null set it to date string
+    var inputName = $("#name-sample-input").val();
+    if(inputName !== ""){
+      if (inputName.substr(inputName.length - 4)===".wav"){
+        this.fileName = inputName;
+      }else{
+        this.fileName = inputName + ".wav"
+      }
+    }
     if (this.fileName === null){
       this.fileName = new Date().toISOString() + '.wav'
     }
+    
     this.recorder.exportWAV(this.writeFile.bind(this));
     $.post( "/samples", {fileName:this.fileName});
     this.recorder.clear();
@@ -82,9 +96,18 @@ function CreateRecorder(client, context){
       rec.state = "cleared";
       $("#recordingslist").empty();
     });
-
   }
-
+  //Take in a file namee. If file exists save it in database by posting to /samples
+  newRecorder.getFileFromDropbox = function(filename){
+    this.client.readFile(filename, { arrayBuffer: true }, function(error, response){
+      if (error) {
+        alert('Error: ' + error);
+      }
+      else {
+        $.post( "/samples", {fileName:filename});
+      }
+    });
+  }
 
   return newRecorder;
 
@@ -98,6 +121,7 @@ function initializeRecorder(client, context){
   });
   $('#recording-interface').empty();
   $('#recording-interface').append(rec.recButtonHTML);
+  $("#from-dropbox").show();
 
   $('#recording-interface').click(function(event){
     if (rec.state === "cleared"){
@@ -110,35 +134,13 @@ function initializeRecorder(client, context){
       $(this).append(rec.recButtonHTML);
       rec.activateButtons();
     }
-
   });
-
-  addEventListener("keydown", function(event) {
-    //if they press r start or stop
-    if (event.keyCode === 82){
-      if (rec.state === "cleared"){
-        rec.start();
-      }
-      else if (rec.state === "recording"){
-        rec.stop();
-      }
-    };
-    //if they press s save
-    if (event.keyCode === 83){
-      if (rec.state === "full"){
-        rec.save();
-      }
-    };
-    // if c, clear
-    if (event.keyCode === 67){
-      if (rec.state === "full"){
-        rec.recorder.clear();
-        rec.state = "cleared";
-      }
-    };
-    console.log(rec.state);
-  });
-
+  $("#get-file-from-dropbox").click(function(){
+    var filenameInput = $("#dropbox-file-input").val()
+    if (filenameInput!==""){
+      rec.getFileFromDropbox(filenameInput);
+    }
+  })
 }
 
 
@@ -180,6 +182,7 @@ function dropboxFlow(client, context, $button) {
       console.log("you have been authenticated!")
       initializeRecorder(client, context);
     //TODO need to clear client so that next user doesn't have access to it
+    //not sure I need last line above
 
     } else {
       // show and set up the "Sign into Dropbox" button
@@ -204,6 +207,7 @@ function dropboxFlow(client, context, $button) {
       client.authenticate({interactive: false}, authenticateWithDropbox);
     }
   });
+
 
 };
 
