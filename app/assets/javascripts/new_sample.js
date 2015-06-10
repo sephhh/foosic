@@ -5,7 +5,7 @@ function CreateRecorder(client, context){
     fileName: null,
     //states are recording, full, cleared
     state: "cleared",
-    recButtonHTML: '<svg height="100" width="100" id="record"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg>',
+    recButtonHTML: '<div class="center">CLICK TO RECORD <svg height="100" width="100" id="record"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg></div>',
     stopButtonHTML: '<svg height="100" width="100" id="stop"><rect width="100" height="100" stroke="black" fill="blue" stroke-width=3/></svg>'
   };
 
@@ -96,9 +96,18 @@ function CreateRecorder(client, context){
       rec.state = "cleared";
       $("#recordingslist").empty();
     });
-
   }
-
+  //Take in a file namee. If file exists save it in database by posting to /samples
+  newRecorder.getFileFromDropbox = function(filename){
+    this.client.readFile(filename, { arrayBuffer: true }, function(error, response){
+      if (error) {
+        alert('Error: ' + error);
+      }
+      else {
+        $.post( "/samples", {fileName:filename});
+      }
+    });
+  }
 
   return newRecorder;
 
@@ -112,6 +121,7 @@ function initializeRecorder(client, context){
   });
   $('#recording-interface').empty();
   $('#recording-interface').append(rec.recButtonHTML);
+  $("#from-dropbox").show();
 
   $('#recording-interface').click(function(event){
     if (rec.state === "cleared"){
@@ -124,8 +134,13 @@ function initializeRecorder(client, context){
       $(this).append(rec.recButtonHTML);
       rec.activateButtons();
     }
-
   });
+  $("#get-file-from-dropbox").click(function(){
+    var filenameInput = $("#dropbox-file-input").val()
+    if (filenameInput!==""){
+      rec.getFileFromDropbox(filenameInput);
+    }
+  })
 }
 
 
@@ -167,6 +182,7 @@ function dropboxFlow(client, context, $button) {
       console.log("you have been authenticated!")
       initializeRecorder(client, context);
     //TODO need to clear client so that next user doesn't have access to it
+    //not sure I need last line above
 
     } else {
       // show and set up the "Sign into Dropbox" button
@@ -191,6 +207,7 @@ function dropboxFlow(client, context, $button) {
       client.authenticate({interactive: false}, authenticateWithDropbox);
     }
   });
+
 
 };
 
