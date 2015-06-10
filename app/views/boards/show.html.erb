@@ -18,33 +18,32 @@
     <!-- sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
-            <li>
-                <a style="color:yellow; cursor:pointer" id="change-pad">CHANGE PAD</a>
+            <li class="change-pad">
+                <a id="change-pad">CHANGE PAD</a>
             </li>
-            <li>
-                <a style="color:red; cursor:pointer" id="connect">CONNECT</a>
+            <li class="connection">
+                <a id="connect">CONNECT</a>
             </li>
-            <li>
-                <a style="color:orange; cursor:pointer" id="load-board">LOAD BOARD</a>
+            <li class="load-board">
+                <a id="load-board">LOAD BOARD</a>
             </li>
-            <li>
-                <a style="color:purple; cursor:pointer" id="save-board">SAVE BOARD</a>
+            <li class="save-board">
+                <a id="save-board">SAVE BOARD</a>
             </li>
-
-            <li>
-                <a style="color:green; cursor:pointer" id="add-sample">ADD SAMPLE</a>
+            <li class="add-sample">
+                <%= link_to "ADD SAMPLE", new_sample_path %>
             </li>
             <% if user_signed_in? %>
                 <div id="username-hidden" style="display:none"><%= current_user.username %></div>
-                <li>
-                    <%= link_to "SIGNOUT", destroy_user_session_path, method: :delete, style:"color:grey"  %>
+                <li class="sign-out">
+                    <%= link_to "SIGNOUT", destroy_user_session_path, method: :delete %>
                 </li>
             <% else %>
-                <li>
-                    <%= link_to "SIGN IN", new_user_session_path, style:"color:white"  %>
+                <li class="sign-out">
+                    <%= link_to "SIGN IN", new_user_session_path  %>
                 </li>
-                <li>
-                    <%= link_to "SIGN UP", new_user_registration_path, style:"color:grey"  %>
+                <li class="sign-up">
+                    <%= link_to "SIGN UP", new_user_registration_path  %>
                 </li>
             <% end %>
 
@@ -83,7 +82,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <p style="color:blue">TURN SOUND ON AND TYPE TO PLAY</p>
+                        TURN SOUND ON AND TYPE TO PLAY
                     </div>
                 </div>
             </div>
@@ -91,11 +90,11 @@
         <!-- end intro message modal -->
 
         <!-- modal select pad message -->
-        <div id="select-a-pad-modal" class="message-modal modal fade" role="dialog">
+        <div id="select-a-pad-modal" class="change-pad message-modal modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <p>CLICK A PAD TO CHANGE ITS SAMPLE</p>
+                        CLICK A PAD TO CHANGE ITS SAMPLE
                     </div>
                 </div>
             </div>
@@ -103,11 +102,11 @@
         <!-- end select-a-pad modal -->
 
         <!-- modal sign-in-to-save message -->
-        <div id="sign-in-to-save-modal" class="message-modal modal fade" role="dialog">
+        <div id="sign-in-to-save-modal" class="save-board message-modal modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <p style="color:purple">YOU MUST SIGN IN / SIGN UP TO SAVE</p>
+                        YOU MUST SIGN IN / SIGN UP TO SAVE
                     </div>
                 </div>
             </div>
@@ -115,14 +114,13 @@
         <!-- end sign-in-to-save modal -->
 
         <!-- sample selection modal -->
-        <div id="sampleModal" class="modal fade" role="dialog">
+        <div id="sampleModal" class="change-pad modal fade" role="dialog">
                 <div class="modal-dialog">
 
                     <!-- modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">CHOOSE A SAMPLE</h4>
+                            CHOOSE A SAMPLE
                         </div>
                         <div class="modal-body">
                             <ul id="sample-list" class="modal-ul">
@@ -140,7 +138,7 @@
         <!-- end modal -->
 
         <!-- connection message modal -->
-        <div id="connection-message-modal" class="message-modal modal fade" role="dialog">
+        <div id="connection-message-modal" class="connection message-modal modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -152,14 +150,14 @@
         <!-- end connection message modal -->
 
         <!-- online users modal -->
-        <div id="online-users-modal" class="modal fade" role="dialog">
+        <div id="online-users-modal" class="connection modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- modal content-->
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="username-message" style="color:black">YOU ARE: <span id="username-for-connection" style="color:red"></span></h4><br />
-                        <h4 class="modal-title" style="color:black">CONNECT WITH SOMEONE ELSE ONLINE...</h4>
+                    <div class="connection-black modal-header">
+                        <span class="modal-title" id="username-message">YOU ARE <span id="username-for-connection" style="color:red"></span><br />
+                        <span class="modal-title">CONNECT WITH SOMEONE ELSE ONLINE...</span>
                     </div>
                     <div class="modal-body">
                         <ul id="online-users" class="modal-ul">
@@ -173,17 +171,17 @@
         <!-- end modal -->
 
         <!-- connection requested modal -->
-        <div id="connection-requested-modal" class="modal fade" role="dialog">
+        <div id="connection-requested-modal" class="connection modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 id="requested-connection" style="color:red"></h3>
+                        <h3 id="requested-connection"></h3>
                     </div>
                     <div class="modal-footer" style="text-align:center">
-                        <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-connection-request" style="color:red">CONFIRM</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal" id="reject-connection-request" style="color:red">REJECT</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-connection-request">CONFIRM</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="reject-connection-request">REJECT</button>
                     </div>
                 </div>
 
@@ -192,13 +190,13 @@
         <!-- end connection requested modal -->
 
         <!-- list boards modal -->
-        <div id="list-boards-modal" class="modal fade" role="dialog">
+        <div id="list-boards-modal" class="load-boards modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- modal content-->
-                <div class="modal-content" style="color:orange">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">CHOOSE A BOARD</h4>
+                        CHOOSE A BOARD
                     </div>
                     <div class="modal-body">
                         <ul id="list-boards-ul" class="modal-ul">
@@ -210,14 +208,13 @@
         </div>
         <!-- end load boards modal -->
         <!-- board save modal -->
-         <div id="board-save-modal" class="modal fade" role="dialog">
+         <div id="board-save-modal" class="save-board modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">SAVE BOARD AS</h4>
+                        SAVE BOARD AS
                     </div>
                     <div class="modal-body">
                         <form action>
@@ -242,7 +239,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">ADD SAMPLE</h4>
-    
+
                     </div>
                      <div class="modal-body">
                         <h1 style="cursor:pointer" id="dropbox-connect"></h1>
