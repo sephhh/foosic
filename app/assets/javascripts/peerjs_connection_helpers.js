@@ -81,6 +81,11 @@ var createPeerToPeer = function(spec) {
         newConnection.on('data', function(peerMessage){
             newPeerToPeer.handleMessage(peerMessage)
         });
+        newConnection.on('close',function(){
+            // display message if connection closes
+            $('#connection-message-modal p').text("LOST CONNECTION TO " + newConnection.peer);
+            $('#connection-message-modal').modal('toggle');
+        });
     }
 
     newPeerToPeer.peer.on('connection', function(connection){
@@ -90,6 +95,11 @@ var createPeerToPeer = function(spec) {
             if (peerMessage.messageType === 'connectionOpened') {
                 newPeerToPeer.sayHello(connection);
             }
+        });
+        connection.on('close',function(){
+            // display message if connection closes
+            $('#connection-message-modal p').text("LOST CONNECTION TO " + connection.peer);
+            $('#connection-message-modal').modal('toggle');
         });
     });
 

@@ -183,7 +183,38 @@ $(document).ready(function() {
             initializePeerToPeer(userBoard);
         }
 
+        // get the currently connected users
+        var currentlyConnectedUsers = [];
+        for (var i = 0; i < userBoard.peerToPeer.connections.length; i++) {
+            var connection = userBoard.peerToPeer.connections[i];
+            if (connection.open) {
+                currentlyConnectedUsers.push(connection.peer);
+            }
+        }
+
         // toggle online users modal
+        $('#connected-users').empty();
+        for (var i = 0; i < currentlyConnectedUsers.length; i++) {
+            $('#connected-users').append('<li class="connected-user">' + currentlyConnectedUsers[i] + '<div class="deletable-li" data-username="' + currentlyConnectedUsers[i] + '">✕</div></li>');
+            // enable connection closing
+            $('.deletable-li[data-username=' + currentlyConnectedUsers[i] + ']').one('click',function(){
+                for (var i = 0; i < userBoard.peerToPeer.connections.length; i++) {
+                    if (userBoard.peerToPeer.connections[i].peer === currentlyConnectedUsers[i]) {
+                        userBoard.peerToPeer.connections[i].close();
+                    }
+                }
+                $(this).closest('li').remove();
+            });
+        }
+        if (currentlyConnectedUsers.length === 0) {
+            $('#connected-users-title').css('display','none');
+        } else {
+            $('#connected-users-title').css('display','block');
+        }
+
+        $('#connected-users').append();
+        $('#online-users').empty();
+        $('#online-users').append('<li class="online-user">NO ONE ELSE IS ONLINE :(</li>');
         $('#online-users-modal').modal('toggle');
 
         // populate username
@@ -207,8 +238,8 @@ $(document).ready(function() {
             });
         }
 
-        // get the online users using WebSocket dispatcher
-        dispatcher.trigger('get_online_users', 1, callback);
+        // get online users via websocket connection
+        dispatcher.trigger('get_online_users', currentlyConnectedUsers, callback);
     });
 
     // websockets
