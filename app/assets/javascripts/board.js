@@ -112,27 +112,32 @@ $(document).ready(function() {
     // CHANGE PAD
     var changePadHandler;
     $('#change-pad').click(function() {
-        if (!changePadHandler) {
-            var changePadHandlerSpec = {
-                board: userBoard,
-                sampleData: allSampleData,
-                context: context,
-                destination: preout
+        dispatcher.trigger('get_all_sample_data', 1, handleChangePad);
+        function handleChangePad(sampleData) {
+            if (!changePadHandler) {
+                var changePadHandlerSpec = {
+                    board: userBoard,
+                    sampleData: sampleData,
+                    context: context,
+                    destination: preout
+                }
+                changePadHandler = createChangePadHandler(changePadHandlerSpec);
+            } else {
+                changePadHandler.update(sampleData);
             }
-            changePadHandler = createChangePadHandler(changePadHandlerSpec);
+            changePadHandler.selectAPadOn();
+            $('#sample-list').empty();
+            $('#sample-list').append(changePadHandler.sampleList);
+            $('#confirm-sample').click(function(){
+                changePadHandler.changePadConfirm();
+            });
+            $("#sampleModal").on('hidden.bs.modal', function(){
+                $('.pad').unbind();
+                $('#confirm-sample').off();
+                $('.sample-list').removeClass('active');
+                changePadHandler.mode = 'inactive';
+            });
         }
-        changePadHandler.selectAPadOn();
-        $('#sample-list').empty();
-        $('#sample-list').append(changePadHandler.sampleList);
-        $('#confirm-sample').click(function(){
-            changePadHandler.changePadConfirm();
-        });
-        $("#sampleModal").on('hidden.bs.modal', function(){
-            $('.pad').unbind();
-            $('#confirm-sample').off();
-            $('.sample-list').removeClass('active');
-            changePadHandler.mode = 'inactive';
-        });
     });
 
     // KANYE MODE
@@ -260,15 +265,10 @@ $(document).ready(function() {
     $('#connect').click(triggerConnectionMenu);
 
     // websockets
-    var username, channel, requestedConnection, allSampleData;
+    var username, channel, requestedConnection;
     var signedIn = false;
     var requestInProgress = false;
     var dispatcher = new WebSocketRails('localhost:3000/websocket');
-    // the 1 is because I'm not sure how to skip the arguments to specify the anon func is callback
-    dispatcher.trigger('get_all_sample_data', 1, function(data){
-        allSampleData = data;
-    });
-
     dispatcher.bind('set_username',function(data){
         username = data.username;
         signedIn = data.signed_in;

@@ -22,7 +22,8 @@ var createChangePadHandler = function(spec){
         board: spec.board,
         sampleLibrary: sampleLibrary,
         sampleList: sampleList,
-        mode: 'inactive'
+        mode: 'inactive',
+        sampleData: spec.sampleData
     };
 
     // enter select-a-pad mode
@@ -70,6 +71,36 @@ var createChangePadHandler = function(spec){
     newChangePadHandler.changePadConfirm = function() {
         this.mode = 'inactive';
         this.board.updateSample(this.activePad, this.activeSample);
+    }
+
+    // handle updates when new samples are added
+    newChangePadHandler.update = function(sampleData) {
+        for (var i = 0; i < sampleData.length; i++) {
+            var already_included = false;
+            for (var j = 0; j < this.sampleData.length; j++) {
+                if (sampleData[i].id === this.sampleData[j]) {
+                    already_included = true;
+                }
+            }
+            if (!already_included) {
+                var sampleSpec = {
+                    id: spec.sampleData[i].id,
+                    name: spec.sampleData[i].name,
+                    url: spec.sampleData[i].url,
+                    user_id: spec.sampleData[i].user_id,
+                    context: spec.context,
+                    destination: spec.destination
+                }
+                var sample = createSample(sampleSpec);
+                this.sampleLibrary.push(sample);
+            }
+        }
+        this.sampleData = sampleData;
+        // delete whole thing so we can handle deletions, too
+        this.sampleList = "";
+        for (var i = 0; i < this.sampleData.length; i++) {
+            this.sampleList += ('<li class="sample-list" data-id="' + i + '">' + this.sampleData[i].name + '</li>');
+        }
     }
 
     return newChangePadHandler;
