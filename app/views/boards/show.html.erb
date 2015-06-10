@@ -157,8 +157,8 @@
                 <!-- modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2 id="username-message" style="color:black">YOU ARE: <span id="username-for-connection" style="color:red"></span></h2>
-                        <h2 style="color:black">CONNECT WITH SOMEONE ELSE ONLINE...</h2>
+                        <h4 class="modal-title" id="username-message" style="color:black">YOU ARE: <span id="username-for-connection" style="color:red"></span></h4><br />
+                        <h4 class="modal-title" style="color:black">CONNECT WITH SOMEONE ELSE ONLINE...</h4>
                     </div>
                     <div class="modal-body">
                         <ul id="online-users" class="modal-ul">
@@ -197,7 +197,7 @@
                 <!-- modal content-->
                 <div class="modal-content" style="color:orange">
                     <div class="modal-header">
-                        <h2>CHOOSE A BOARD</h2>
+                        <h4 class="modal-title">CHOOSE A BOARD</h4>
                     </div>
                     <div class="modal-body">
                         <ul id="list-boards-ul" class="modal-ul">
@@ -220,7 +220,7 @@
                     </div>
                     <div class="modal-body">
                         <form action>
-                            <input type="text" value="" id="board-name-input">
+                            <input type="text" id="board-name-input" onfocus="this.value = '';" value="enter a name here">
                         </form>
                         <!-- append options here -->
                     </div>
