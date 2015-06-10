@@ -13,6 +13,7 @@ function CreateRecorder(client, context){
     var inputPoint = newRecorder.context.createGain();
     var input = newRecorder.context.createMediaStreamSource(stream);    
     input.connect(inputPoint);
+    debugger;
     newRecorder.recorder =  new Recorder(inputPoint, {workerPath: "/recorderWorker.js"})
   }
 
@@ -119,7 +120,9 @@ function initializeRecorder(client, context){
   rec = CreateRecorder(client, context);
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
   navigator.getUserMedia({audio:true}, rec.initAudio, function(e) {
+    alert("enable microphone in order to record a sample")
     console.log(e);
+    return;
   });
   $('#recording-interface').empty();
   $('#recording-interface').append(rec.recButtonHTML);
@@ -169,6 +172,9 @@ function dropboxFlow(client, context, $button) {
         if (error) {
           return handleError(error);
         }
+        saveUser(client.credentials().token);
+        console.log("you have been authenticated!")
+        // initializeRecorder(client, context);
       });
     });
   }
@@ -179,18 +185,19 @@ function dropboxFlow(client, context, $button) {
       return handleError(error);
     }
     //if they are back from flow, save user's token in DB 
-    if (client.isAuthenticated()) {
-      saveUser(client.credentials().token)
-      console.log("you have been authenticated!")
-      initializeRecorder(client, context);
+    // if (client.isAuthenticated()) {
+    //   saveUser(client.credentials().token)
+    //   console.log("you have been authenticated!")
+    //   debugger;
+    //   initializeRecorder(client, context);
     //TODO need to clear client so that next user doesn't have access to it
     //not sure I need last line above
 
-    } else {
+    // } else {
       // show and set up the "Sign into Dropbox" button
       //once they click and authenticate they will come back to this page authenticated
       dropboxSignInFlow(client);
-    }
+    // }
 
   }
 
@@ -206,16 +213,10 @@ function dropboxFlow(client, context, $button) {
     //create client object from our app_key
     client = new Dropbox.Client({ key: data.app_key });
     //send user through authentication process
-      client.authenticate({interactive: false}, authenticateWithDropbox);
+    debugger;
+      client.authenticate({interactive: true}, authenticateWithDropbox);
     }
   });
 
 
 };
-
-//TODO
-//save sample to database-
-  //sample belongs_to user
-  //create and save sample
-  //modify how samples load so we can access custom ones
-//better file naming

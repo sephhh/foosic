@@ -382,7 +382,7 @@ $(document).ready(function() {
     });
     $("#add-sample-modal").on('hidden.bs.modal', function(){
        $("#recordingslist").empty();
-       
+
     });
 
     // clear notices after a bit
