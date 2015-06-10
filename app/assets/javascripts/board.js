@@ -107,13 +107,13 @@ $(document).ready(function() {
         $("#menu-arrow").toggleClass("glyphicon-chevron-right glyphicon-chevron-left");
     });
 
-    //click "change pad" from menu
+    // CHANGE PAD
     var changePadHandler;
     $('#change-pad').click(function() {
         if (!changePadHandler) {
             var changePadHandlerSpec = {
                 board: userBoard,
-                sampleData: userBoard.sampleData,
+                sampleData: allSampleData,
                 context: context,
                 destination: preout
             }
@@ -210,10 +210,15 @@ $(document).ready(function() {
     });
 
     // websockets
-    var username, channel, requestedConnection;
+    var username, channel, requestedConnection, allSampleData;
     var signedIn = false;
     var requestInProgress = false;
     var dispatcher = new WebSocketRails('localhost:3000/websocket');
+    // the 1 is because I'm not sure how to skip the arguments to specify the anon func is callback
+    dispatcher.trigger('get_all_sample_data', 1, function(data){
+        allSampleData = data;
+    });
+
     dispatcher.bind('set_username',function(data){
         username = data.username;
         signedIn = data.signed_in;

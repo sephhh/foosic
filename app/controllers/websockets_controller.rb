@@ -12,7 +12,7 @@ class WebsocketsController < WebsocketRails::BaseController
     send_message :set_username, {username: username, signed_in: signed_in}
   end
 
-    def get_online_users
+  def get_online_users
     users = connection_store.collect_all(:username)
     users.delete(connection_store[:username])
     if users.size > 0
@@ -30,6 +30,15 @@ class WebsocketsController < WebsocketRails::BaseController
 
   def reject_connection
     WebsocketRails[message[:sender]].trigger 'connection_rejected', message
+  end
+
+  def get_all_sample_data
+    if user_signed_in?
+      samples = Sample.where("user_id = ? OR user_id IS NULL", current_user.id)
+    else
+      samples = Sample.where("user_id IS NULL")
+    end
+    trigger_success samples
   end
 
 end

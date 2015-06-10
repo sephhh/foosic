@@ -15,6 +15,9 @@ WebsocketRails::EventMap.describe do
   # handle failed requests
   subscribe :reject_connection, 'websockets#reject_connection'
 
+  # handle requests for all samples
+  subscribe :get_all_sample_data, 'websockets#get_all_sample_data'
+
   # You can use this file to map incoming events to controller actions.
   # One event can be mapped to any number of controller actions. The
   # actions will be executed in the order they were subscribed.
