@@ -12,52 +12,40 @@
 
 
 <!-- end rails indicator -->
-<!-- PeerJS Key -->
-<div id="peerJSKey" style="display: none" data-key="<%= ENV["PEER_JS"] %>"></div>
-<!-- End PeerJS Key -->
 <!-- full page wrapper -->
 <div id="wrapper" class="toggled">
     <!-- sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li>
-                <a href="#" style="color:yellow" id="change-pad">CHANGE PAD</a>
+                <a style="color:yellow; cursor:pointer" id="change-pad">CHANGE PAD</a>
             </li>
             <li>
-                <a href="#" style="color:red" id="connect">CONNECT</a>
+                <a style="color:red; cursor:pointer" id="connect">CONNECT</a>
             </li>
             <li>
-                <a href="#" style="color:orange" id="load-board">LOAD BOARD</a>
+                <a style="color:orange; cursor:pointer" id="load-board">LOAD BOARD</a>
             </li>
             <li>
-                <a href="#" style="color:pink" id="save-board">SAVE BOARD</a>
+                <a style="color:purple; cursor:pointer" id="save-board">SAVE BOARD</a>
             </li>
 
             <li>
                 <%= link_to "ADD SAMPLE", new_sample_path,style:"color:green"  %>
             </li>
-            <li>
-                <a href="#" style="color:purple">INSTRUCTIONS</a>
-            </li>
-            <li>
-                <a href="#" style="color:white">ABOUT</a>
-            </li>
             <% if user_signed_in? %>
+                <div id="username-hidden" style="display:none"><%= current_user.username %></div>
                 <li>
-                    HELLO <%= current_user.email %>
-                </li>
-                <li>
-                    <%= link_to "SIGNOUT", destroy_user_session_path, method: :delete, style:"color:white"  %>
+                    <%= link_to "SIGNOUT", destroy_user_session_path, method: :delete, style:"color:grey"  %>
                 </li>
             <% else %>
                 <li>
-                    <%= link_to "Sign In", new_user_session_path, style:"color:white"  %>
+                    <%= link_to "SIGN IN", new_user_session_path, style:"color:white"  %>
                 </li>
                 <li>
-                    <%= link_to "Sign Up", new_user_registration_path, style:"color:white"  %>
+                    <%= link_to "SIGN UP", new_user_registration_path, style:"color:grey"  %>
                 </li>
             <% end %>
-
 
         </ul>
     </div>
@@ -86,6 +74,18 @@
         <div id="pad-8" data-id="8" class="button col-md-4 pad">M</div>
         <!-- end board -->
 
+        <!-- intro message modal -->
+        <div id="intro-message-modal" class="message-modal modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p style="color:blue">TURN SOUND ON AND TYPE TO PLAY</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end intro message modal -->
+
         <!-- modal select pad message -->
         <div id="select-a-pad-modal" class="message-modal modal fade" role="dialog">
             <div class="modal-dialog">
@@ -97,6 +97,18 @@
             </div>
         </div>
         <!-- end select-a-pad modal -->
+
+        <!-- modal sign-in-to-save message -->
+        <div id="sign-in-to-save-modal" class="message-modal modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p style="color:purple">YOU MUST SIGN IN / SIGN UP TO SAVE</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end sign-in-to-save modal -->
 
         <!-- sample selection modal -->
         <div id="sampleModal" class="modal fade" role="dialog">
@@ -120,7 +132,7 @@
 
                 </div>
             </div>
-       
+
         <!-- end modal -->
 
         <!-- connection message modal -->

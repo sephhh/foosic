@@ -1,5 +1,11 @@
 //Once the page loads
 $(document).ready(function() {
+    // DISPLAY INSTRUCTIONS
+    $('#intro-message-modal').modal('toggle');
+    window.setTimeout(function(){
+        $('#intro-message-modal').modal('toggle');
+    }, 1500);
+
     // AUDIO SETUP
     // Set audio context
     var context = new AudioContext();
@@ -47,7 +53,7 @@ $(document).ready(function() {
             // change color of pad
             $('#pad-' + padId).addClass(userBoard.color);
             // send pad play to connected users
-            if (userBoard.peerToPeer.connections.length > 0) {
+            if (userBoard.peerToPeer && userBoard.peerToPeer.connections.length > 0) {
                 var message = {
                     messageType: 'padPlay',
                     padId: padId,
@@ -63,7 +69,7 @@ $(document).ready(function() {
             //looper object responds to spacebar press
             looper.respond();
             // send message to peer
-            if (userBoard.peerToPeer.connections.length > 0) {
+            if (userBoard.peerToPeer && userBoard.peerToPeer.connections.length > 0) {
                 var message = {
                     messageType: 'spacebarToggle'
                 }
@@ -80,7 +86,7 @@ $(document).ready(function() {
             // change color back
             $('#pad-' + padId).removeClass(userBoard.color);
             // change peer's color back
-            if (userBoard.peerToPeer.connections.length > 0) {
+            if (userBoard.peerToPeer && userBoard.peerToPeer.connections.length > 0) {
                 var message = {
                     messageType: 'padStop',
                     padId: padId,
@@ -203,12 +209,14 @@ $(document).ready(function() {
         dispatcher.trigger('get_online_users', 1, callback);
     });
 
-    // websockets user management
+    // websockets
     var username, channel, requestedConnection;
+    var signedIn = false;
     var requestInProgress = false;
-    var dispatcher = new WebSocketRails('www.tyutyu.be/websocket');
-    dispatcher.bind('set_username',function(generatedUsername){
-        username = generatedUsername;
+    var dispatcher = new WebSocketRails('localhost:3000/websocket');
+    dispatcher.bind('set_username',function(data){
+        username = data.username;
+        signedIn = data.signed_in;
         channel = dispatcher.subscribe(username);
         channel.bind('connection_requested',function(message){
             // Start peer mode if needed
@@ -283,15 +291,23 @@ $(document).ready(function() {
     });
 
     $('#save-board').click(function(){
-        $('#board-save-modal').modal('toggle');
-        $('#confirm-board-save').one('click',function(event){
-            event.preventDefault();
-            event.stopPropagation();
-            var boardName = $('#board-name-input').val();
-            if (boardName !== ""){
-                $.post('/boards', {name: boardName, sampleData: userBoard.sampleData});
-                $('#board-save-modal').modal('toggle');
-            }
-        });
+        // check to see if user is signed in
+        if (signedIn) {
+            $('#board-save-modal').modal('toggle');
+            $('#confirm-board-save').one('click',function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                var boardName = $('#board-name-input').val();
+                if (boardName !== ""){
+                    $.post('/boards', {name: boardName, sampleData: userBoard.sampleData});
+                    $('#board-save-modal').modal('toggle');
+                }
+            });
+        } else {
+            $('#sign-in-to-save-modal').modal('toggle');
+            window.setTimeout(function(){
+                $('#sign-in-to-save-modal').modal('toggle');
+            }, 1500);
+        }
     });
 });

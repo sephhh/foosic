@@ -1,19 +1,19 @@
 WebsocketRails::EventMap.describe do
 
-  # when client connects to the WebSocket, run 'hello' method of ConnectionsController
-  subscribe :client_connected, 'user#set_username'
+  # when client connects to the WebSocket, run 'set_username' method of WebsocketsController
+  subscribe :client_connected, 'websockets#set_username'
 
   # when client gets online users, populate list
-  subscribe :get_online_users, 'connections#get_online_users'
+  subscribe :get_online_users, 'websockets#get_online_users'
 
   # send request for connection
-  subscribe :request_connection, 'connections#request_connection'
+  subscribe :request_connection, 'websockets#request_connection'
 
   # handle accepted requests
-  subscribe :accept_connection, 'connections#accept_connection'
+  subscribe :accept_connection, 'websockets#accept_connection'
 
   # handle failed requests
-  subscribe :reject_connection, 'connections#reject_connection'
+  subscribe :reject_connection, 'websockets#reject_connection'
 
   # You can use this file to map incoming events to controller actions.
   # One event can be mapped to any number of controller actions. The

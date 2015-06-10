@@ -28,7 +28,7 @@ var createBoard = function(spec) {
             url: newSample.url
         }
         this.samples[padId] = newSample;
-        if (this.peerToPeer) {
+        if (this.peerToPeer && this.peerToPeer.connections.length > 0) {
             var message = {
                 messageType: 'padUpdated',
                 peerId: this.peerToPeer.id,
@@ -60,5 +60,3 @@ var createBoard = function(spec) {
 
     return newBoard;
 }
-
-

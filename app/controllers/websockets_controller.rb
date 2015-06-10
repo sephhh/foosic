@@ -1,6 +1,18 @@
-class ConnectionsController < WebsocketRails::BaseController
+class WebsocketsController < WebsocketRails::BaseController
 
-  def get_online_users
+  def set_username
+    if current_user
+      username = current_user.username
+      signed_in = true
+    else
+      username = [["BIG","TURNT","LAZY","SLEEPY","TINY"].sample,["STOMPER","JAMMER","ROCKER","WAILER"].sample,rand(0..100).to_s].join("-")
+      signed_in = false
+    end
+    connection_store[:username] = username
+    send_message :set_username, {username: username, signed_in: signed_in}
+  end
+
+    def get_online_users
     users = connection_store.collect_all(:username)
     users.delete(connection_store[:username])
     if users.size > 0
