@@ -122,6 +122,7 @@ $(document).ready(function() {
             changePadHandler = createChangePadHandler(changePadHandlerSpec);
         }
         changePadHandler.selectAPadOn();
+        $('#sample-list').empty();
         $('#sample-list').append(changePadHandler.sampleList);
         $('#confirm-sample').click(function(){
             changePadHandler.changePadConfirm();
