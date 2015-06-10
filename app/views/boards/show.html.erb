@@ -31,7 +31,7 @@
                 <a id="save-board">SAVE BOARD</a>
             </li>
             <li class="add-sample">
-                <%= link_to "ADD SAMPLE", new_sample_path %>
+                <a id="add-sample">ADD SAMPLE</a>
             </li>
             <% if user_signed_in? %>
                 <div id="username-hidden" style="display:none"><%= current_user.username %></div>
