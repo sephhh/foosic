@@ -1,10 +1,12 @@
 //Once the page loads
 $(document).ready(function() {
-    // DISPLAY INSTRUCTIONS
-    $('#intro-message-modal').modal('toggle');
-    window.setTimeout(function(){
+    // DISPLAY INSTRUCTIONS IF FIRST VISIT
+    if ($('#first-visit-indicator').text() === 'true') {
         $('#intro-message-modal').modal('toggle');
-    }, 1500);
+        window.setTimeout(function(){
+            $('#intro-message-modal').modal('toggle');
+        }, 2500);
+    }
 
     // AUDIO SETUP
     // Set audio context
@@ -315,4 +317,10 @@ $(document).ready(function() {
             }, 1500);
         }
     });
+
+    // clear notices after a bit
+    window.setTimeout(function(){
+        $('.notice').hide();
+    },3000);
+
 });

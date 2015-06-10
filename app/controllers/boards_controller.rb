@@ -8,17 +8,19 @@ class BoardsController < ApplicationController
     end
     respond_to do |format|
       format.json {render json: @boards}
-    end 
+    end
   end
 
   def show
+    @first_visit = !cookies.permanent[:first_visit]
+    cookies.permanent[:first_visit] = 1
   end
 
   def lookup
     @board = Board.find(params[:id])
     respond_to do |format|
       format.json {render json: @board.get_samples}
-    end 
+    end
   end
 
   def create
