@@ -199,7 +199,17 @@ $(document).ready(function() {
             $('.deletable-li[data-username=' + currentlyConnectedUsers[i] + ']').one('click',function(){
                 for (var i = 0; i < userBoard.peerToPeer.connections.length; i++) {
                     if (userBoard.peerToPeer.connections[i].peer === currentlyConnectedUsers[i]) {
+                        // gracefully close connection
                         userBoard.peerToPeer.connections[i].close();
+                        // delete connection
+                        delete userBoard.peerToPeer.connections[i];
+                        // delete board and peer associated with the connection
+                        for (var j = 0; j < userBoard.peerToPeer.peerIds.length; j++) {
+                            if (userBoard.peerToPeer.peerIds[j] === currentlyConnectedUsers[i]) {
+                                delete userBoard.peerToPeer.peerIds[j];
+                                delete userBoard.peerToPeer.peerBoards[j];
+                            }
+                        }
                     }
                 }
                 $(this).closest('li').remove();
