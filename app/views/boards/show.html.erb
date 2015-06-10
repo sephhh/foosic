@@ -231,23 +231,22 @@
         </div>
         <!-- end board save modal -->
     <!-- add sample modal -->
-         <div id="add-sample-modal" class="modal fade" role="dialog">
+         <div id="add-sample-modal" class="add-sample modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">ADD SAMPLE</h4>
-
+                        ADD SAMPLE
                     </div>
                      <div class="modal-body">
                         <h1 style="cursor:pointer" id="dropbox-connect"></h1>
                         <div id="from-dropbox" style="display:none">
-                            GET A FILE FROM DROPBOX:
-                            <input id="dropbox-file-input" type="text">
+                            ADD A SAMPLE FROM DROPBOX:
+                            <input id="dropbox-file-input" type="text" title="Upload an audio file to your dropbox account inside the app/tyutyu.be folder, then enter the full filename here">
                             <button type="button" class="btn btn-success" data-dismiss="modal" id="get-file-from-dropbox">GET IT</button>
                         </div>
+                        <hr>
                         <div id="recording-interface"></div>
                         <div id="recordingslist"></div>
                         <!-- append options here -->

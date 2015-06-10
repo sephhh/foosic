@@ -5,8 +5,8 @@ function CreateRecorder(client, context){
     fileName: null,
     //states are recording, full, cleared
     state: "cleared",
-    recButtonHTML: '<div class="center">CLICK TO RECORD <svg height="100" width="100" id="record"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg></div>',
-    stopButtonHTML: '<svg height="100" width="100" id="stop"><rect width="100" height="100" stroke="black" fill="blue" stroke-width=3/></svg>'
+    recButtonHTML: '<svg height="100" width="100" id="record"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg>CLICK TO RECORD USING MICROPHONE',
+    stopButtonHTML: '<svg height="100" width="100" id="stop"><rect width="100" height="100" stroke="black" fill="blue" stroke-width=3/></svg>CLICK TO STOP'
   };
 
   newRecorder.initAudio = function(stream){
@@ -122,6 +122,7 @@ function initializeRecorder(client, context){
   $('#recording-interface').empty();
   $('#recording-interface').append(rec.recButtonHTML);
   $("#from-dropbox").show();
+  $("#dropbox-file-input").tooltip();
 
   $('#recording-interface').click(function(event){
     if (rec.state === "cleared"){
