@@ -262,6 +262,7 @@ div.modal-footer {
   color: purple;
 }
 
+
 #board-name-input {
     width: 100%;
     padding: 3vh;
@@ -274,6 +275,14 @@ div.modal-footer {
 
 #board-save-modal .modal-body {
   height: 10vh;
+}
+
+/* add sample modals */
+.add-sample .modal-body {
+  color: green;
+}
+.add-sample .modal-header {
+  color: green;
 }
 
 /* LOOPER ANIMATION LAYER STYLING */
