@@ -1,5 +1,10 @@
 //Once the page loads
 $(document).ready(function() {
+    // don't play sounds when interacting with modals
+    $(".modal").on("keydown", function(e){
+        e.stopPropagation();
+    })
+
     // DISPLAY INSTRUCTIONS IF FIRST VISIT
     if ($('#first-visit-indicator').text() === 'true') {
         $('#intro-message-modal').modal('toggle');
@@ -41,8 +46,9 @@ $(document).ready(function() {
     var keys = [84,89,85,71,72,74,66,78,77];
 
     addEventListener("keydown", function(event) {
-        // event.preventDefault();
-        // event.stopPropagation();
+        if (event.target === $('#menu-toggle')[0]) {
+            event.preventDefault();
+        }
         var padId = keys.indexOf(event.keyCode);
         //if it's one of our keypad keys
         if (padId >= 0){
