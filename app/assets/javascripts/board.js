@@ -175,9 +175,8 @@ $(document).ready(function() {
         userBoard.peerToPeer = createPeerToPeer(peerToPeerSpec);
     }
 
-    // USER MANAGEMENT
-    // open modal on click from menu
-    $('#connect').click(function(){
+    // CONNECTION MANAGEMENT
+    function triggerConnectionMenu(){
         // Start peer mode if needed
         if (!userBoard.peerToPeer) {
             initializePeerToPeer(userBoard);
@@ -204,6 +203,10 @@ $(document).ready(function() {
                     }
                 }
                 $(this).closest('li').remove();
+                $('#online-users-modal').modal('toggle');
+                window.setTimeout(function(){
+                    triggerConnectionMenu();
+                },1000);
             });
         }
         if (currentlyConnectedUsers.length === 0) {
@@ -240,7 +243,10 @@ $(document).ready(function() {
 
         // get online users via websocket connection
         dispatcher.trigger('get_online_users', currentlyConnectedUsers, callback);
-    });
+    }
+
+    // open connection modal on click from menu
+    $('#connect').click(triggerConnectionMenu);
 
     // websockets
     var username, channel, requestedConnection, allSampleData;

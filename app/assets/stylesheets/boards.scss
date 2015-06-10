@@ -231,10 +231,6 @@ div.modal-footer {
 }
 
 /* connection modals */
-#connection-message-modal {
-  z-index: 1000;
-}
-
 .connection .modal-header {
   color: red;
 }
@@ -248,13 +244,21 @@ div.modal-footer {
 }
 
 #connected-users-title {
-  padding-left: 5px;
+  padding-left: 20px;
   color: black;
 }
 
 #online-users-title {
-  padding-left: 5px;
+  padding-left: 20px;
   color:black;
+}
+
+#connected-users li {
+  padding-left: 40px;
+}
+
+#online-users li {
+  padding-left: 40px;
 }
 
 /* load board modals */

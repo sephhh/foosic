@@ -85,6 +85,9 @@ var createPeerToPeer = function(spec) {
             // display message if connection closes
             $('#connection-message-modal p').text("LOST CONNECTION TO " + newConnection.peer);
             $('#connection-message-modal').modal('toggle');
+            window.setTimeout(function(){
+                $('#connection-message-modal').modal('toggle');
+            },1500);
         });
     }
 
@@ -100,6 +103,9 @@ var createPeerToPeer = function(spec) {
             // display message if connection closes
             $('#connection-message-modal p').text("LOST CONNECTION TO " + connection.peer);
             $('#connection-message-modal').modal('toggle');
+            window.setTimeout(function(){
+                $('#connection-message-modal').modal('toggle');
+            },1500);
         });
     });
 
