@@ -65,7 +65,61 @@ board2.assign_pad(6, 24)
 board2.assign_pad(7, 25)
 board2.assign_pad(8, 26)
 
+# SEVEN NATION ARMY
+# drums
+samples = [
+         {name: 'crash cymbol', url: 'https://dl.dropbox.com/s/ti2me4p0hil58gc/CyCdh_K3Crash-07.wav?dl=0'},
+         {name: 'kick', url: 'https://dl.dropbox.com/s/gwtnrmnmkbg8bdg/CyCdh_K3Kick-03.wav?dl=0'},
+         {name: 'tom', url: 'https://dl.dropbox.com/s/d22galw04tbebbe/CyCdh_K3Tom-05.wav?dl=0'},
+         {name: 'hi-hat', url: 'https://dl.dropbox.com/s/v2lfvos1pzzsk73/CYCdh_K1close_ClHat-09.wav?dl=0'},
+         {name: 'snare', url: 'https://dl.dropbox.com/s/n3sax9qclejn14o/CYCdh_K1close_Snr-05.wav?dl=0'},
+         {name: 'tambourine', url: 'https://dl.dropbox.com/s/qw0dohvh5a1s5vk/tambourine-45_World%20Sounds%20Vol1.wav?dl=0'},
+         {name: 'ride', url: 'https://dl.dropbox.com/s/c5csnd387nr52q1/CYCdh_Kurz02-Ride02.wav?dl=0'},
+         {name: 'flam', url: 'https://dl.dropbox.com/s/wpqozfqdk9lzsgm/CYCdh_LudFlamB-04.wav?dl=0'},
+         {name: 'tambo2', url: 'https://dl.dropbox.com/s/z3fky220exlwnpl/tambourine-87_World%20Sounds%20Vol1.wav?dl=0'}
+         ]
 
+# drums
+board = Board.create(name: 'Seven Nation Drums')
+samples.each_with_index do |sample_data, index|
+  sample = Sample.create(name: sample_data[:name], url: sample_data[:url])
+  board.assign_pad(index,sample.id)
+end
 
+# guitar
+samples = [
+         {name: 'sn guitar 1', url: 'https://dl.dropbox.com/s/idivvjaj8edo9oz/seven%20nation%20guitar%201.wav?dl=0'},
+         {name: 'sn guitar 2', url: 'https://dl.dropbox.com/s/5ciy0omh3b75g21/seven%20nation%20guitar%202.wav?dl=0'},
+         {name: 'sn guitar 3', url: 'https://dl.dropbox.com/s/6m778wjkld2v4n6/seven%20nation%20guitar%203.wav?dl=0'},
+         {name: 'sn guitar 4', url: 'https://dl.dropbox.com/s/lx210jwhnpubmgx/seven%20nation%20guitar%204.wav?dl=0'},
+         {name: 'sn guitar 5', url: 'https://dl.dropbox.com/s/gtg8wrokcx6spwk/seven%20nation%20guitar%205.wav?dl=0'},
+         {name: 'sn guitar 6', url: 'https://dl.dropbox.com/s/unr7dvzqpvdwi5q/seven%20nation%20guitar%206.wav?dl=0'},
+         {name: 'sn guitar 7', url: 'https://dl.dropbox.com/s/jpvl8qjilwymd64/seven%20nation%20guitar%207.wav?dl=0'},
+         {name: 'airhorn 1', url: 'https://dl.dropboxusercontent.com/s/xbs42i9b5q74p90/Jamaican%20Horn%20Siren.wav'},
+         {name: 'airhorn 2', url: 'https://dl.dropboxusercontent.com/s/xbs42i9b5q74p90/Jamaican%20Horn%20Siren.wav'}
+         ]
 
+board = Board.create(name: 'Seven Nation Guitar')
+samples.each_with_index do |sample_data, index|
+  sample = Sample.create(name: sample_data[:name], url: sample_data[:url])
+  board.assign_pad(index,sample.id)
+end
 
+# vox
+samples = [
+         {name: "gonna fight em off", url: 'https://dl.dropbox.com/s/ue63wmcs5iq9dpx/gonna%20fight%20em%20off.wav?dl=0'},
+         {name: "seven nation army", url: 'https://dl.dropbox.com/s/tiul1kjkutst96h/seven%20nation%20army.wav?dl=0'},
+         {name: "they're gonna", url: 'https://dl.dropbox.com/s/0twuslsqvqld6bp/they%27re%20gonna.wav?dl=0'},
+         {name: "talking their time", url: 'https://dl.dropbox.com/s/7yy4rh71jj8xu2z/taking%20their%20time.wav?dl=0'},
+         {name: "and I'm talking", url: 'https://dl.dropbox.com/s/0cvvx364ycmrb4x/and%20I%27m%20talking.wav?dl=0'},
+         {name: "behind a cigarette", url: 'https://dl.dropbox.com/s/92hnueoxbonsjij/behind%20a%20cigarette.wav?dl=0'},
+         {name: "leave it alone", url: 'https://dl.dropbox.com/s/wjmmc60xfcgj8ro/gonna%20get.wav?dl=0'},
+         {name: 'airhorn 3', url: 'https://dl.dropboxusercontent.com/s/xbs42i9b5q74p90/Jamaican%20Horn%20Siren.wav'},
+         {name: 'airhorn 4', url: 'https://dl.dropboxusercontent.com/s/xbs42i9b5q74p90/Jamaican%20Horn%20Siren.wav'}
+         ]
+
+board = Board.create(name: 'Seven Nation Vox')
+samples.each_with_index do |sample_data, index|
+  sample = Sample.create(name: sample_data[:name], url: sample_data[:url])
+  board.assign_pad(index,sample.id)
+end
