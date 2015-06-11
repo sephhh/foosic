@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   post "dropbox/upload"
   get  "dropbox/auth_start"
   get  "dropbox/auth_finish"
+  get  "dropbox/redirect_to_main"
 
   get "dropbox/has_token" => "dropbox#has_token?"
 

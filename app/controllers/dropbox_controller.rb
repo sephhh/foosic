@@ -10,7 +10,13 @@ class DropboxController < ApplicationController
     end
   end
 
+  def redirect_to_main
+    url = "https://tyutyube.herokuapp.com/dropbox/main?#{current_user.id}"
+    redirect_to url
+  end
+
   def main
+    session[:dont_worry_about_me] = params[:dont_worry_about_me]
     client = get_dropbox_client
     unless client
       redirect_to(:action => 'auth_start') and return
@@ -74,8 +80,9 @@ class DropboxController < ApplicationController
   def auth_finish
     begin
       access_token, user_id, url_state = get_web_auth.finish(params)
-      current_user.dropbox_token = access_token
-      current_user.save
+      me = User.find(session[:dont_worry_about_me])
+      me.dropbox_token = access_token
+      me.save
       session[:access_token] = access_token
       redirect_to :action => 'main'
     rescue DropboxOAuth2Flow::BadRequestError => e

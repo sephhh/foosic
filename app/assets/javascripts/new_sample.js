@@ -162,7 +162,7 @@ function dropboxFlow(context, $button) {
           initializeRecorder(context)
       } else {
         $button.empty();
-        $button.append("<a href='https://tyutyube.herokuapp.com/dropbox/main'>CLICK HERE TO CONNECT TO DROPBOX</a>");
+        $button.append("<a href='/dropbox/redirect_to_main'>CLICK HERE TO CONNECT TO DROPBOX</a>");
     }
   });
 };
