@@ -52,9 +52,8 @@ class DropboxController < ApplicationController
   end
 
   def get_dropbox_client
-    if session[:access_token]
+    if access_token = current_user.dropbox_token
       begin
-        access_token = session[:access_token]
         DropboxClient.new(access_token)
       rescue
         # Maybe something's wrong with the access token?
