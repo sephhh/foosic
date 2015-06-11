@@ -4,7 +4,6 @@ class DropboxController < ApplicationController
   require 'securerandom'
 
   def has_token?
-    binding.pry
     @response = !!get_dropbox_client
     respond_to do |format|
       format.json {render json: {has_token: @response}.to_json}
@@ -16,6 +15,8 @@ class DropboxController < ApplicationController
     unless client
       redirect_to(:action => 'auth_start') and return
     end
+
+    redirect_to root_path
   end
 
   def upload
@@ -26,7 +27,13 @@ class DropboxController < ApplicationController
 
     begin
       # Upload the POST'd file to Dropbox, keeping the same name
-      resp = client.put_file(params[:file].original_filename, params[:file].read)
+      resp = client.put_file(params[:filename], params[:file].read)
+
+      new_session = DropboxOAuth2Session.new(session[:access_token], nil)
+      response = new_session.do_get "/shares/auto/#{client.format_path(resp["path"])}", {"short_url"=>false}
+      url = Dropbox::parse_response(response)["url"]
+      url.gsub!("https://www", "https://dl")
+      Sample.create(name: params[:filename], user_id: current_user.id, url: url)
       render :text => "Upload successful.  File now at #{resp['path']}"
     rescue DropboxAuthError => e
       session.delete(:access_token)  # An auth error means the access token is probably bad
