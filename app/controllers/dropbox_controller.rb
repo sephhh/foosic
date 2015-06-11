@@ -19,10 +19,8 @@ class DropboxController < ApplicationController
     session[:dont_worry_about_me] = params[:dont_worry_about_me]
     client = get_dropbox_client
     unless client
-      redirect_to(:action => 'auth_start') and return
+      redirect_to(:action => 'auth_start')
     end
-
-    redirect_to 'http://www.tyutyu.be'
   end
 
   def upload
@@ -83,7 +81,7 @@ class DropboxController < ApplicationController
       me.dropbox_token = access_token
       me.save
       session[:access_token] = access_token
-      redirect_to :action => 'main'
+      redirect_to 'http://www.tyutyu.be'
     rescue DropboxOAuth2Flow::BadRequestError => e
       render :text => "Error in OAuth 2 flow: Bad request: #{e}"
     rescue DropboxOAuth2Flow::BadStateError => e
