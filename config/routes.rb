@@ -12,6 +12,12 @@ Rails.application.routes.draw do
 
   get 'kanye' => 'boards#show'
 
+  get  "dropbox/main"
+  post "dropbox/upload"
+  get  "dropbox/auth_start"
+  get  "dropbox/auth_finish"
+
+  get "dropbox/has_token" => "dropbox#has_token?"
 
   devise_scope :user do
     post "users/save_token" => 'users/sessions#save_token'

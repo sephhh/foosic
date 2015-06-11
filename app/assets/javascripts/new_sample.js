@@ -11,7 +11,7 @@ function CreateRecorder(client, context){
 
   newRecorder.initAudio = function(stream){
     var inputPoint = newRecorder.context.createGain();
-    var input = newRecorder.context.createMediaStreamSource(stream);    
+    var input = newRecorder.context.createMediaStreamSource(stream);
     input.connect(inputPoint);
     newRecorder.recorder =  new Recorder(inputPoint, {workerPath: "/recorderWorker.js"})
   }
@@ -32,7 +32,7 @@ function CreateRecorder(client, context){
       var au = document.createElement('audio');
       var hf = document.createElement('a');
       var recordingslist = $("#recordingslist");
-      
+
       au.controls = true;
       au.src = url;
       hf.href = url;
@@ -61,7 +61,7 @@ function CreateRecorder(client, context){
     if (this.fileName === null){
       this.fileName = new Date().toISOString() + '.wav'
     }
-    
+
     this.recorder.exportWAV(this.writeFile.bind(this));
     $.post( "/samples", {fileName:this.fileName});
     this.recorder.clear();
@@ -183,22 +183,23 @@ function dropboxFlow(client, context, $button) {
       $(".sign-out").one("click", function(){
         client.signOut(function(error){
             console.log("signed out of dropbox!");
-        });  
+        });
       });
     }
   }
 
-  $.getJSON( "/samples/new.json", function( data ) {
+  $.getJSON( "/dropbox/has_token.json", function( data ) {
     //if there's a user token from db, authenticate with that
-    if(data.user_token !== null){
-      client = authenticateFromDatabase(data.user_token);
-      initializeRecorder(client, context);
-    }
-    else {
-    //create client object from our app_key and pass that to dropboxSignInFlow so they can authenticate
-      client = client || new Dropbox.Client({ key: data.app_key });
-          //send user through authentication process
-    client.authenticate({interactive: false}, dropboxSignInFlow);
+      if(data.has_token){
+          debugger;
+      // client = authenticateFromDatabase(data.user_token);
+      // initializeRecorder(client, context);
+      } else {
+          debugger;
+        // create client object from our app_key and pass that to dropboxSignInFlow so they can authenticate
+        // client = client || new Dropbox.Client({ key: data.app_key });
+        // send user through authentication process
+        // client.authenticate({interactive: false}, dropboxSignInFlow);
     }
   });
 
