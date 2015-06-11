@@ -16,7 +16,7 @@ class DropboxController < ApplicationController
       redirect_to(:action => 'auth_start') and return
     end
 
-    redirect_to root_path
+    redirect_to 'http://www.tyutyu.be'
   end
 
   def upload

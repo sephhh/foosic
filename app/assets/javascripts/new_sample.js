@@ -77,7 +77,7 @@ function CreateRecorder(context){
       processData: false,
       success: function(data) {
         alert("boa!");
-      },    
+      },
       error: function() {
         alert("not so boa!");
       }
@@ -162,7 +162,7 @@ function dropboxFlow(context, $button) {
           initializeRecorder(context)
       } else {
         $button.empty();
-        $button.append("<a href='dropbox/main'>CLICK HERE TO CONNECT TO DROPBOX</a>");
+        $button.append("<a href='https://tyutyube.herokuapp.com/dropbox/main'>CLICK HERE TO CONNECT TO DROPBOX</a>");
     }
   });
 };

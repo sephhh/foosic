@@ -19,6 +19,8 @@ Rails.application.routes.draw do
 
   get "dropbox/has_token" => "dropbox#has_token?"
 
+  get "dropbox/forward_to_root"
+
   devise_scope :user do
     post "users/save_token" => 'users/sessions#save_token'
     get "users/save_token" => 'users/sessions#save_token'
