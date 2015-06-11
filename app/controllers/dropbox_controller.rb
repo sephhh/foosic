@@ -11,7 +11,6 @@ class DropboxController < ApplicationController
   end
 
   def main
-    binding.remote_pry
     client = get_dropbox_client
     unless client
       redirect_to(:action => 'auth_start') and return
@@ -75,6 +74,8 @@ class DropboxController < ApplicationController
   def auth_finish
     begin
       access_token, user_id, url_state = get_web_auth.finish(params)
+      current_user.dropbox_token = access_token
+      current_user.save
       session[:access_token] = access_token
       redirect_to :action => 'main'
     rescue DropboxOAuth2Flow::BadRequestError => e
