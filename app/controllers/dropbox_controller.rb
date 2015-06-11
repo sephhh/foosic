@@ -52,7 +52,7 @@ class DropboxController < ApplicationController
   end
 
   def get_dropbox_client
-    if access_token = current_user.dropbox_token
+    if current_user && access_token = current_user.dropbox_token
       begin
         DropboxClient.new(access_token)
       rescue
