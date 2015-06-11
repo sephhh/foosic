@@ -28,7 +28,7 @@ function CreateRecorder(client, context){
     //to display audio, need better way
     this.recorder.exportWAV(function(blob){
       var url = URL.createObjectURL(blob);
-      var li = document.createElement('li');
+      var p = document.createElement('p');
       var au = document.createElement('audio');
       var hf = document.createElement('a');
       var recordingslist = $("#recordingslist");
@@ -38,10 +38,10 @@ function CreateRecorder(client, context){
       hf.href = url;
       hf.download = newRecorder.fileName;
       hf.innerHTML = "DOWNLOAD FILE";
-      li.appendChild(au);
-      li.appendChild(hf);
-      recordingslist.append(li);
-      recordingslist.append('NAME SAMPLE: <input id="name-sample-input" type="text" value='+ newRecorder.fileName +'>')
+      p.appendChild(au);
+      p.appendChild(hf);
+      recordingslist.append(p);
+      recordingslist.append('NAME YOUR SAMPLE: <input id="name-sample-input" type="text" value='+ newRecorder.fileName +'>')
     });
   };
 
@@ -76,25 +76,27 @@ function CreateRecorder(client, context){
       }
     });
   }
-  //pass in a jQuery div and this will add Save, Clear and Cancel buttons
+  //pass in a jQuery div and this will add Save, Clear and Cancel buttons to it
   newRecorder.activateButtons = function(){
     $("#rec-buttons").off();
     $("#rec-buttons").show();
     $("#new-sample-save").on("click", function(){
       if (rec.state === "full"){
         rec.save();
-        $("#recordingslist").empty();
       }
     });
     $("#new-sample-clear").on("click", function(){
       rec.recorder.clear();
       rec.state = "cleared";
+      $('#recording-interface').empty();
+      $('#recording-interface').append(rec.recButtonHTML);
       $("#recordingslist").empty();
+      $("#rec-buttons").hide();
+
     });
     $("#new-sample-cancel").on("click", function(){
       rec.recorder.clear();
       rec.state = "cleared";
-      $("#recordingslist").empty();
     });
   }
   //Take in a file namee. If file exists save it in database by posting to /samples
@@ -117,14 +119,16 @@ function initializeRecorder(client, context){
   rec = CreateRecorder(client, context);
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
   navigator.getUserMedia({audio:true}, rec.initAudio, function(e) {
+    alert("enable microphone in order to record a sample")
     console.log(e);
+    return;
   });
   $('#recording-interface').empty();
   $('#recording-interface').append(rec.recButtonHTML);
   $("#from-dropbox").show();
   $("#dropbox-file-input").tooltip();
-
-  $('#recording-interface').click(function(event){
+  $('#recording-interface').off()
+  $('#recording-interface').on("click", function(event){
     if (rec.state === "cleared"){
       rec.start();
       $(this).empty();
@@ -132,7 +136,6 @@ function initializeRecorder(client, context){
     }else if (rec.state === "recording"){
       rec.stop();
       $(this).empty();
-      $(this).append(rec.recButtonHTML);
       rec.activateButtons();
     }
   });
@@ -149,7 +152,6 @@ function dropboxFlow(client, context, $button) {
   //takes user token from database and returns authenticated client object
   function authenticateFromDatabase(token){
     var client = new Dropbox.Client({token: token})
-    console.log("I got yr dropbox info so I logged you in!!!!")
     return client;
   }
 
@@ -160,61 +162,45 @@ function dropboxFlow(client, context, $button) {
     console.log(error);
   }
 
-  function dropboxSignInFlow(client){
-    $button.append("CLICK HERE TO CONNECT TO DROPBOX")
-    $button.on("click", function() {
-      // The user will have to click an 'Authorize' button.
-      client.authenticate(function(error, client) {
-        if (error) {
-          return handleError(error);
-        }
+  function dropboxSignInFlow(error, client){
+    if (!client.isAuthenticated()) {
+      $button.empty();
+      $button.append("CLICK HERE TO CONNECT TO DROPBOX");
+      $button.on("click", function() {
+        // The user will have to click an 'Authorize' button.
+        client.authenticate(function(error, client) {
+          if (error) {
+            return handleError(error);
+          }
+        });
       });
-    });
-  }
-
-
-  function authenticateWithDropbox(error, client){
-    if (error) {
-      return handleError(error);
-    }
-    //if they are back from flow, save user's token in DB 
-    if (client.isAuthenticated()) {
-      saveUser(client.credentials().token)
+    }else{
+      saveUser(client.credentials().token);
       console.log("you have been authenticated!")
       initializeRecorder(client, context);
-    //TODO need to clear client so that next user doesn't have access to it
-    //not sure I need last line above
-
-    } else {
-      // show and set up the "Sign into Dropbox" button
-      //once they click and authenticate they will come back to this page authenticated
-      dropboxSignInFlow(client);
+      $button.empty();
+      $button.off();
+      $(".sign-out").one("click", function(){
+        client.signOut(function(error){
+            console.log("signed out of dropbox!");
+        });  
+      });
     }
-
   }
 
-
   $.getJSON( "/samples/new.json", function( data ) {
-
     //if there's a user token from db, authenticate with that
     if(data.user_token !== null){
       client = authenticateFromDatabase(data.user_token);
       initializeRecorder(client, context);
     }
     else {
-    //create client object from our app_key
-    client = new Dropbox.Client({ key: data.app_key });
-    //send user through authentication process
-      client.authenticate({interactive: false}, authenticateWithDropbox);
+    //create client object from our app_key and pass that to dropboxSignInFlow so they can authenticate
+      client = client || new Dropbox.Client({ key: data.app_key });
+          //send user through authentication process
+    client.authenticate({interactive: false}, dropboxSignInFlow);
     }
   });
 
 
 };
-
-//TODO
-//save sample to database-
-  //sample belongs_to user
-  //create and save sample
-  //modify how samples load so we can access custom ones
-//better file naming

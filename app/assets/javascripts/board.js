@@ -373,19 +373,23 @@ $(document).ready(function() {
     });
 
     //adding a sample
-    //move this client variable inside click handler? Or clear it at end of handler?
     var client;
+
     $('#add-sample').click(function(){
         if (signedIn) {
             $('#add-sample-modal').modal('toggle');
-            $button = $("#dropbox-connect")
-            dropboxFlow(client, context, $button)
+            $button = $("#dropbox-connect");
+            dropboxFlow(client, context, $button);
         }else {
             $('#sign-in-to-save-modal').modal('toggle');
             window.setTimeout(function(){
                 $('#sign-in-to-save-modal').modal('toggle');
             }, 1500);
         }
+    });
+    $("#add-sample-modal").on('hidden.bs.modal', function(){
+       $("#recordingslist").empty();
+
     });
 
     // clear notices after a bit

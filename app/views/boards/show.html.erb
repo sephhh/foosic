@@ -247,19 +247,21 @@
                         <div id="from-dropbox" style="display:none">
                             ADD A SAMPLE FROM DROPBOX:
                             <input id="dropbox-file-input" type="text" title="Upload an audio file to your dropbox account inside the app/tyutyu.be folder, then enter the full filename here">
-                            <button type="button" class="btn btn-success" data-dismiss="modal" id="get-file-from-dropbox">GET IT</button>
+                            <button type="button" data-dismiss="modal" id="get-file-from-dropbox">GET IT</button>
                         </div>
                         <hr>
                         <div id="recording-interface"></div>
                         <div id="recordingslist"></div>
+                        <br>
+                        <div id="rec-buttons" style="display:none">
+                            <button type="button" data-dismiss="modal" id="new-sample-save">SAVE</button>
+                            <button type="button" id="new-sample-clear">CLEAR</button>
+                            <button type="button" data-dismiss="modal" id="new-sample-cancel">CANCEL</button>
+                        </div>
                         <!-- append options here -->
                      </div>
                     <div class="modal-footer">
-                        <div id="rec-buttons" style="display:none">
-                            <button type="button" class="btn btn-success" data-dismiss="modal" id="new-sample-save">SAVE</button>
-                            <button type="button" class="btn btn-success" id="new-sample-clear">CLEAR</button>
-                            <button type="button" class="btn btn-success" data-dismiss="modal" id="new-sample-cancel">CANCEL</button>
-                        </div>
+
                     </div>
                 </div>
 
