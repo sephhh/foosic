@@ -17,10 +17,7 @@ class DropboxController < ApplicationController
 
   def main
     session[:dont_worry_about_me] = params[:dont_worry_about_me]
-    client = get_dropbox_client
-    unless client
-      redirect_to(:action => 'auth_start')
-    end
+    redirect_to(:action => 'auth_start')
   end
 
   def upload
@@ -50,7 +47,7 @@ class DropboxController < ApplicationController
   end
 
   def get_dropbox_client
-    if current_user && access_token = current_user.dropbox_token
+    if access_token = current_user.dropbox_token
       begin
         DropboxClient.new(access_token)
       rescue
