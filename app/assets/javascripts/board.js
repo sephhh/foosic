@@ -271,7 +271,7 @@ $(document).ready(function() {
     var username, channel, requestedConnection;
     var signedIn = false;
     var requestInProgress = false;
-    var dispatcher = new WebSocketRails('localhost:3000/websocket');
+    var dispatcher = new WebSocketRails('www.tyutyu.be/websocket');
     dispatcher.bind('set_username',function(data){
         username = data.username;
         signedIn = data.signed_in;
