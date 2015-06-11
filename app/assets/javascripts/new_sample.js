@@ -13,7 +13,6 @@ function CreateRecorder(client, context){
     var inputPoint = newRecorder.context.createGain();
     var input = newRecorder.context.createMediaStreamSource(stream);    
     input.connect(inputPoint);
-    debugger;
     newRecorder.recorder =  new Recorder(inputPoint, {workerPath: "/recorderWorker.js"})
   }
 
@@ -153,7 +152,6 @@ function dropboxFlow(client, context, $button) {
   //takes user token from database and returns authenticated client object
   function authenticateFromDatabase(token){
     var client = new Dropbox.Client({token: token})
-    console.log("I got yr dropbox info so I logged you in!!!!")
     return client;
   }
 
@@ -164,57 +162,43 @@ function dropboxFlow(client, context, $button) {
     console.log(error);
   }
 
-  function dropboxSignInFlow(client){
-    $button.append("CLICK HERE TO CONNECT TO DROPBOX")
-    $button.on("click", function() {
-      // The user will have to click an 'Authorize' button.
-      client.authenticate(function(error, client) {
-        if (error) {
-          return handleError(error);
-        }
-        saveUser(client.credentials().token);
-        console.log("you have been authenticated!")
-        // initializeRecorder(client, context);
+  function dropboxSignInFlow(error, client){
+    if (!client.isAuthenticated()) {
+      $button.empty();
+      $button.append("CLICK HERE TO CONNECT TO DROPBOX");
+      $button.on("click", function() {
+        // The user will have to click an 'Authorize' button.
+        client.authenticate(function(error, client) {
+          if (error) {
+            return handleError(error);
+          }
+        });
       });
-    });
-  }
-
-
-  function authenticateWithDropbox(error, client){
-    if (error) {
-      return handleError(error);
+    }else{
+      saveUser(client.credentials().token);
+      console.log("you have been authenticated!")
+      initializeRecorder(client, context);
+      $button.empty();
+      $button.off();
+      $(".sign-out").one("click", function(){
+        client.signOut(function(error){
+            console.log("signed out of dropbox!");
+        });  
+      });
     }
-    //if they are back from flow, save user's token in DB 
-    // if (client.isAuthenticated()) {
-    //   saveUser(client.credentials().token)
-    //   console.log("you have been authenticated!")
-    //   debugger;
-    //   initializeRecorder(client, context);
-    //TODO need to clear client so that next user doesn't have access to it
-    //not sure I need last line above
-
-    // } else {
-      // show and set up the "Sign into Dropbox" button
-      //once they click and authenticate they will come back to this page authenticated
-      dropboxSignInFlow(client);
-    // }
-
   }
-
 
   $.getJSON( "/samples/new.json", function( data ) {
-
     //if there's a user token from db, authenticate with that
     if(data.user_token !== null){
       client = authenticateFromDatabase(data.user_token);
       initializeRecorder(client, context);
     }
     else {
-    //create client object from our app_key
-    client = new Dropbox.Client({ key: data.app_key });
-    //send user through authentication process
-    debugger;
-      client.authenticate({interactive: true}, authenticateWithDropbox);
+    //create client object from our app_key and pass that to dropboxSignInFlow so they can authenticate
+      client = client || new Dropbox.Client({ key: data.app_key });
+          //send user through authentication process
+    client.authenticate({interactive: false}, dropboxSignInFlow);
     }
   });
 
