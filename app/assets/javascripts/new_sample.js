@@ -1,6 +1,5 @@
-function CreateRecorder(client, context){
+function CreateRecorder(context){
   var newRecorder = {
-    client: client,
     context: context,
     fileName: null,
     //states are recording, full, cleared
@@ -11,7 +10,7 @@ function CreateRecorder(client, context){
 
   newRecorder.initAudio = function(stream){
     var inputPoint = newRecorder.context.createGain();
-    var input = newRecorder.context.createMediaStreamSource(stream);    
+    var input = newRecorder.context.createMediaStreamSource(stream);
     input.connect(inputPoint);
     newRecorder.recorder =  new Recorder(inputPoint, {workerPath: "/recorderWorker.js"})
   }
@@ -32,7 +31,7 @@ function CreateRecorder(client, context){
       var au = document.createElement('audio');
       var hf = document.createElement('a');
       var recordingslist = $("#recordingslist");
-      
+
       au.controls = true;
       au.src = url;
       hf.href = url;
@@ -61,20 +60,30 @@ function CreateRecorder(client, context){
     if (this.fileName === null){
       this.fileName = new Date().toISOString() + '.wav'
     }
-    
+
     this.recorder.exportWAV(this.writeFile.bind(this));
-    $.post( "/samples", {fileName:this.fileName});
     this.recorder.clear();
     this.state = "cleared";
   };
-  newRecorder.writeFile = function(blob){
-    this.client.writeFile(this.fileName, blob, function (error) {
-      if (error) {
-          alert('Error: ' + error);
-      } else {
-          alert('File written successfully!');
+  newRecorder.writeFile = function(file){
+    var data = new FormData();
+    data.append('file', file);
+    data.append('filename', this.fileName);
+    $.ajax({
+      url :  "dropbox/upload",
+      type: 'POST',
+      data: data,
+      contentType: false,
+      processData: false,
+      success: function(data) {
+        alert("boa!");
+      },    
+      error: function() {
+        alert("not so boa!");
       }
     });
+
+    // $.post("/dropbox/upload", {filename: this.fileName, file: file} );
   }
   //pass in a jQuery div and this will add Save, Clear and Cancel buttons to it
   newRecorder.activateButtons = function(){
@@ -115,8 +124,8 @@ function CreateRecorder(client, context){
 
 }
 
-function initializeRecorder(client, context){
-  rec = CreateRecorder(client, context);
+function initializeRecorder(context){
+  rec = CreateRecorder(context);
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
   navigator.getUserMedia({audio:true}, rec.initAudio, function(e) {
     alert("enable microphone in order to record a sample")
@@ -147,60 +156,13 @@ function initializeRecorder(client, context){
   })
 }
 
-
-function dropboxFlow(client, context, $button) {
-  //takes user token from database and returns authenticated client object
-  function authenticateFromDatabase(token){
-    var client = new Dropbox.Client({token: token})
-    return client;
-  }
-
-  function saveUser (token){
-    $.post( "/users/save_token", {dropBoxToken:token});
-  }
-  function handleError(error){
-    console.log(error);
-  }
-
-  function dropboxSignInFlow(error, client){
-    if (!client.isAuthenticated()) {
-      $button.empty();
-      $button.append("CLICK HERE TO CONNECT TO DROPBOX");
-      $button.on("click", function() {
-        // The user will have to click an 'Authorize' button.
-        client.authenticate(function(error, client) {
-          if (error) {
-            return handleError(error);
-          }
-        });
-      });
-    }else{
-      saveUser(client.credentials().token);
-      console.log("you have been authenticated!")
-      initializeRecorder(client, context);
-      $button.empty();
-      $button.off();
-      $(".sign-out").one("click", function(){
-        client.signOut(function(error){
-            console.log("signed out of dropbox!");
-        });  
-      });
-    }
-  }
-
-  $.getJSON( "/samples/new.json", function( data ) {
-    //if there's a user token from db, authenticate with that
-    if(data.user_token !== null){
-      client = authenticateFromDatabase(data.user_token);
-      initializeRecorder(client, context);
-    }
-    else {
-    //create client object from our app_key and pass that to dropboxSignInFlow so they can authenticate
-      client = client || new Dropbox.Client({ key: data.app_key });
-          //send user through authentication process
-    client.authenticate({interactive: false}, dropboxSignInFlow);
+function dropboxFlow(context, $button) {
+  $.getJSON( "/dropbox/has_token.json", function( data ) {
+      if(data.has_token){
+          initializeRecorder(context)
+      } else {
+        $button.empty();
+        $button.append("<a href='dropbox/main'>CLICK HERE TO CONNECT TO DROPBOX</a>");
     }
   });
-
-
 };

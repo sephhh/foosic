@@ -271,7 +271,7 @@ $(document).ready(function() {
     var username, channel, requestedConnection;
     var signedIn = false;
     var requestInProgress = false;
-    var dispatcher = new WebSocketRails('www.tyutyu.be/websocket');
+    var dispatcher = new WebSocketRails('localhost:3000/websocket');
     dispatcher.bind('set_username',function(data){
         username = data.username;
         signedIn = data.signed_in;
@@ -366,14 +366,11 @@ $(document).ready(function() {
         }
     });
 
-    //adding a sample
-    var client;
-
     $('#add-sample').click(function(){
         if (signedIn) {
             $('#add-sample-modal').modal('toggle');
             $button = $("#dropbox-connect");
-            dropboxFlow(client, context, $button);
+            dropboxFlow(context, $button);
         }else {
             $('#sign-in-to-add-sample-modal').modal('toggle');
         }

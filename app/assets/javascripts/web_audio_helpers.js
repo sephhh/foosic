@@ -1,31 +1,14 @@
 // Define function to load audio associated with a pad html object
 function loadAudio(sample) {
-    if (sample.url !== null){
-        var request = new XMLHttpRequest();
-        request.open('GET', sample.url, true);
-        request.responseType = 'arraybuffer';
-        request.onload = function() {
-            sample.context.decodeAudioData(request.response, function(buffer) {
-                sample.buffer = buffer;
-            });
-        }
-        request.send();
-    } else{
-        //for dropbox files associated with user id
-        $.getJSON( "/users/lookup", function(data){
-            var client = new Dropbox.Client({ token: data.token });
-            client.readFile(sample.name, { arrayBuffer: true }, function(error, response){
-                if (error) {
-                  alert('Error: ' + error);
-                }
-                else {
-                    sample.context.decodeAudioData(response, function(buffer) {
-                        sample.buffer = buffer;
-                    });
-                }
-            });
+    var request = new XMLHttpRequest();
+    request.open('GET', sample.url, true);
+    request.responseType = 'arraybuffer';
+    request.onload = function() {
+        sample.context.decodeAudioData(request.response, function(buffer) {
+            sample.buffer = buffer;
         });
     }
+    request.send();
 }
 
 // Sample constructor
