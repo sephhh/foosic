@@ -8,9 +8,6 @@ $(document).ready(function() {
     // DISPLAY INSTRUCTIONS IF FIRST VISIT
     if ($('#first-visit-indicator').text() === 'true') {
         $('#intro-message-modal').modal('toggle');
-        window.setTimeout(function(){
-            $('#intro-message-modal').modal('toggle');
-        }, 2500);
     }
 
     // AUDIO SETUP
@@ -366,9 +363,6 @@ $(document).ready(function() {
             });
         } else {
             $('#sign-in-to-save-modal').modal('toggle');
-            window.setTimeout(function(){
-                $('#sign-in-to-save-modal').modal('toggle');
-            }, 1500);
         }
     });
 
@@ -381,15 +375,11 @@ $(document).ready(function() {
             $button = $("#dropbox-connect");
             dropboxFlow(client, context, $button);
         }else {
-            $('#sign-in-to-save-modal').modal('toggle');
-            window.setTimeout(function(){
-                $('#sign-in-to-save-modal').modal('toggle');
-            }, 1500);
+            $('#sign-in-to-add-sample-modal').modal('toggle');
         }
     });
     $("#add-sample-modal").on('hidden.bs.modal', function(){
        $("#recordingslist").empty();
-
     });
 
     // clear notices after a bit

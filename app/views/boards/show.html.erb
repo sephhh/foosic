@@ -106,34 +106,46 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        YOU MUST SIGN IN / SIGN UP TO SAVE
+                        YOU MUST SIGN IN / SIGN UP TO SAVE A BOARD
                     </div>
                 </div>
             </div>
         </div>
         <!-- end sign-in-to-save modal -->
 
-        <!-- sample selection modal -->
-        <div id="sampleModal" class="change-pad modal fade" role="dialog">
-                <div class="modal-dialog">
-
-                    <!-- modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            CHOOSE A SAMPLE
-                        </div>
-                        <div class="modal-body">
-                            <ul id="sample-list" class="modal-ul">
-                            </ul>
-                            <!-- append options here -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-sample">CONFIRM</button>
-                        </div>
+        <!-- sign in to add sample modal -->
+        <div id="sign-in-to-add-sample-modal" class="add-sample message-modal modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        YOU MUST SIGN IN / SIGN UP TO ADD SAMPLE
                     </div>
-
                 </div>
             </div>
+        </div>
+        <!-- end sign in to add sample modal -->
+
+        <!-- sample selection modal -->
+        <div id="sampleModal" class="change-pad modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        CHOOSE A SAMPLE
+                    </div>
+                    <div class="modal-body">
+                        <ul id="sample-list" class="modal-ul">
+                        </ul>
+                        <!-- append options here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="confirm-sample">CONFIRM</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         <!-- end modal -->
 
@@ -211,7 +223,7 @@
         </div>
         <!-- end load boards modal -->
         <!-- board save modal -->
-         <div id="board-save-modal" class="save-board modal fade" role="dialog">
+        <div id="board-save-modal" class="save-board modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- modal content-->
@@ -233,8 +245,8 @@
             </div>
         </div>
         <!-- end board save modal -->
-    <!-- add sample modal -->
-         <div id="add-sample-modal" class="add-sample modal fade" role="dialog">
+        <!-- add sample modal -->
+        <div id="add-sample-modal" class="add-sample modal fade" role="dialog">
             <div class="modal-dialog">
 
                 <!-- modal content-->
@@ -242,7 +254,7 @@
                     <div class="modal-header">
                         ADD SAMPLE
                     </div>
-                     <div class="modal-body">
+                    <div class="modal-body">
                         <h1 style="cursor:pointer" id="dropbox-connect"></h1>
                         <div id="from-dropbox" style="display:none">
                             ADD A SAMPLE FROM DROPBOX:
@@ -259,7 +271,7 @@
                             <button type="button" data-dismiss="modal" id="new-sample-cancel">CANCEL</button>
                         </div>
                         <!-- append options here -->
-                     </div>
+                    </div>
                     <div class="modal-footer">
 
                     </div>
