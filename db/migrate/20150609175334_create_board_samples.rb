@@ -7,7 +7,8 @@ class CreateBoardSamples < ActiveRecord::Migration
 
       t.timestamps null: false
     end
-    add_foreign_key :board_samples, :boards
-    add_foreign_key :board_samples, :samples
+    # commented due to postgres errors
+    # add_foreign_key :board_samples, :boards
+    # add_foreign_key :board_samples, :samples
   end
 end
