@@ -12,11 +12,11 @@ Rails.application.routes.draw do
 
   get 'kanye' => 'boards#show'
 
-  get  "dropbox/main"
-  post "dropbox/upload"
-  get  "dropbox/auth_start"
-  get  "dropbox/auth_finish"
-  get  "dropbox/redirect_to_main"
+  get  "dropbox/main" => "dropbox#main"
+  post "dropbox/upload" => "dropbox#upload"
+  get  "dropbox/auth_start" => "dropbox#auth_start"
+  get  "dropbox/auth_finish" => "dropbox#auth_finish"
+  get  "dropbox/redirect_to_main" => "dropbox#redirect_to_main"
 
   get "dropbox/has_token" => "dropbox#has_token?"
 
