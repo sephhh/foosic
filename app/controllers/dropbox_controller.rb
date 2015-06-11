@@ -27,10 +27,11 @@ class DropboxController < ApplicationController
     end
 
     begin
+      access_token = current_user.dropbox_token
       # Upload the POST'd file to Dropbox, keeping the same name
       resp = client.put_file(params[:filename], params[:file].read)
 
-      new_session = DropboxOAuth2Session.new(session[:access_token], nil)
+      new_session = DropboxOAuth2Session.new(access_token, nil)
       response = new_session.do_get "/shares/auto/#{client.format_path(resp["path"])}", {"short_url"=>false}
       url = Dropbox::parse_response(response)["url"]
       url.gsub!("https://www", "https://dl")
