@@ -11,6 +11,7 @@ class DropboxController < ApplicationController
   end
 
   def main
+    binding.remote_pry
     client = get_dropbox_client
     unless client
       redirect_to(:action => 'auth_start') and return

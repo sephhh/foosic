@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+# add remote pry
+gem 'pry-remote'
 # Add WebSocket-Rails for user management
 gem 'websocket-rails'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
