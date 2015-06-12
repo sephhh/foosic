@@ -127,7 +127,6 @@ $(document).ready(function() {
                 }
                 changePadHandler = createChangePadHandler(changePadHandlerSpec);
             } else {
-                debugger;
                 changePadHandler.update(sampleData);
             }
             changePadHandler.selectAPadOn();
@@ -380,7 +379,7 @@ $(document).ready(function() {
     $("#add-sample-modal").on('hidden.bs.modal', function(){
        $("#recordingslist").empty();
     });
-    
+
     $('#upload-sample').click(function(){
         if (signedIn) {
             $('#upload-sample-modal').modal('toggle');
