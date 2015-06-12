@@ -11,7 +11,8 @@ class DropboxController < ApplicationController
   end
 
   def redirect_to_main
-    url = "https://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
+    # url = "https://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
+    url = "http://localhost:3000/dropbox/main?dont_worry_about_me=#{current_user.id}"    
     redirect_to url
   end
 
@@ -29,13 +30,14 @@ class DropboxController < ApplicationController
     begin
       access_token = current_user.dropbox_token
       # Upload the POST'd file to Dropbox, keeping the same name
-      resp = client.put_file(params[:filename], params[:file].read)
+      filename = params[:filename] || params["file"].original_filename
+      resp = client.put_file(filename, params[:file].read)
 
       new_session = DropboxOAuth2Session.new(access_token, nil)
       response = new_session.do_get "/shares/auto/#{client.format_path(resp["path"])}", {"short_url"=>false}
       url = Dropbox::parse_response(response)["url"]
       url.gsub!("https://www", "https://dl")
-      Sample.create(name: params[:filename], user_id: current_user.id, url: url)
+      Sample.create(name: filename, user_id: current_user.id, url: url)
       render :text => "Upload successful.  File now at #{resp['path']}"
     rescue DropboxAuthError => e
       session.delete(:access_token)  # An auth error means the access token is probably bad
@@ -79,7 +81,9 @@ class DropboxController < ApplicationController
       me.dropbox_token = access_token
       me.save
       session[:access_token] = access_token
-      redirect_to 'http://www.tyutyu.be'
+
+      redirect_to root_path
+      # redirect_to 'http://www.tyutyu.be'
     rescue DropboxOAuth2Flow::BadRequestError => e
       render :text => "Error in OAuth 2 flow: Bad request: #{e}"
     rescue DropboxOAuth2Flow::BadStateError => e

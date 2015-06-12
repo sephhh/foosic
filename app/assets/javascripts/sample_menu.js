@@ -46,9 +46,6 @@ var createChangePadHandler = function(spec){
         });
         // toggle select-a-pad message modal
         $('#select-a-pad-modal').modal('toggle');
-        window.setTimeout(function(){
-            $('#select-a-pad-modal').modal('toggle')
-        }, 1000);
     }
 
     // enter select-a-sample mode
@@ -75,21 +72,22 @@ var createChangePadHandler = function(spec){
 
     // handle updates when new samples are added
     newChangePadHandler.update = function(sampleData) {
+        debugger;
         for (var i = 0; i < sampleData.length; i++) {
             var already_included = false;
             for (var j = 0; j < this.sampleData.length; j++) {
-                if (sampleData[i].id === this.sampleData[j]) {
+                if (sampleData[i].id === this.sampleData[j].id) {
                     already_included = true;
                 }
             }
             if (!already_included) {
                 var sampleSpec = {
-                    id: spec.sampleData[i].id,
-                    name: spec.sampleData[i].name,
-                    url: spec.sampleData[i].url,
-                    user_id: spec.sampleData[i].user_id,
-                    context: spec.context,
-                    destination: spec.destination
+                    id: sampleData[i].id,
+                    name: sampleData[i].name,
+                    url: sampleData[i].url,
+                    user_id: sampleData[i].user_id,
+                    context: this.context,
+                    destination: this.destination
                 }
                 var sample = createSample(sampleSpec);
                 this.sampleLibrary.push(sample);

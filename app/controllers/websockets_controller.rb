@@ -36,13 +36,4 @@ class WebsocketsController < WebsocketRails::BaseController
     WebsocketRails[message[:sender]].trigger 'connection_rejected', message
   end
 
-  def get_all_sample_data
-    if user_signed_in?
-      samples = Sample.where("user_id = ? OR user_id IS NULL", current_user.id)
-    else
-      samples = Sample.where("user_id IS NULL")
-    end
-    trigger_success samples
-  end
-
 end

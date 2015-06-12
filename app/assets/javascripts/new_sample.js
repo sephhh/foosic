@@ -166,3 +166,16 @@ function dropboxFlow(context, $button) {
     }
   });
 };
+function dropboxUploadFlow($div) {
+  $.getJSON( "/dropbox/has_token.json", function( data ) {
+      if(data.has_token){
+          $("#dropbox-upload-connect").empty();
+          initializeUploader();
+      }
+  });
+};
+
+function initializeUploader(){
+  $("#upload-file").show();
+}
+

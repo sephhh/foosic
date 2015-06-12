@@ -31,8 +31,12 @@
                 <a id="save-board">SAVE BOARD</a>
             </li>
             <li class="add-sample">
-                <a id="add-sample">ADD SAMPLE</a>
+                <a id="add-sample">RECORD SAMPLE</a>
             </li>
+            <li class="upload-sample">
+                <a id="upload-sample">UPLOAD SAMPLE</a>
+            </li>
+
             <% if user_signed_in? %>
                 <div id="username-hidden" style="display:none"><%= current_user.username %></div>
                 <li class="sign-out">
@@ -124,6 +128,17 @@
             </div>
         </div>
         <!-- end sign in to add sample modal -->
+        <!-- sign in to upload sample modal -->
+        <div id="sign-in-to-upload-sample-modal" class="upload-sample message-modal modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        YOU MUST SIGN IN / SIGN UP TO UPLOAD SAMPLE
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end sign in to upload sample modal -->
 
         <!-- sample selection modal -->
         <div id="sampleModal" class="change-pad modal fade" role="dialog">
@@ -274,6 +289,33 @@
                     </div>
                     <div class="modal-footer">
 
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end add sample modal -->
+        <!-- upload sample modal -->
+        <div id="upload-sample-modal" class="upload-sample modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        UPLOAD SAMPLE
+                    </div>
+                    <div class="modal-body">
+                        <h1 style="cursor:pointer" id="dropbox-upload-connect">
+                            <a href='/dropbox/redirect_to_main'>CLICK HERE TO CONNECT TO DROPBOX</a>
+                        </h1>
+                        <div id="upload-file" style="display:none">
+                            <%= form_tag({:controller => :dropbox, :action => :upload}, :multipart => true) do %>
+                                <%= file_field_tag 'file' %><%= submit_tag 'Upload' %>
+                            <% end %>
+                        </div>
+                        <!-- append options here -->
+                    </div>
+                    <div class="modal-footer">
                     </div>
                 </div>
 

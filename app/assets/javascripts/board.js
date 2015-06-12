@@ -115,7 +115,8 @@ $(document).ready(function() {
     // CHANGE PAD
     var changePadHandler;
     $('#change-pad').click(function() {
-        dispatcher.trigger('get_all_sample_data', 1, handleChangePad);
+        $.getJSON('/samples', handleChangePad);
+        // dispatcher.trigger('get_all_sample_data', 1, handleChangePad);
         function handleChangePad(sampleData) {
             if (!changePadHandler) {
                 var changePadHandlerSpec = {
@@ -126,6 +127,7 @@ $(document).ready(function() {
                 }
                 changePadHandler = createChangePadHandler(changePadHandlerSpec);
             } else {
+                debugger;
                 changePadHandler.update(sampleData);
             }
             changePadHandler.selectAPadOn();
@@ -377,6 +379,18 @@ $(document).ready(function() {
     });
     $("#add-sample-modal").on('hidden.bs.modal', function(){
        $("#recordingslist").empty();
+    });
+    
+    $('#upload-sample').click(function(){
+        if (signedIn) {
+            $('#upload-sample-modal').modal('toggle');
+            dropboxUploadFlow();
+        }else {
+            $('#sign-in-to-upload-sample-modal').modal('toggle');
+        }
+    });
+    $("#upload-sample-modal").on('hidden.bs.modal', function(){
+       // $("#upload-sample-modal .modal-body").empty();
     });
 
     // clear notices after a bit
