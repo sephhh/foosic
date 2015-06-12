@@ -12,7 +12,7 @@ class DropboxController < ApplicationController
 
   def redirect_to_main
     # url = "https://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
-    url = "http://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
+    url = "https://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
     redirect_to url
   end
 
