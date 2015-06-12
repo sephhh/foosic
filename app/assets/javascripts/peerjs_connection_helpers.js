@@ -33,7 +33,7 @@ var createPeerToPeer = function(spec) {
             break;
         case 'connectionOpened':
             // log 'hello'
-            console.log(peerMessage.messageBody + " from " + peerMessage.peerId);
+            console.log(peerMessage.messageBody + " from " + peerMessage.peerId + " with color " + peerMessage.userBoardSpecTransmission.color);
             // load peerBoardSpec
             var peerBoardSpec = peerMessage.userBoardSpecTransmission;
             peerBoardSpec.context = this.context;
