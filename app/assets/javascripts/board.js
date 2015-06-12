@@ -169,6 +169,9 @@ $(document).ready(function() {
                 key_array = key_array.slice(-16);
                 if (key_array.join("yeezy") === runaway){
                     kanyeLoop.loop();
+                    window.setInterval(function(){
+                        $('#kanye-layer').toggleClass("show");
+                    },100);
                 }
             }
         });

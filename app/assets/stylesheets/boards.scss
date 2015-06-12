@@ -332,6 +332,14 @@ div.modal-footer {
   display: none;
 }
 
+#kanye-layer {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: url("/kanye-west-3.jpg");
+  display: none;
+}
+
 #player-layer.show {
   display: block;
 }
