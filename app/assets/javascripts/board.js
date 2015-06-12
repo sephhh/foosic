@@ -133,7 +133,8 @@ $(document).ready(function() {
                     context: context,
                     destination: preout
                 }
-                changePadHandler.update(changePadHandlerSpec);
+                changePadHandler = createChangePadHandler(changePadHandlerSpec);
+                // changePadHandler.update(changePadHandlerSpec);
             }
             changePadHandler.selectAPadOn();
             $('#sample-list').empty();
