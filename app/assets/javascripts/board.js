@@ -127,7 +127,13 @@ $(document).ready(function() {
                 }
                 changePadHandler = createChangePadHandler(changePadHandlerSpec);
             } else {
-                changePadHandler.update(sampleData);
+                var changePadHandlerSpec = {
+                    board: userBoard,
+                    sampleData: sampleData,
+                    context: context,
+                    destination: preout
+                }
+                changePadHandler.update(changePadHandlerSpec);
             }
             changePadHandler.selectAPadOn();
             $('#sample-list').empty();

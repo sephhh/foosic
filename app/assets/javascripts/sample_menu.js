@@ -71,29 +71,27 @@ var createChangePadHandler = function(spec){
     }
 
     // handle updates when new samples are added
-    newChangePadHandler.update = function(sampleData) {
-        debugger;
-        for (var i = 0; i < sampleData.length; i++) {
+    newChangePadHandler.update = function(spec) {
+        for (var i = 0; i < spec.sampleData.length; i++) {
             var already_included = false;
             for (var j = 0; j < this.sampleData.length; j++) {
-                if (sampleData[i].id === this.sampleData[j].id) {
+                if (spec.sampleData[i].id === this.sampleData[j].id) {
                     already_included = true;
                 }
             }
             if (!already_included) {
-                debugger;
                 var sampleSpec = {
-                    id: sampleData[i].id,
-                    name: sampleData[i].name,
-                    url: sampleData[i].url,
-                    user_id: sampleData[i].user_id,
-                    context: this.context,
-                    destination: this.destination
+                    id: spec.sampleData[i].id,
+                    name: spec.sampleData[i].name,
+                    url: spec.sampleData[i].url,
+                    user_id: spec.sampleData[i].user_id,
+                    context: spec.context,
+                    destination: spec.destination
                 }
                 var sample = createSample(sampleSpec);
                 this.sampleLibrary.push(sample);
-                this.sampleData.push(sampleData[i]);
-                this.sampleList = ('<li class="sample-list" data-id="' + this.sampleData[i].id + '">' + this.sampleData[i].name + '</li>') + this.sampleList;
+                this.sampleData.push(spec.sampleData[i]);
+                this.sampleList = ('<li class="sample-list" data-id="' + spec.sampleData[i].id + '">' + spec.sampleData[i].name + '</li>') + this.sampleList;
             }
         }
     }
