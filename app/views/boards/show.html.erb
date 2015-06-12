@@ -281,9 +281,6 @@
                         </div>
                         <!-- append options here -->
                     </div>
-                    <div class="modal-footer">
-
-                    </div>
                 </div>
 
             </div>
@@ -300,7 +297,7 @@
                     </div>
                     <div class="modal-body">
                         <h1 style="cursor:pointer" id="dropbox-upload-connect">
-                            <a href='/dropbox/redirect_to_main'>CLICK HERE TO CONNECT TO DROPBOX</a>
+                            <a class="dropbox-redirect-link" href='/dropbox/redirect_to_main'>CLICK HERE TO CONNECT TO DROPBOX</a>
                         </h1>
                         <div id="upload-file" style="display:none; padding-left:20px">
                             <%= form_tag({:controller => :dropbox, :action => :upload}, :multipart => true) do %>
@@ -309,8 +306,6 @@
                             <% end %>
                         </div>
                         <!-- append options here -->
-                    </div>
-                    <div class="modal-footer">
                     </div>
                 </div>
 

@@ -377,7 +377,7 @@ $(document).ready(function() {
         }
     });
     $("#add-sample-modal").on('hidden.bs.modal', function(){
-       $("#recordingslist").empty();
+        $("#recordingslist").empty();
     });
 
     $('#upload-sample').click(function(){
@@ -389,7 +389,7 @@ $(document).ready(function() {
         }
     });
     $("#upload-sample-modal").on('hidden.bs.modal', function(){
-       // $("#upload-sample-modal .modal-body").empty();
+        // $("#upload-sample-modal .modal-body").empty();
     });
 
     // clear notices after a bit

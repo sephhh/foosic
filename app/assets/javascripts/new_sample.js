@@ -4,8 +4,8 @@ function CreateRecorder(context){
     fileName: null,
     //states are recording, full, cleared
     state: "cleared",
-    recButtonHTML: '<svg height="100" width="100" id="record"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg>CLICK TO RECORD USING MICROPHONE',
-    stopButtonHTML: '<svg height="100" width="100" id="stop"><rect width="100" height="100" stroke="black" fill="blue" stroke-width=3/></svg>CLICK TO STOP'
+    recButtonHTML: '<svg height="100" width="100" id="record"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /><br /></svg>CLICK TO RECORD USING MICROPHONE',
+    stopButtonHTML: '<svg height="100" width="100" id="stop"><rect width="100" height="100" stroke="black" fill="blue" stroke-width=3/><br /></svg>CLICK TO STOP'
   };
 
   newRecorder.initAudio = function(stream){
@@ -36,7 +36,7 @@ function CreateRecorder(context){
       au.src = url;
       hf.href = url;
       hf.download = newRecorder.fileName;
-      hf.innerHTML = "DOWNLOAD FILE";
+      hf.innerHTML = "<br />DOWNLOAD FILE";
       p.appendChild(au);
       p.appendChild(hf);
       recordingslist.append(p);
@@ -141,7 +141,7 @@ function dropboxFlow(context, $button) {
           initializeRecorder(context)
       } else {
         $button.empty();
-        $button.append("<a href='/dropbox/redirect_to_main'>CLICK HERE TO CONNECT TO DROPBOX</a>");
+        $button.append("<a class='dropbox-redirect-link' href='/dropbox/redirect_to_main'>CLICK HERE TO CONNECT TO DROPBOX</a>");
     }
   });
 };
@@ -157,4 +157,3 @@ function dropboxUploadFlow($div) {
 function initializeUploader(){
   $("#upload-file").show();
 }
-
