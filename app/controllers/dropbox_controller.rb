@@ -11,8 +11,8 @@ class DropboxController < ApplicationController
   end
 
   def redirect_to_main
-    # url = "https://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
     url = "https://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
+    # url = "https://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
     redirect_to url
   end
 
@@ -84,8 +84,8 @@ class DropboxController < ApplicationController
       me.save
       session[:access_token] = access_token
 
-      redirect_to root_path
-      # redirect_to 'http://www.tyutyu.be'
+      # redirect_to root_path
+      redirect_to 'http://www.tyutyu.be'
     rescue DropboxOAuth2Flow::BadRequestError => e
       render :text => "Error in OAuth 2 flow: Bad request: #{e}"
     rescue DropboxOAuth2Flow::BadStateError => e
