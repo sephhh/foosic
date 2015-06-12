@@ -82,8 +82,6 @@ function CreateRecorder(context){
         alert("not so boa!");
       }
     });
-
-    // $.post("/dropbox/upload", {filename: this.fileName, file: file} );
   }
   //pass in a jQuery div and this will add Save, Clear and Cancel buttons to it
   newRecorder.activateButtons = function(){
@@ -108,17 +106,6 @@ function CreateRecorder(context){
       rec.state = "cleared";
     });
   }
-  //Take in a file namee. If file exists save it in database by posting to /samples
-  newRecorder.getFileFromDropbox = function(filename){
-    this.client.readFile(filename, { arrayBuffer: true }, function(error, response){
-      if (error) {
-        alert('Error: ' + error);
-      }
-      else {
-        $.post( "/samples", {fileName:filename});
-      }
-    });
-  }
 
   return newRecorder;
 
@@ -134,8 +121,6 @@ function initializeRecorder(context){
   });
   $('#recording-interface').empty();
   $('#recording-interface').append(rec.recButtonHTML);
-  $("#from-dropbox").show();
-  $("#dropbox-file-input").tooltip();
   $('#recording-interface').off()
   $('#recording-interface').on("click", function(event){
     if (rec.state === "cleared"){
@@ -148,12 +133,6 @@ function initializeRecorder(context){
       rec.activateButtons();
     }
   });
-  $("#get-file-from-dropbox").click(function(){
-    var filenameInput = $("#dropbox-file-input").val()
-    if (filenameInput!==""){
-      rec.getFileFromDropbox(filenameInput);
-    }
-  })
 }
 
 function dropboxFlow(context, $button) {
