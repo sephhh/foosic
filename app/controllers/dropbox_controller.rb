@@ -38,7 +38,9 @@ class DropboxController < ApplicationController
       url = Dropbox::parse_response(response)["url"]
       url.gsub!("https://www", "https://dl")
       Sample.create(name: filename, user_id: current_user.id, url: url)
-      render :text => "Upload successful.  File now at #{resp['path']}"
+      
+      redirect_to root_path, notice: "Sample saved!"
+    # render :text => "Upload successful.  File now at #{resp['path']}"
     rescue DropboxAuthError => e
       session.delete(:access_token)  # An auth error means the access token is probably bad
       logger.info "Dropbox auth error: #{e}"
