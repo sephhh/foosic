@@ -302,7 +302,7 @@
                         <div id="upload-file" style="display:none; padding-left:20px">
                             <%= form_tag({:controller => :dropbox, :action => :upload}, :multipart => true) do %>
                                 <%= file_field_tag 'file', type: "button", :style => "padding-top:20px" %>
-                                <%= submit_tag 'Upload', type: "button"%>
+                                <%= submit_tag 'Upload' %>
                             <% end %>
                         </div>
                         <!-- append options here -->

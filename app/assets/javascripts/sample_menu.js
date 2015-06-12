@@ -72,6 +72,7 @@ var createChangePadHandler = function(spec){
 
     // handle updates when new samples are added
     newChangePadHandler.update = function(sampleData) {
+        debugger;
         for (var i = 0; i < sampleData.length; i++) {
             var already_included = false;
             for (var j = 0; j < this.sampleData.length; j++) {
@@ -80,6 +81,7 @@ var createChangePadHandler = function(spec){
                 }
             }
             if (!already_included) {
+                debugger;
                 var sampleSpec = {
                     id: sampleData[i].id,
                     name: sampleData[i].name,
@@ -90,13 +92,9 @@ var createChangePadHandler = function(spec){
                 }
                 var sample = createSample(sampleSpec);
                 this.sampleLibrary.push(sample);
+                this.sampleData.push(sampleData[i]);
+                this.sampleList = ('<li class="sample-list" data-id="' + this.sampleData[i].id + '">' + this.sampleData[i].name + '</li>') + this.sampleList;
             }
-        }
-        this.sampleData = sampleData;
-        // delete whole thing so we can handle deletions, too
-        this.sampleList = "";
-        for (var i = 0; i < this.sampleData.length; i++) {
-            this.sampleList += ('<li class="sample-list" data-id="' + this.sampleData[i].id + '">' + this.sampleData[i].name + '</li>');
         }
     }
 
