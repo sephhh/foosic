@@ -5,11 +5,11 @@
         <%= devise_error_messages! %>
 
         <div class="devise-field field">
-            <%= f.email_field :username, autofocus: true, placeholder: "USERNAME" %>
+            <%= f.text_field :username, autofocus: true, placeholder: "USERNAME" %>
         </div>
 
         <div class="devise-field field">
-            <%= f.email_field :email, autofocus: true, placeholder: "EMAIL" %>
+            <%= f.email_field :email, placeholder: "EMAIL" %>
         </div>
 
         <div class="devise-field field">
