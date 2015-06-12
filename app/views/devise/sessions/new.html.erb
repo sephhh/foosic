@@ -1,28 +1,26 @@
 <div class="devise-content-wrapper">
-    <h2 class="devise-header">LOG IN TO TYUTYU.BE</h2>
+    <h2 class="devise-header">SIGN IN TO TYUTYU.BE</h2>
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <div class="field">
-            <%= f.label :email %><br />
-            <%= f.email_field :email, autofocus: true %>
+        <div class="devise-field field">
+            <%= f.email_field :email, autofocus: true, placeholder: "EMAIL" %>
         </div>
 
-        <div class="field">
-            <%= f.label :password %><br />
-            <%= f.password_field :password, autocomplete: "off" %>
+        <div class="devise-field field">
+            <%= f.password_field :password, autocomplete: "off", placeholder: "PASSWORD" %>
         </div>
 
-        <% if devise_mapping.rememberable? -%>
-            <div class="field">
-                <%= f.check_box :remember_me %>
-                <%= f.label :remember_me %>
-            </div>
-        <% end -%>
+        <!-- <% if devise_mapping.rememberable? -%> -->
+        <!--     <div class="devise-field field"> -->
+        <!--         <%= f.check_box :remember_me %> -->
+        <!--         <%= f.label :remember_me %> -->
+        <!--     </div> -->
+        <!-- <% end -%> -->
 
-        <div class="actions">
-            <%= f.submit "Log in" %>
+        <div class="devise-action actions">
+            <%= f.submit "SUBMIT" %>
         </div>
     <% end %>
 
-    <%= render "devise/shared/links" %>
+    <!-- <%= render "devise/shared/links" %> -->
 </div>

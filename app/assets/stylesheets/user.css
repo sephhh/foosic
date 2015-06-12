@@ -6,8 +6,35 @@ html, body {
   height: 100%;
   width: 100%;
   background-color: #2C2C2C;
+  text-align: center;
 }
 
 .devise-header {
   color: #DA0D72;
+  font-size: 6vh;
+}
+
+.devise-field {
+  color: #DA0D72;
+  margin: 25px;
+  font-size: 6vh;
+}
+
+.devise-field input {
+  background-color: #2C2C2C;
+  border: none;
+}
+
+.devise-action {
+  color: #DA0D72;
+}
+
+.devise-action input {
+  background-color: #2C2C2C;
+  border: none;
+  font-size: 6vh;
+}
+
+.devise-action input:hover {
+  background-color: green;
 }
