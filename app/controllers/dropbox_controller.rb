@@ -12,7 +12,7 @@ class DropboxController < ApplicationController
 
   def redirect_to_main
     # url = "https://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
-    url = "http://localhost:3000/dropbox/main?dont_worry_about_me=#{current_user.id}"    
+    url = "http://tyutyube.herokuapp.com/dropbox/main?dont_worry_about_me=#{current_user.id}"
     redirect_to url
   end
 
@@ -38,7 +38,7 @@ class DropboxController < ApplicationController
       url = Dropbox::parse_response(response)["url"]
       url.gsub!("https://www", "https://dl")
       Sample.create(name: filename, user_id: current_user.id, url: url)
-      
+
       redirect_to root_path, notice: "Sample saved!"
     # render :text => "Upload successful.  File now at #{resp['path']}"
     rescue DropboxAuthError => e
