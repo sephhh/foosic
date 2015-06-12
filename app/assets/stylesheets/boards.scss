@@ -84,6 +84,10 @@ li.add-sample a {
   color: green;
 }
 
+li.upload-sample a {
+  color: pink;
+}
+
 li.sign-up a {
   color: white;
 }
@@ -308,6 +312,15 @@ div.modal-footer {
 }
 .add-sample .modal-header {
   color: green;
+}
+
+/* upload sample modals */
+.upload-sample .modal-body {
+  color: pink;
+}
+
+.upload-sample .modal-header {
+  color: pink;
 }
 
 /* LOOPER ANIMATION LAYER STYLING */

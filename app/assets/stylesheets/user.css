@@ -1,0 +1,13 @@
+html, body {
+  background-color: #2C2C2C;
+}
+
+.devise-content-wrapper {
+  height: 100%;
+  width: 100%;
+  background-color: #2C2C2C;
+}
+
+.devise-header {
+  color: #DA0D72;
+}
