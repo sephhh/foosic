@@ -208,7 +208,7 @@ This application's primary server was built using Ruby on Rails, though a number
     end
     ```
 
-And here's some of the corresponding JavaScript:
+    And here's some of the corresponding JavaScript:
 
     ```javascript
     var username, channel, requestedConnection;
