@@ -1,5 +1,13 @@
 # tyutyu.be
 
+- [Description](#Description)
+- [Usage](#Usage)
+- [Technologies Used](#Technologies Used)
+- [Authors // Background](#Authors // Background)
+- [License](#License)
+
+## Description
+
 [tyutyu.be](http://www.tyutyu.be) is an interactive, collaborative, customizable musical experience. On the home page, users see the default 'board', which has nine different 'pads' - each with a different letter. By pressing the corresponding letter on their keyboards, users can play audio samples that have been assigned to those pads.
 
 #### Customization
