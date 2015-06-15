@@ -65,40 +65,39 @@ This application's primary server was built using Ruby on Rails, though a number
 
 - **Web Audio API:** Enables the site's core audio functionality. Sounds are loaded into audio buffers from static URLs. These can then be played back. For example, here's the code that loads a new sample and defines the `play` and `loop` functions:
 
- ```javascript
-// Sample constructor
-var createSample = function(spec) {
-    var newSample = {
-        name: spec.name,
-        url: spec.url,
-        id: spec.id,
-        user_id: spec.user_id,
-        context: spec.context,
-        destination: spec.destination
+    ```javascript
+    // Sample constructor
+    var createSample = function(spec) {
+        var newSample = {
+            name: spec.name,
+            url: spec.url,
+            id: spec.id,
+            user_id: spec.user_id,
+            context: spec.context,
+            destination: spec.destination
+        }
+
+        loadAudio(newSample);
+
+        newSample.play = function() {
+            var source = this.context.createBufferSource();
+            source.buffer = this.buffer;
+            source.connect(this.destination);
+            source.start(0);
+            this.source = source;
+        }
+
+        newSample.loop = function() {
+            var source = this.context.createBufferSource();
+            source.buffer = this.buffer;
+            source.connect(this.destination);
+            source.loop = true;
+            source.start(this.context.currentTime + 0.7);
+        }
+
+        return newSample;
     }
-
-    loadAudio(newSample);
-
-    newSample.play = function() {
-        var source = this.context.createBufferSource();
-        source.buffer = this.buffer;
-        source.connect(this.destination);
-        source.start(0);
-        this.source = source;
-    }
-
-    newSample.loop = function() {
-        var source = this.context.createBufferSource();
-        source.buffer = this.buffer;
-        source.connect(this.destination);
-        source.loop = true;
-        source.start(this.context.currentTime + 0.7);
-    }
-
-    return newSample;
-}
-
-```
+    ```
 
 - **Recorderjs:** JavaScript library used to record loops and new samples. Below is the code used to start and stop recording:
 
