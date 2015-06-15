@@ -1,12 +1,12 @@
 # tyutyu.be
 
-[**Description**](#Description)
-[**Usage**](#Usage)
-[**Technologies Used**](#Technologies Used)
-[**Authors // Background**](#Authors // Background)
-[**License**](#License)
+- [Description](#description)
+- [Usage](#usage)
+- [Technologies Used](#technologies)
+- [Authors // Background](#authors)
+- [License](#license)
 
-## Description
+## <a name="description"></a>Description
 
 [tyutyu.be](http://www.tyutyu.be) is an interactive, collaborative, customizable musical experience. On the home page, users see the default 'board', which has nine different 'pads' - each with a different letter. By pressing the corresponding letter on their keyboards, users can play audio samples that have been assigned to those pads.
 
@@ -24,7 +24,7 @@ Users can record and play back loops by toggling the spacebar.
 
 Using the 'connect' feature, also accessible through the menu bar, users can browse a list of other users who are online and request to connect with them. Once connected, users hear and see each other's activity in real time, including looping and updates to pad assignments, even for newly uploaded or recorded samples.
 
-## Usage
+## <a name="usage"></a>Usage
 
 The default board contains nine playable pads
 
@@ -67,7 +67,7 @@ Users can also connect with one another...
 
 ![connection GIF](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20connection%20user1.gif)
 
-## Technologies Used
+## <a name="technologies"></a>Technologies Used
 
 This application's primary server was built using Ruby on Rails, though a number of other libraries and tools were required for certain features:
 
@@ -272,12 +272,12 @@ This application's primary server was built using Ruby on Rails, though a number
     }
     ```
 
-## Authors // Background
+## <a name="authors"></a>Authors // Background
 
 This app was developed at [The Flatiron School](http://flatironschool.com/) by Seph Kramer and Parker Lawrence. We both really enjoyed playing with other fun online instruments and thought it would be exciting to try to create a simple instrument ourselves, with some added features that we hadn't seen elsewhere.
 
 You can find us on Twitter [@sephhh](https://twitter.com/seph_k) and [@parkeristyping](https://twitter.com/parkeristyping), or check out our blogs [here](http://sephhh.github.io/) and [here](http://www.hereisahand.com/).
 
-## License
+## <a name="license"></a>License
 
 Tyutyu.be is MIT Licensed. See LICENSE for details.
