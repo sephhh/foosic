@@ -35,7 +35,7 @@ The menu bar can be toggled by clicking the arrow at top left
 
 ![GIF of menu toggle](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20menu%20screen.gif)
 
-Using the sidebar, users can change samples assigned to different users,...
+Using the menu bar, users can change samples assigned to different users,...
 
 ![GIF of change pad](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20change%20pad.gif)
 
@@ -49,7 +49,7 @@ Using the sidebar, users can change samples assigned to different users,...
 
 ...record a new sound,...
 
-![GIF of record sound]()
+![GIF of record sound](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20record%20sample.gif)
 
 ...or upload one.
 
@@ -57,13 +57,48 @@ Using the sidebar, users can change samples assigned to different users,...
 
 Users can also connect with one another...
 
-[side-by-side GIF of connection process]
+![connection GIF](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20connection%20user1.gif)
 
 ## Technologies Used
 
 This application's primary server was built using Ruby on Rails, though a number of other libraries and tools were required for certain features:
 
-- **Web Audio API**: Enables the site's core audio functionality. Sounds are loaded into audio buffers from static URLs. These can then be played back using the '' function. Here's some sample code:
+- **Web Audio API**: Enables the site's core audio functionality. Sounds are loaded into audio buffers from static URLs. These can then be played back. For example, here's the code that loads a new sample and defines the `play` and `loop` functions:
+
+```
+// Sample constructor
+var createSample = function(spec) {
+    var newSample = {
+        name: spec.name,
+        url: spec.url,
+        id: spec.id,
+        user_id: spec.user_id,
+        context: spec.context,
+        destination: spec.destination
+    }
+
+    loadAudio(newSample);
+
+    newSample.play = function() {
+        var source = this.context.createBufferSource();
+        source.buffer = this.buffer;
+        source.connect(this.destination);
+        source.start(0);
+        this.source = source;
+    }
+
+    newSample.loop = function() {
+        var source = this.context.createBufferSource();
+        source.buffer = this.buffer;
+        source.connect(this.destination);
+        source.loop = true;
+        source.start(this.context.currentTime + 0.7);
+    }
+
+    return newSample;
+}
+
+```
 
 ...
 
