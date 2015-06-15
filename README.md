@@ -103,66 +103,66 @@ var createSample = function(spec) {
 - **Recorderjs:** JavaScript library used to record loops and new samples. Below is the code used to start and stop recording:
 
 ```javascript
-  newRecorder.start = function(){
-    this.recorder.record();
-    this.state = "recording";
-  };
+newRecorder.start = function(){
+  this.recorder.record();
+  this.state = "recording";
+};
 
-  newRecorder.stop = function(){
-    this.recorder.stop();
-    this.state = "full"
-    this.fileName = new Date().toISOString() + '.wav'
-    //to display audio, need better way
-    this.recorder.exportWAV(function(blob){
-      var url = URL.createObjectURL(blob);
-      var p = document.createElement('p');
-      var au = document.createElement('audio');
-      var hf = document.createElement('a');
-      var recordingslist = $("#recordingslist");
+newRecorder.stop = function(){
+  this.recorder.stop();
+  this.state = "full"
+  this.fileName = new Date().toISOString() + '.wav'
+  //to display audio, need better way
+  this.recorder.exportWAV(function(blob){
+    var url = URL.createObjectURL(blob);
+    var p = document.createElement('p');
+    var au = document.createElement('audio');
+    var hf = document.createElement('a');
+    var recordingslist = $("#recordingslist");
 
-      au.controls = true;
-      au.src = url;
-      hf.href = url;
-      hf.download = newRecorder.fileName;
-      hf.innerHTML = "<br />DOWNLOAD FILE";
-      p.appendChild(au);
-      p.appendChild(hf);
-      recordingslist.append(p);
-      recordingslist.append('NAME YOUR SAMPLE: <input id="name-sample-input" type="text" value='+ newRecorder.fileName +'>')
-    });
-  };
-  ```
+    au.controls = true;
+    au.src = url;
+    hf.href = url;
+    hf.download = newRecorder.fileName;
+    hf.innerHTML = "<br />DOWNLOAD FILE";
+    p.appendChild(au);
+    p.appendChild(hf);
+    recordingslist.append(p);
+    recordingslist.append('NAME YOUR SAMPLE: <input id="name-sample-input" type="text" value='+ newRecorder.fileName +'>')
+  });
+};
+```
 
 - **Ruby Dropbox SDK:** The Ruby wrapper for the Dropbox API, this was used to handle user authentication with Dropbox and to write files to users' Dropbox accounts. Here's our `upload` method:
 
-``` prettyprint lang-ruby
-  def upload
-    client = get_dropbox_client
-    unless client
-      redirect_to(:action => 'auth_start') and return
-    end
-
-    begin
-      access_token = current_user.dropbox_token
-      filename = params[:filename] || params["file"].original_filename
-      resp = client.put_file(filename, params[:file].read)
-
-      new_session = DropboxOAuth2Session.new(access_token, nil)
-      response = new_session.do_get "/shares/auto/#{client.format_path(resp["path"])}", {"short_url"=>false}
-      url = Dropbox::parse_response(response)["url"]
-      url.gsub!("https://www", "https://dl")
-      Sample.create(name: filename, user_id: current_user.id, url: url)
-
-      redirect_to root_path, notice: "Sample saved!"
-    rescue DropboxAuthError => e
-      session.delete(:access_token)  # An auth error means the access token is probably bad
-      logger.info "Dropbox auth error: #{e}"
-      render :text => "Dropbox auth error"
-    rescue DropboxError => e
-      logger.info "Dropbox API error: #{e}"
-      render :text => "Dropbox API error"
-    end
+```ruby
+def upload
+  client = get_dropbox_client
+  unless client
+    redirect_to(:action => 'auth_start') and return
   end
+
+  begin
+    access_token = current_user.dropbox_token
+    filename = params[:filename] || params["file"].original_filename
+    resp = client.put_file(filename, params[:file].read)
+
+    new_session = DropboxOAuth2Session.new(access_token, nil)
+    response = new_session.do_get "/shares/auto/#{client.format_path(resp["path"])}", {"short_url"=>false}
+    url = Dropbox::parse_response(response)["url"]
+    url.gsub!("https://www", "https://dl")
+    Sample.create(name: filename, user_id: current_user.id, url: url)
+
+    redirect_to root_path, notice: "Sample saved!"
+  rescue DropboxAuthError => e
+    session.delete(:access_token)  # An auth error means the access token is probably bad
+    logger.info "Dropbox auth error: #{e}"
+    render :text => "Dropbox auth error"
+  rescue DropboxError => e
+    logger.info "Dropbox API error: #{e}"
+    render :text => "Dropbox API error"
+  end
+end
 ```
 
 - **WebSocket Rails:** Ruby gem used to enable the user management functionality of the connection process. Below is the relevant controller, which handles the connection management process from the Rails side:
@@ -213,57 +213,56 @@ And here's some of the corresponding JavaScript:
 
 ```javascript
 var username, channel, requestedConnection;
-    var signedIn = false;
-    var requestInProgress = false;
-    var dispatcher = new WebSocketRails('www.tyutyu.be/websocket');
-    dispatcher.bind('set_username',function(data){
-        username = data.username;
-        signedIn = data.signed_in;
-        channel = dispatcher.subscribe(username);
-        channel.bind('connection_requested',function(message){
-            // Start peer mode if needed
-            if (!userBoard.peerToPeer) {
-                initializePeerToPeer(userBoard);
-            }
-            requestInProgress = true;
-            requestedConnection = message;
-            // handle modal showing request
-            $('#connection-requested-modal').modal('toggle');
-            $('#requested-connection').text(message.sender + " WANTS TO CONNECT WITH YOU");
-        });
-        channel.bind('connection_accepted',function(message){
-            // $('#request-sent-modal').modal('toggle');
-            userBoard.peerToPeer.prepareForConnection();
-            userBoard.peerToPeer.connectToPeer(message.receiver);
-            $('#connection-message-modal p').text("REQUEST ACCEPTED. CONNECTING...");
-        });
-        channel.bind('connection_rejected',function(message){
-            $('#connection-message-modal p').text("REQUEST REJECTED. BUMMER");
-            window.setTimeout(function(){
-                $('#connection-message-modal').modal('toggle')
-            }, 1000);
-        });
+var signedIn = false;
+var requestInProgress = false;
+var dispatcher = new WebSocketRails('www.tyutyu.be/websocket');
+dispatcher.bind('set_username',function(data){
+    username = data.username;
+    signedIn = data.signed_in;
+    channel = dispatcher.subscribe(username);
+    channel.bind('connection_requested',function(message){
+        // Start peer mode if needed
+        if (!userBoard.peerToPeer) {
+            initializePeerToPeer(userBoard);
+        }
+        requestInProgress = true;
+        requestedConnection = message;
+        // handle modal showing request
+        $('#connection-requested-modal').modal('toggle');
+        $('#requested-connection').text(message.sender + " WANTS TO CONNECT WITH YOU");
     });
-
+    channel.bind('connection_accepted',function(message){
+        // $('#request-sent-modal').modal('toggle');
+        userBoard.peerToPeer.prepareForConnection();
+        userBoard.peerToPeer.connectToPeer(message.receiver);
+        $('#connection-message-modal p').text("REQUEST ACCEPTED. CONNECTING...");
+    });
+    channel.bind('connection_rejected',function(message){
+        $('#connection-message-modal p').text("REQUEST REJECTED. BUMMER");
+        window.setTimeout(function(){
+            $('#connection-message-modal').modal('toggle')
+        }, 1000);
+    });
+});
 ```
 
 - **PeerJS WebRTC framework:** PeerJS was used to broker the WebRTC connections used to send real-time messages like keypresses. PeerJS makes setting up the connection really easy, and has a `DataChannel` for sending arbitrary data, as was needed in our case (WebRTC is often used for sending streaming audio or video). Here's the code used to "say hello" when a connection is opened. This adds the newly-connected peer to the array of connected peers and transmits things like the current state of a user's board (i.e. which pads have which samples).
 
 ```javascript
 newPeerToPeer.sayHello = function(connection) {
-        var otherConnections = [];
-        for (var i = 0; i < this.connections.length; i++) {
-            otherConnections.push(this.connections[i].peer);
-        }
-        var message = {
-            messageType: 'connectionOpened',
-            messageBody: 'Hello!',
-            peerId: this.id,
-            userBoardSpecTransmission: this.userBoardSpecTransmission,
-            otherConnections: otherConnections
-        }
-        connection.send(message);
+    var otherConnections = [];
+    for (var i = 0; i < this.connections.length; i++) {
+        otherConnections.push(this.connections[i].peer);
     }
+    var message = {
+        messageType: 'connectionOpened',
+        messageBody: 'Hello!',
+        peerId: this.id,
+        userBoardSpecTransmission: this.userBoardSpecTransmission,
+        otherConnections: otherConnections
+    }
+    connection.send(message);
+}
 ```
 
 ## Authors // Background
