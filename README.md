@@ -8,7 +8,7 @@
 
 ## <a name="description"></a>Description
 
-[tyutyu.be](http://www.tyutyu.be) is an interactive, collaborative, customizable musical experience. On the home page, users see the default 'board', which has nine different 'pads' - each with a different letter. By pressing the corresponding letter on their keyboards, users can play audio samples that have been assigned to those pads.
+[tyutyu.be](http://www.tyutyu.be) is an interactive, collaborative, customizable musical experience. On the home page, users see the default 'board', which has nine 'pads' - each with a different letter. By pressing the corresponding letter on their keyboards, users can play audio samples that have been assigned to those pads.
 
 #### Customization
 
@@ -71,7 +71,7 @@ Users can also connect with one another...
 
 This application's primary server was built using Ruby on Rails, though a number of other libraries and tools were required for certain features:
 
-- **Web Audio API:** Enables the site's core audio functionality. Sounds are loaded into audio buffers from static URLs. These can then be played back. For example, here's the code that loads a new sample and defines the `play` and `loop` functions:
+- **Web Audio API:** Enables the site's core audio functionality. Sounds are loaded into audio buffers from static URLs. These can then be played back. For example, here's the code that defines the `play` and `loop` functions once the sound has been loaded:
 
     ```javascript
     // Sample constructor
