@@ -1,10 +1,10 @@
 # tyutyu.be
 
-####[Description](#Description)
-####[Usage](#Usage)
-####[Technologies Used](#Technologies Used)
-####[Authors // Background](#Authors // Background)
-####[License](#License)
+[**Description**](#Description)
+[**Usage**](#Usage)
+[**Technologies Used**](#Technologies Used)
+[**Authors // Background**](#Authors // Background)
+[**License**](#License)
 
 ## Description
 
