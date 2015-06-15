@@ -266,7 +266,7 @@ This application's primary server was built using Ruby on Rails, though a number
 
 ## Authors // Background
 
-This app was developed at [The Flatiron School](http://flatironschool.com/) by Seph Kramer and Parker Lawrence. We both really enjoy playing with other fun online instruments and thought it would be exciting to try to create a simple instrument ourselves, with some added features that we hadn't seen elsewhere.
+This app was developed at [The Flatiron School](http://flatironschool.com/) by Seph Kramer and Parker Lawrence. We both really enjoyed playing with other fun online instruments and thought it would be exciting to try to create a simple instrument ourselves, with some added features that we hadn't seen elsewhere.
 
 You can find us on Twitter [@sephhh](https://twitter.com/seph_k) and [@parkeristyping](https://twitter.com/parkeristyping), or check out our blogs [here](http://sephhh.github.io/) and [here](http://www.hereisahand.com/).
 
