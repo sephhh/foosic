@@ -18,11 +18,9 @@ Using the 'connect' feature, also accessible through the menu bar, users can bro
 
 ## Usage
 
-![home page picture](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20home%20page.png)
-
 The default board contains nine playable pads
 
-[GIF of loop]
+![home page picture](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20home%20page.png)
 
 The loop feature contains animations to indicate which state is active:
 
@@ -31,27 +29,33 @@ The loop feature contains animations to indicate which state is active:
 - Playback: The screen displays a scrolling animation when the loop is being played back
 - Normal: Spacebar can be toggled again to stop playback of the loop and prepare for a new loop to be recorded
 
-[GIF of sidebar toggle]
+![loop GIF](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20loop.gif)
 
 The menu bar can be toggled by clicking the arrow at top left
 
-[GIF of change pad]
+![GIF of menu toggle](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20menu%20screen.gif)
 
 Using the sidebar, users can change samples assigned to different users,...
 
-[GIF of change board]
+![GIF of change pad](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20change%20pad.gif)
 
 ...change the entire board at once,...
 
-[GIF of save board]
+![GIF of change board](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20change%20board.gif)
 
 ...save a new board,...
 
-[GIF of board record]
+![GIF of save board](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20save%20board.gif)
 
-...or record or upload a new sound.
+...record a new sound,...
 
-Users can also connect with other users...
+![GIF of record sound]()
+
+...or upload one.
+
+![GIF of upload sound](https://raw.githubusercontent.com/sephhh/tyutyu.be/master/readme_images/tyutyube%20upload%20sample.gif)
+
+Users can also connect with one another...
 
 [side-by-side GIF of connection process]
 
