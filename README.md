@@ -65,7 +65,7 @@ This application's primary server was built using Ruby on Rails, though a number
 
 - **Web Audio API:** Enables the site's core audio functionality. Sounds are loaded into audio buffers from static URLs. These can then be played back. For example, here's the code that loads a new sample and defines the `play` and `loop` functions:
 
-``` prettyprint lang-javascript
+```javascript
 // Sample constructor
 var createSample = function(spec) {
     var newSample = {
@@ -102,7 +102,7 @@ var createSample = function(spec) {
 
 - **Recorderjs:** JavaScript library used to record loops and new samples. Below is the code used to start and stop recording:
 
-``` prettyprint lang-javascript
+```javascript
   newRecorder.start = function(){
     this.recorder.record();
     this.state = "recording";
@@ -167,7 +167,7 @@ var createSample = function(spec) {
 
 - **WebSocket Rails:** Ruby gem used to enable the user management functionality of the connection process. Below is the relevant controller, which handles the connection management process from the Rails side:
 
-``` prettyprint lang-ruby
+```ruby
 class WebsocketsController < WebsocketRails::BaseController
 
   def set_username
@@ -211,7 +211,7 @@ end
 
 And here's some of the corresponding JavaScript:
 
-``` prettyprint lang-javascript
+```javascript
 var username, channel, requestedConnection;
     var signedIn = false;
     var requestInProgress = false;
@@ -249,7 +249,7 @@ var username, channel, requestedConnection;
 
 - **PeerJS WebRTC framework:** PeerJS was used to broker the WebRTC connections used to send real-time messages like keypresses. PeerJS makes setting up the connection really easy, and has a `DataChannel` for sending arbitrary data, as was needed in our case (WebRTC is often used for sending streaming audio or video). Here's the code used to "say hello" when a connection is opened. This adds the newly-connected peer to the array of connected peers and transmits things like the current state of a user's board (i.e. which pads have which samples).
 
-```
+```javascript
 newPeerToPeer.sayHello = function(connection) {
         var otherConnections = [];
         for (var i = 0; i < this.connections.length; i++) {
