@@ -65,7 +65,7 @@ This application's primary server was built using Ruby on Rails, though a number
 
 - **Web Audio API:** Enables the site's core audio functionality. Sounds are loaded into audio buffers from static URLs. These can then be played back. For example, here's the code that loads a new sample and defines the `play` and `loop` functions:
 
-```javascript
+ ```javascript
 // Sample constructor
 var createSample = function(spec) {
     var newSample = {
